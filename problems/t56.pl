@@ -4,7 +4,7 @@ g(3,1).
 o(3,1).
 g(4,2).
 bl(5).
-striped_bl(5).
+striped_w(5).
 p(5,3,4).
 striped_p(5,1,2). 
 b(xb(A),A).

@@ -10,6 +10,7 @@ striped_p(5,1,2).
 b(xb(A),A).
 p(F,A,xp(F,A)).
 b(A,C) :- b(C,A).
+g(A,C) :- g(B,C), b(A,B).
 c(A,B) :- g(A,B), g(C,B), b(A,C), o(C,B).
 o(A,B) :- g(A,B), g(C,B), b(A,C), c(C,B).
 w(A) :- g(A,B), c(A,B), w(B). 

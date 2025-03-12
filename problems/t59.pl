@@ -5,8 +5,6 @@ r(A,xr(A)).
 g(xg(A,B),A,B).
 r(B,1) :- r(B,C), g(C,A,A). 
 w(A,1) :- r(A,1).
-g(1,A,A).
-g(A,B,B) :- r(A,1). 
 w(B,C) :- g(1,B,C).
 g(1,B,C) :- w(B,C).
 g(1,A,B) :- g(C,A,B), w(C,1). 

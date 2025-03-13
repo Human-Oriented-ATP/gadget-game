@@ -9,4 +9,5 @@ b(5,2).
 g(A,B,C) :- g(B,C,A).
 g(A,B,C) :- g(B,A,C), r(A,B), b(A,C).
 b(A,B) :- b(A,C), b(B,D), r(C,D).
+r(A,B) :- r(A,C), r(B,C), b(C,D).
 :- g(2,3,6).

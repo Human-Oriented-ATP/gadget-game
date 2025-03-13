@@ -9,5 +9,5 @@ o(A,B,C) :- o(A,C,B).
 b(C,A,B) :- o(A,D,F), o(B,E,F), b(C,D,E).
 b(C,D,E) :- o(A,D,F), o(B,E,F), b(C,A,B). 
 r(A) :- b(A,C,D).
-r(7).
+:- r(7).
 

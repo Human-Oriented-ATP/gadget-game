@@ -6,6 +6,8 @@ g(2,4,6).
 b(1,4).
 b(3,6).
 b(5,2).
+r(A,B) :- b(B,A).
+b(A,B) :- r(B,A). 
 g(A,B,C) :- g(B,C,A).
 g(A,B,C) :- g(B,A,C), r(A,B), b(A,C).
 b(A,B) :- b(A,C), b(B,D), r(C,D).

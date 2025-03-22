@@ -1,11 +1,11 @@
 
 w(3).
 b(xb(A),A).
-striped_b(xb(A),A).
+b(A,yb(A)).
 o(xo(A),A).
-striped_o(xo(A),A).
+o(A,yo(A)).
 p(xp(A),A).
-striped_p(xp(A),A).
+p(A,yp(A)).
 b(A,B) :- striped_b(B,A).
 o(A,B) :- striped_o(B,A).
 p(A,B) :- striped_p(B,A).

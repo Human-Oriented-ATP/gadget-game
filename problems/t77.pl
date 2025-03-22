@@ -12,8 +12,8 @@ b(A,C) :- o(A,B), o(B,C).
 o(A,C) :- b(A,B), b(B,C).
 o(A,C) :- p(A,B), p(B,C).
 p(A,C) :- o(A,B), o(B,C).
-bl(D,A,C) :- p(A,B), p(B,C).
-p(A,B) :- bl(1,B,C).
-p(A,B) :- bl(1,C,A).
+bl(A,C) :- p(A,B), p(B,C).
+p(1,B) :- bl(B,C).
+p(A,2) :- bl(C,A).
 :- r(1,2).
 

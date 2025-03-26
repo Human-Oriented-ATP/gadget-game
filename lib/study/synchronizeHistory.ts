@@ -1,11 +1,13 @@
 "use server"
 
+import { promisify } from "node:util"
+import { randomBytes } from "node:crypto";
 import { sql } from "@vercel/postgres";
 import { cookies } from "next/headers";
 import { GameHistory } from "./GameHistory";
 
-function generateNewPlayerId(): string {
-    const newPlayerId = Math.random().toString(36).substring(2)
+async function generateNewPlayerId(): Promise<string> {
+    const newPlayerId = (await promisify(randomBytes)(20)).toString('hex');
     return newPlayerId
 }
 
@@ -18,7 +20,7 @@ async function setPlayerId(playerId: string) {
 export async function getPlayerId(): Promise<string> {
     const playerId = cookies().get('id')
     if (playerId === undefined) {
-        const newPlayerId = generateNewPlayerId()
+        const newPlayerId = await generateNewPlayerId()
         setPlayerId(newPlayerId)
         return newPlayerId
     } else {

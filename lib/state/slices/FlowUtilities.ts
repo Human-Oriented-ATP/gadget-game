@@ -71,7 +71,6 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
 
     makeGadgetNode: (axiom: string, axiomPosition: XYPosition) => {
       const id = get().generateNewGadgetId()
-      console.log("Creating new gadget node with id", id)
       const gadgetProps = axiomToGadget(axiom, id)
       const gadgetNode: GadgetNode = {
         id, type: 'gadgetNode',

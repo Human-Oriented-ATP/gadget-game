@@ -10,6 +10,22 @@
 
 You can also run unit tests using `npm run test`.
 
+### Database setup
+
+Errors around database access can be ignored for those not wishing to integrate a database.
+However, if you want to store questionnaire data and user solution analytics, the server can
+connect to a PostgreSQL database.
+
+* If using Vercel, set up a PostgreSQL integration and connect it to the project.
+* If self-hosting, set the environment variable `GADGET_SELFHOST=true`,
+  and specify environmental variables required for establishing a connection
+  (documented at https://www.postgresql.org/docs/current/libpq-envars.html
+  and https://node-postgres.com/apis/client).
+  These variables can also be set using `.env.local`.
+
+Migrations are automatically run for production vercel deployments, or for those self-hosting
+by using `npm run build` or `npm run migrate` (standalone).
+
 ## Writing problem files
 
 You can create your own problem files and put them in the folder `problems` to add them to the game. They then automatically appear on the page `internal` under Unlisted Problems. Take a look at the files already present in that folder to learn more about the syntax. The following colours are available: 

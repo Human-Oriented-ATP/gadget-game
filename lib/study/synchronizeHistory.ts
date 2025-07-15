@@ -1,8 +1,8 @@
 "use server"
 
+import { sql } from "../util/Database";
 import { promisify } from "node:util"
 import { randomBytes } from "node:crypto";
-import { sql } from "@vercel/postgres";
 import { cookies } from "next/headers";
 import { GameHistory } from "./GameHistory";
 

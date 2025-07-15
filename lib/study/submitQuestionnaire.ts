@@ -1,6 +1,6 @@
 "use server"
 
-import { sql } from "@vercel/postgres";
+import { sql } from "../util/Database";
 import { getPlayerId } from "./synchronizeHistory";
 import { StudyConfiguration } from "./Types";
 import { cookies } from "next/headers";

@@ -7,7 +7,7 @@ interface InsertGadgetButtonProps extends React.PropsWithChildren<{}> {
     axiom: string;
 }
 
-export function InsertGadgetButton({ axiom, children }: InsertGadgetButtonProps): JSX.Element {
+export function InsertGadgetButton({ axiom, children }: InsertGadgetButtonProps): React.JSX.Element {
     const addGadgetNode = useGameStateContext(useShallow((state) => state.addGadgetNode));
     const abortAddingGadget = useGameStateContext(useShallow((state) => state.abortAddingGadget));
 

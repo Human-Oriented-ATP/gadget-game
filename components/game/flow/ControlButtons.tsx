@@ -10,15 +10,15 @@ const selector = (state: GameSlice) => ({
     rf: state.rf
 })
 
-export function ControlButtons(): JSX.Element {
+export function ControlButtons(): React.JSX.Element {
     const { rf, zoomEnabled, panEnabled } = useGameStateContext(useShallow(selector))
 
     function fitView() {
         rf.fitView({ padding: 0.5 })
     }
 
-    const buttonClassNames = "!w-10 !h-10 border-black border-2 rounded-lg m-0.5 hover:bg-black hover:text-white"
-    const svgClassNames = "!max-w-none !max-h-none h-full"
+    const buttonClassNames = "w-10! h-10! border-black border-2 rounded-lg m-0.5 hover:bg-black hover:text-white"
+    const svgClassNames = "max-w-none! max-h-none! h-full"
 
     return <Controls showZoom={false} showInteractive={false} showFitView={false} position="bottom-right">
         {zoomEnabled &&

@@ -11,7 +11,7 @@ function makeShelfGadgetProps(axiom: string, id: number): GadgetProps {
     return { terms, id: axiomId, isOnShelf: true }
 }
 
-export function GadgetShelf(): JSX.Element {
+export function GadgetShelf(): React.JSX.Element {
     const axioms = useGameStateContext(useShallow((state) => state.setup.axioms))
 
     return <>

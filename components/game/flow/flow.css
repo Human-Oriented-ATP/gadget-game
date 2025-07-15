@@ -29,9 +29,9 @@
 .react-flow__node.selectable:focus {
     box-shadow: 0px 10px 30px gray;
     border-radius: 15px;
-    @apply bg-white;
+    background-color: var(--color-white);
 }
 
 .react-flow__handle.valid svg {
-    fill: theme('colors.green');
+    fill: var(--color-green);
 }

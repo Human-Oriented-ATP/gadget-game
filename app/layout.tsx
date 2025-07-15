@@ -1,5 +1,5 @@
 import { Metadata } from "next"
-import "../index.css"
+import "../tailwind.css"
 import { Analytics } from "@vercel/analytics/next"
 
 export const metadata: Metadata = {

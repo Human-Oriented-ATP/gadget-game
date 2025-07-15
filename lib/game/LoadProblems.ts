@@ -12,6 +12,14 @@ export async function loadAllProblemsInDirectory(): Promise<string[]> {
     return withExtensionRemoved
 }
 
+export async function loadAllStudyConfigurations(): Promise<string[]> {
+    const pathToProblems = process.cwd() + "/study_setup/"
+    const folderContent = await fs.readdir(pathToProblems)
+    const prologFiles = folderContent.filter(file => file.toLowerCase().endsWith(".json"))
+    const withExtensionRemoved = prologFiles.map(file => file.slice(0, -5))
+    return withExtensionRemoved
+}
+
 export async function loadStudyConfiguration(configurationIdentifier: string): Promise<StudyConfiguration> { 
     const configurationFilePath = path.resolve('study_setup', configurationIdentifier + ".json")
     const configurationFile = await fs.readFile(configurationFilePath, "utf-8")

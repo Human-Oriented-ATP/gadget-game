@@ -33,7 +33,7 @@ export function LandingPage() {
 
                 <p className="p-2 font-bold">Note that this study has been optimised for laptops and desktop computers and that participation is not possible from touch devices like phones or tablets.</p>
 
-                <p className="p-2">To continue, check the checkboxes below and click "Start".</p>
+                <p className="p-2">To continue, check the checkboxes below and click {"Start"}.</p>
             </div>
             <div className="text-left p-2">
                 <CheckItem setIsChecked={setCheck1}>I am age 18 or older.</CheckItem>
@@ -46,7 +46,7 @@ export function LandingPage() {
                     <Link href={`pilot3/game/questionnaire1`}>
                         <StartButton />
                     </Link>
-                    : <StartButton className="border-2 border-black rounded-lg p-5 px-10 hover:bg-black hover:text-white text-2xl cursor-not-allowed bg-palette-gray opacity-40 cursor-not-allowed " />}
+                    : <StartButton className="border-2 border-black rounded-lg p-5 px-10 hover:bg-black hover:text-white text-2xl cursor-not-allowed bg-palette-gray opacity-40 " />}
             </div>
             <div className="absolute top-0 right-0 p-2 text-sm">Contact: kmc61@cam.ac.uk </div>
         </div>

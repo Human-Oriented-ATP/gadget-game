@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "TSCheck",
+      "type": "shell",
+      "command": "npx tsc --noEmit",
+      "problemMatcher": "$tsc",
+      "group": "build"
+    },
+    {
+      "label": "ESLint",
+      "type": "shell",
+      "command": "npx eslint .",
+      "problemMatcher": ["$eslint-stylish"],
+      "group": "build"
+    },
+    {
+      "label": "Lint (tsc + eslint)",
+      "dependsOn": ["TSCheck", "ESLint"],
+      "group": "build"
+    }
+  ]
+}

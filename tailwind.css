@@ -17,9 +17,9 @@
   --color-dark-gray: #777777;
   --color-palette-gray: #dddddd;
 
-  --animation-svg-stroke-glow-red: svgStrokeGlowRed 2s linear infinite;
-  --animation-svg-stroke-blink: svgStrokeBlink 1s infinite;
-  --animation-dashdraw: dashdraw 0.5s linear infinite;
+  --animate-svg-stroke-glow-red: svgStrokeGlowRed 2s linear infinite;
+  --animate-svg-stroke-blink: svgStrokeBlink 1s infinite;
+  --animate-dashdraw: dashdraw 0.5s linear infinite;
 
   --background-image-striped: url('/diagonal-stripes.svg');
 }
@@ -36,7 +36,7 @@
 
 @keyframes svgStrokeBlink {
   0%, 100% { stroke: #3d3d3d }
-  50% { stroke: 'transparent' }
+  50% { stroke: transparent }
 }
 
 @keyframes dashdraw {

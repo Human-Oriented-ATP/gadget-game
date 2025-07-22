@@ -2,7 +2,7 @@ import { StudyConfiguration } from "lib/study/Types";
 import { ProblemCategoryDisplay } from "./ProblemCategory";
 import { getProblemList } from "lib/study/LevelConfiguration";
 
-function getUnlistedProblems(config: StudyConfiguration, allProblems: string[]): JSX.Element {
+function getUnlistedProblems(config: StudyConfiguration, allProblems: string[]): React.JSX.Element {
     if (config.displayUnlistedProblems === true) {
         const allProblemsInConfig = getProblemList(config)
         const unlistedProblems = allProblems.filter((problem) => !allProblemsInConfig.includes(problem))

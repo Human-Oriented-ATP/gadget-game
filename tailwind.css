@@ -1,0 +1,45 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-red: #ff3838;
+  --color-yellow: #fff200;
+  --color-green: #32ff7e;
+  --color-blue: #7d5fff;
+  --color-white: #eeeeee;
+  --color-black: #3d3d3d;
+  --color-orange: #ff9f1a;
+  --color-purple: #c56cf0;
+  --color-cyan: #7efff5;
+  --color-pink: #ffcccc;
+  --color-yellow-highlight: #fffa65;
+  --color-light-gray: #fefefe;
+  --color-middle-gray: #eeeeee;
+  --color-dark-gray: #777777;
+  --color-palette-gray: #dddddd;
+
+  --animate-svg-stroke-glow-red: svgStrokeGlowRed 2s linear infinite;
+  --animate-svg-stroke-blink: svgStrokeBlink 1s infinite;
+  --animate-dashdraw: dashdraw 0.5s linear infinite;
+
+  --background-image-striped: url('/diagonal-stripes.svg');
+}
+
+@keyframes rotate {
+  0%, 100% { transform: rotate(0deg) }
+  50% { transform: rotate(360deg) }
+}
+
+@keyframes svgStrokeGlowRed {
+  0%, 10%, 90%, 100% { stroke: #ff0000 }
+  50% { stroke: #000000 }
+}
+
+@keyframes svgStrokeBlink {
+  0%, 100% { stroke: #3d3d3d }
+  50% { stroke: transparent }
+}
+
+@keyframes dashdraw {
+  0% { stroke-dashoffset: 100 }
+  100% { stroke-dashoffset: 0 }
+}

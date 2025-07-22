@@ -1,5 +1,5 @@
 import { LandingPage } from 'components/navigation/LandingPage'
-import '../index.css'
+import '../tailwind.css'
 
 export default async function Page() {
     return <LandingPage />

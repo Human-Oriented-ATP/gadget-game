@@ -16,7 +16,7 @@ export interface ConnectionSvgProps {
 }
 
 export function ConnectionPath(props: ConnectionDrawingData, index: number,
-    fixedOffset = CONTROL_POINT_OFFSET): JSX.Element {
+    fixedOffset = CONTROL_POINT_OFFSET): React.JSX.Element {
     const svg_start_sequence = "M " + pointToString(props.start);
     let offset_start = props.fromInput
         ? fixedOffset

@@ -4,33 +4,32 @@
     "private": true,
     "dependencies": {
         "@radix-ui/react-icons": "^1.3.0",
-        "@testing-library/jest-dom": "^5.17.0",
-        "@testing-library/user-event": "^13.5.0",
-        "@types/jest": "^27.5.2",
-        "@types/react": "^18.2.67",
-        "@types/react-dom": "^18.2.22",
+        "@testing-library/jest-dom": "^6.6.0",
+        "@testing-library/user-event": "^14.6.0",
+        "@types/jest": "^30.0.0",
+        "@types/react": "^19.1.0",
+        "@types/react-dom": "^19.1.0",
         "@vercel/analytics": "^1.4.0",
-        "@vercel/postgres": "^0.9.0",
-        "@xyflow/react": "^12.0.3",
+        "@vercel/postgres": "^0.10.0",
+        "@xyflow/react": "^12.8.0",
         "chevrotain": "^11.0.3",
-        "next": "^14.2.5",
-        "react": "^18.2.0",
-        "react-dom": "^18.2.0",
-        "tailwind-merge": "^2.3.0",
-        "typescript": "^4.9.5",
+        "next": "^15.3.5",
+        "node-pg-migrate": "^8.0.3",
+        "pg": "^8.16.0",
+        "react": "^19.1.0",
+        "react-dom": "^19.1.0",
+        "tailwind-merge": "^3.3.0",
         "vite-tsconfig-paths": "^5.1.0",
-        "web-vitals": "^2.1.4",
+        "web-vitals": "^5.0.0",
         "zustand": "^5.0.0"
     },
     "scripts": {
         "dev": "next dev",
-        "build": "next build",
+        "build": "npm run migrate && next build",
         "start": "next start",
-        "lint": "next lint",
-        "test": "vitest"
-    },
-    "eslintConfig": {
-        "extends": "next/core-web-vitals"
+        "lint": "tsc --noEmit && eslint .",
+        "test": "vitest",
+        "migrate": "node --env-file-if-exists=.env.local migrate.mjs"
     },
     "browserslist": {
         "production": [
@@ -45,16 +44,25 @@
         ]
     },
     "devDependencies": {
+        "@eslint/js": "^9.30.1",
+        "@tailwindcss/postcss": "^4.1.11",
         "@testing-library/dom": "^10.4.0",
-        "@testing-library/react": "^16.0.1",
-        "@types/node": "^22.7.4",
-        "@vitejs/plugin-react": "^4.3.2",
-        "autoprefixer": "^10.4.19",
-        "eslint": "^9.1.1",
-        "jsdom": "^25.0.1",
-        "postcss": "^8.4.38",
-        "tailwindcss": "^3.4.3",
+        "@testing-library/react": "^16.3.0",
+        "@types/node": "^22.9",
+        "@typescript-eslint/parser": "^8.36.0",
+        "@vitejs/plugin-react": "^4.6.0",
+        "eslint": "^9.30.0",
+        "eslint-config-next": "^15.3.5",
+        "eslint-plugin-compat": "^6.0.2",
+        "globals": "^16.3.0",
+        "jsdom": "^26.1.0",
+        "tailwindcss": "^4.1.11",
         "tsc-alias": "^1.8.10",
-        "vitest": "^2.1.2"
+        "typescript": "^5.8.3",
+        "typescript-eslint": "^8.36.0",
+        "vitest": "^3.2.0"
+    },
+    "engines": {
+        "node": "^22.9"
     }
 }

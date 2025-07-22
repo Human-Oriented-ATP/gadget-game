@@ -12,7 +12,7 @@ function getGadgetConnection(props: EdgeProps): GadgetConnection {
     return toGadgetConnection(connection)
 }
 
-export function CustomEdge({ ...props }: EdgeProps): JSX.Element {
+export function CustomEdge({ ...props }: EdgeProps): React.JSX.Element {
     const equationIsSatisfied = useGameStateContext((state) => state.equationIsSatisfied)
     const gadgetConnection = getGadgetConnection(props)
     const isSatisfied = equationIsSatisfied.get(gadgetConnection) ?? false

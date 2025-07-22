@@ -41,7 +41,7 @@ export const tutorial05: InteractiveLevel = {
         trigger: { GadgetRemoved: "ANY_GADGET" }
     }, {
         content: {
-            jsx: <>That's better, now solve the level!</>,
+            jsx: <>That&apos;s better, now solve the level!</>,
         },
         trigger: {
             GameCompleted: null

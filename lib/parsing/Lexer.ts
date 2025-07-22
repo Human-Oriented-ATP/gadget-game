@@ -27,18 +27,18 @@ export const RightParen = createToken({ name: "RightParen", pattern: /\)/ })
 
 export const WhiteSpace = createToken({
   name: "WhiteSpace",
-  pattern: /[^\S\n]/,
+  pattern: /[^\S\r\n]/,
   group: Lexer.SKIPPED
 })
 
 export const NewLine = createToken({
   name: "NewLine",
-  pattern: /\n+/,
+  pattern: /[\r\n]+/,
 })
 
 export const Comment = createToken({
   name: "Comment",
-  pattern: /%[^\n]*/,
+  pattern: /%[^\r\n]*/,
   group: Lexer.SKIPPED
 })
 

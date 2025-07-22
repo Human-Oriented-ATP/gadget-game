@@ -53,7 +53,7 @@ export function AnimatedHand(props: AnimatedHandProps) {
         }, getMillisecondsUntilNextFrame(animationProgress, props.endWithClick))
 
         return () => clearInterval(interval)
-    }, [animationProgress])
+    }, [animationProgress, props.endWithClick])
 
     const x = easeAnimation(animationProgress) * props.toX
     const y = easeAnimation(animationProgress) * props.toY
@@ -65,7 +65,7 @@ export function AnimatedHand(props: AnimatedHandProps) {
 
     const imageSource = props.endWithClick && animationProgress >= 0.999 ? "/clicking-hand.svg" : "/pointing-hand.svg"
 
-    return <div className="translate-x-1/2" style={{ "width": `${width * 2}px`, "height": `${height * 2}px`, 'transform': 'translate(-50%,-50%)' }}>
+    return <div style={{ "width": `${width * 2}px`, "height": `${height * 2}px`, 'transform': 'translate(-50%,-50%)' }}>
         {props.drawPlacementCircle &&
             <div style={{ left: width + props.toX - CIRCLE_SIZE, top: height + props.toY - CIRCLE_SIZE, height: CIRCLE_SIZE * 2, width: CIRCLE_SIZE * 2 }}
                 className={`absolute rounded-full border-4 border-dashed border-black`}></div>

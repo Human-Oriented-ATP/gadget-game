@@ -1,6 +1,6 @@
 "use server"
 
-import { sql } from "@vercel/postgres";
+import { sql } from "../util/Database";
 import { getPlayerId } from "./synchronizeHistory";
 import { StudyConfiguration } from "./Types";
 import { cookies } from "next/headers";
@@ -19,7 +19,7 @@ export async function submitQuestionnaire1(formData: string) {
         ${questionnaire.specialty}, ${questionnaire.firstLanguage}, ${questionnaire.prolific}, ${questionnaire.feedback})`;
 }
 
-export async function submitQuestionnaire2(formData) {
+export async function submitQuestionnaire2(formData: string) {
     const playerId = await getPlayerId();
     const questionnaire = JSON.parse(formData);
     await sql`UPDATE questionnaire_responses
@@ -34,13 +34,13 @@ export async function submitQuestionnaire2(formData) {
 }
 
 export async function hasSubmittedQuestionnaire2() {
-    const submitted = cookies().get("questionnaire2Submitted");
+    const submitted = (await cookies()).get("questionnaire2Submitted");
     return submitted !== undefined;
 }
 
 export async function hasCompletedEnoughProblems(config: StudyConfiguration) {
     const problems = getProblemList(config);
-    const completed = cookies().get("completed");
+    const completed = (await cookies()).get("completed");
     if (completed === undefined) {
         return false
     } else {
@@ -51,7 +51,7 @@ export async function hasCompletedEnoughProblems(config: StudyConfiguration) {
 }
 
 export async function timeIsOver() {
-    const startTime = cookies().get("start_time");
+    const startTime = (await cookies()).get("start_time");
     if (!startTime) {
         return false
     } else {

@@ -66,6 +66,7 @@ export function Flow() {
             zoomOnDoubleClick={false}
             autoPanOnConnect={false}
             autoPanOnNodeDrag={false}
+            connectionDragThreshold={0}
         >
             <Background color="#bbb" size={1.8} variant={BackgroundVariant.Dots} />
         </ReactFlow>

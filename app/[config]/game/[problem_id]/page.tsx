@@ -1,18 +1,26 @@
-import { loadAllProblemsInDirectory, loadStudyConfiguration } from "lib/game/LoadProblems";
+import { loadAllStudyConfigurations, loadStudyConfiguration } from "lib/game/LoadProblems";
 import GameOrQuestionnaireLoader from "components/navigation/GameOrQuestionnaireLoader";
+import { ProblemCategory } from "lib/study/Types";
 
-export async function generateStaticParams() {
-    let problems = await loadAllProblemsInDirectory()
-    const problemIds = problems.map(problem => ({ problem_id: problem }))
-    return [...problemIds, "questionnaire1", "questionnaire2"]
+async function generateConfigurationStaticParams(config: string) {
+    const loadedConfig = await loadStudyConfiguration(config)
+    const configCategories = loadedConfig.categories;
+    const generateProblemsParams = (category: ProblemCategory) => 
+        category.problems.map(problem_id => ({config, problem_id}));
+
+    return configCategories.flatMap(generateProblemsParams);
 }
 
-export const dynamic = 'force-dynamic'
+export async function generateStaticParams() {
+    const configurations = await loadAllStudyConfigurations();
+    return configurations.flatMap(generateConfigurationStaticParams);
+}
 
-export default async function Page({ params }: {
-    params: { config: string, problem_id: string },
-}) {
+type Params = Promise<{ config: string, problem_id: string }>
+
+export default async function Page(props: { params: Params }) {
+    const params = await props.params;
     const config = await loadStudyConfiguration(params.config)
-    const Loader = await GameOrQuestionnaireLoader({ problemId: params.problem_id, config })
-    return Loader
+    const loaderProps = { problemId: params.problem_id, config };
+    return <GameOrQuestionnaireLoader {...loaderProps} />
 }

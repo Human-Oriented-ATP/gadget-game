@@ -100,7 +100,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
     },
 
     removeGadgetNodes(nodes: GadgetNode[]) {
-      let events = new Array()
+      let events: GameEvent[] = []
       for (const node of nodes) {
         const edgeDeletionEvents = get().removeGadgetNode(node)
         events = [...events, ...edgeDeletionEvents]

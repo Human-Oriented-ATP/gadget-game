@@ -25,7 +25,7 @@ export default tseslint.config(
       "dist/",
     ],
   },
-  ...flatNextConfig, 
+  ...flatNextConfig,
   { ...polyfillCompat.configs["flat/recommended"] },
   {
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
@@ -53,8 +53,6 @@ export default tseslint.config(
   // Later rules take precedence.
   {
     "rules": {
-      "@typescript-eslint/no-array-constructor": "off",
-      "@typescript-eslint/no-base-to-string": "off",
       "@typescript-eslint/no-duplicate-type-constituents": "off",
       "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-explicit-any": "off",

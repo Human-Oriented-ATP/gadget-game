@@ -53,7 +53,6 @@ export default tseslint.config(
   // Later rules take precedence.
   {
     "rules": {
-      "@typescript-eslint/no-empty-object-type": "off",
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-extra-non-null-assertion": "off",
       "@typescript-eslint/no-floating-promises": "off",

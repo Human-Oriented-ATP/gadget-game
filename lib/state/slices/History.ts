@@ -36,7 +36,7 @@ export type HistoryActions = {
   getCurrentEquations: () => ValueMap<GadgetConnection, Equation>
 }
 
-export type HistorySlice = SetupReadonlyState & GadgetDndFromShelfSlice & HistoryStateInitializedFromData & HistoryState & HistoryActions
+export type HistorySlice = SetupReadonlyState & GadgetDndFromShelfSlice & HistoryState & HistoryActions
 
 export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFromData, HistorySlice> = (initialState, set, get): HistorySlice => {
   return {

@@ -1,6 +1,5 @@
 import { makeInitializationDataFromProblemFileData } from "lib/game/Initialization"
-import { promises as fs } from "fs"
-import { loadStudyConfiguration } from "lib/game/LoadProblems"
+import { loadProblemData, loadStudyConfiguration } from "lib/game/LoadProblems"
 import { parseProblemFile } from "lib/parsing/Semantics"
 import { getNextProblem } from "lib/study/LevelConfiguration"
 import { Suspense } from "react"
@@ -23,9 +22,7 @@ function LoadingScreen() {
 
 export async function GameLoader({ configId, problemId }: { configId: string, problemId: string }) {
     const configuration = await loadStudyConfiguration(configId)
-
-    const problemFile = problemId + ".pl"
-    const problemData = await fs.readFile(process.cwd() + "/problems/" + problemFile, "utf-8")
+    const problemData = await loadProblemData(problemId);
 
     const nextProblem = getNextProblem(configuration, problemId)
     const { initialDiagramFromTutorialSpecification, settings, tutorialSteps } = getTutorialProps(problemId)

@@ -59,18 +59,14 @@ export function Gadget(props: GadgetProps) {
             const end = calculateHolePosition(props.id, internalConnection.to)
             const [fromNode] = internalConnection.from
             const [toNode] = internalConnection.to
-            const from_input = fromNode !== "output"
-            const to_output = toNode === "output"
-            return { start, end, fromInput: from_input, toOutput: to_output }
+            const fromInput = fromNode !== "output"
+            const toOutput = toNode === "output"
+            return { start, end, fromInput, toOutput }
         }
 
-        if (hasOutputNode(props.terms)) {
-            const inputs = Array.from(props.terms).filter(key => isInputPosition(key[0]))
-            const inputTerms = inputs.map(kv => kv[1])
-            const connections = makeConnections(inputTerms, props.terms.get(OUTPUT_POSITION)!)
-            const drawingData = connections.map(calculateInternalConnectionDrawingData)
-            setConnectionState({ connections: drawingData })
-        }
+        const connections = makeConnections(props.terms);
+        const drawingData = connections.map(calculateInternalConnectionDrawingData)
+        setConnectionState({ connections: drawingData })
 
     }, [props.terms, props.id])
 

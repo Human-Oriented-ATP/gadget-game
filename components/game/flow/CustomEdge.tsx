@@ -33,7 +33,12 @@ export function CustomEdge({ ...props }: EdgeProps): React.JSX.Element {
            ${endPointX} ${props.targetY}`
     );
 
-    return <g className={twJoin("stroke-black", !isSatisfied && "animate-dashdraw")} strokeDasharray={isSatisfied ? 0 : 5}>
-        <path d={pathData} strokeWidth="2px" fill="transparent"/>
-    </g>
+    return <>
+        <g className={twJoin("stroke-black", !isSatisfied && "animate-dashdraw")} strokeDasharray={isSatisfied ? 0 : 5}>
+            <path d={pathData} strokeWidth="2px" fill="transparent"/>
+        </g>
+        <g className="stroke-transparent">
+            <path d={pathData} strokeWidth="10px" fill="transparent"/>
+        </g>
+    </>
 }

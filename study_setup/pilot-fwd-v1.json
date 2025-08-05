@@ -1,0 +1,52 @@
+{
+  "name": "pilot-fwd-v1",
+  "displayNamesAs": "name",
+  "displayUnlistedProblems": false,
+  "displayEndParticipationButton": false,
+  "skipTime": 420,
+  "categories": [
+    {
+      "name": "Tutorial",
+      "problems": [
+        "tutorial01",
+        "tutorial01a",
+        "tutorial02",
+        "tutorial03",
+        "tutorial04",
+        "tutorial05",
+        "tutorial06"
+      ],
+      "numberOfUnlockedProblems": 10
+    },
+    {
+      "name": "Set I",
+      "problems": [
+        "jofwd01",
+        "jofwd02",
+        "jofwd03",
+        "jo02"
+      ],
+      "numberOfUnlockedProblems": 4
+    },
+    {
+      "name": "Set II",
+      "problems": [
+        "ja29",
+        "ja30",
+        "ja31",
+        "ja32",
+        "ja33",
+        "ja34",
+        "ja35",
+        "ja36",
+        "ja55a",
+        "ja55b",
+        "ja55c",
+        "ja56",
+        "ja57",
+        "ja58"
+      ],
+      "numberOfUnlockedProblems": 20
+    }
+  ]
+}

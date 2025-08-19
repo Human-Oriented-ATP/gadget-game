@@ -9,6 +9,7 @@ import { twJoin } from 'tailwind-merge'
 import { calculateHolePosition } from '../../../lib/game/calculateHolePosition'
 import { GadgetId, GOAL_GADGET_ID } from 'lib/game/Primitives'
 import { Term } from 'lib/game/Term'
+import { HandleDoubleClickProps } from './CustomHandle'
 
 export type GadgetProps = {
     id: GadgetId;
@@ -27,7 +28,7 @@ function hasInputNode(terms: Map<CellPosition, Term>): boolean {
 }
 
 
-function GadgetInputNodes(props: GadgetProps) {
+function GadgetInputNodes(props: GadgetProps & HandleDoubleClickProps) {
     const terms: [CellPosition, Term][] = Array.from(props.terms.entries())
     return <>
         {terms.map(([cellPosition, term]) => {
@@ -37,19 +38,26 @@ function GadgetInputNodes(props: GadgetProps) {
                     position={cellPosition}
                     gadgetId={props.id}
                     isOnShelf={props.isOnShelf}
-                    isGoalNode={props.id === GOAL_GADGET_ID} />
+                    isGoalNode={props.id === GOAL_GADGET_ID}
+                    onHandleDoubleClick={props.onHandleDoubleClick} />
             }
         })}
     </>
 }
 
-function GadgetOutputNode(props: GadgetProps) {
+function GadgetOutputNode(props: GadgetProps & HandleDoubleClickProps) {
     const term = props.terms.get(OUTPUT_POSITION)
     if (term === undefined) return <></>
-    return <Cell term={term} position={OUTPUT_POSITION} gadgetId={props.id} isOnShelf={props.isOnShelf} isGoalNode={false} />
+    return <Cell 
+        term={term} 
+        position={OUTPUT_POSITION}
+        gadgetId={props.id} 
+        isOnShelf={props.isOnShelf} 
+        isGoalNode={false}
+        onHandleDoubleClick={props.onHandleDoubleClick} />
 }
 
-export function Gadget(props: GadgetProps) {
+export function Gadget(props: GadgetProps & HandleDoubleClickProps) {
     const [connectionState, setConnectionState] = useState<ConnectionSvgProps>({ connections: [] })
 
     useLayoutEffect(() => {
@@ -59,18 +67,14 @@ export function Gadget(props: GadgetProps) {
             const end = calculateHolePosition(props.id, internalConnection.to)
             const [fromNode] = internalConnection.from
             const [toNode] = internalConnection.to
-            const from_input = fromNode !== "output"
-            const to_output = toNode === "output"
-            return { start, end, fromInput: from_input, toOutput: to_output }
+            const fromInput = fromNode !== "output"
+            const toOutput = toNode === "output"
+            return { start, end, fromInput, toOutput }
         }
 
-        if (hasOutputNode(props.terms)) {
-            const inputs = Array.from(props.terms).filter(key => isInputPosition(key[0]))
-            const inputTerms = inputs.map(kv => kv[1])
-            const connections = makeConnections(inputTerms, props.terms.get(OUTPUT_POSITION)!)
-            const drawingData = connections.map(calculateInternalConnectionDrawingData)
-            setConnectionState({ connections: drawingData })
-        }
+        const connections = makeConnections(props.terms);
+        const drawingData = connections.map(calculateInternalConnectionDrawingData)
+        setConnectionState({ connections: drawingData })
 
     }, [props.terms, props.id])
 

@@ -94,7 +94,8 @@ export function HelpContent() {
                 <HelpItem>Connect all open connectors<OpenTargetConnector />to complete the gadget machine</HelpItem>
                 <HelpItem>The machine is not complete if there are any broken <span className="break-keep">connections<BrokenConnection /></span></HelpItem>
                 <HelpItem>Draw a line from<SourceConnector />to<TargetConnector />to create a connection</HelpItem>
-                <HelpItem>Click on<TargetConnector />to remove a connection</HelpItem>
+                <HelpItem>Double-click on<TargetConnector />or<SourceConnector />to remove its connections</HelpItem>
+                <HelpItem>You can also click once on a single connection line to remove it</HelpItem> 
                 {proximityConnectEnabled &&
                     <HelpItem>Move gadgets close to each other and they will connect automatically</HelpItem>}
             </HelpSection>

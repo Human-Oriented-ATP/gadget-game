@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { AnimatedHand } from "./AnimatedHand";
+import { AnimatedHand, EndClickType } from "./AnimatedHand";
 import { XYPosition } from "@xyflow/react";
 
 export type AnchorPoint = "BOTTOM_RIGHT" | "CENTER_RIGHT" | "CENTER_LEFT" | "CENTER_MIDDLE"
@@ -18,6 +18,7 @@ export interface DragIndicatorProps<Position> {
     destination: { absolutePosition: Position } | { relativePosition: XYPosition }
     drawLine?: boolean
     endWithClick?: boolean
+    endWithDoubleClick?: boolean
     drawPlacementCircle?: boolean
 }
 
@@ -54,12 +55,17 @@ function DragIndicator(props: DragIndicatorProps<ElementPosition>) {
         const extent = calculateExtent(props.destination, originPosition)
 
         const style = { left: originPosition.x + props.origin.offset.x, top: originPosition.y + props.origin.offset.y }
+        let clickType: EndClickType = "none";
+
+        if (props.endWithClick) clickType = "single";
+        // Double click takes preference
+        if (props.endWithDoubleClick) clickType =  "double";
 
         return <div style={style} className="absolute">
             <AnimatedHand toX={extent.x} toY={extent.y}
                 drawLine={props.drawLine ?? false}
                 drawPlacementCircle={props.drawPlacementCircle ?? false}
-                endWithClick={props.endWithClick ?? false} />
+                endWithClick={clickType} />
         </div>
     } catch (error) {
         console.error(error)

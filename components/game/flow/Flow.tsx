@@ -1,17 +1,27 @@
-import React from 'react';
-import { NodeTypes, EdgeTypes, ReactFlow, Background, BackgroundVariant } from '@xyflow/react';
+import React, { useMemo } from 'react';
+import { NodeTypes, EdgeTypes, ReactFlow, Background, BackgroundVariant, NodeProps } from '@xyflow/react';
 import { useGameStateContext } from 'lib/state/StateContextProvider';
 import { GameSlice } from 'lib/state/Store';
 import { useShallow } from 'zustand/react/shallow';
-import { GadgetFlowNode } from './GadgetFlowNode';
+import { GadgetFlowNode, GadgetNode } from './GadgetFlowNode';
 import { CustomEdge } from './CustomEdge';
 import { ConnectionLineComponent } from './ConnectionLineComponent';
 import { ControlButtons } from './ControlButtons';
-
 import '@xyflow/react/dist/base.css';
 import './flow.css'
+import { DoubleClickHandler } from '../gadget/CustomHandle';
 
-const nodeTypes: NodeTypes = { 'gadgetNode': GadgetFlowNode }
+const useNodeTypesWithHandler = (onHandleDoubleClick: DoubleClickHandler) => {
+  const nodeTypes = useMemo(() => {
+    return {
+      'gadgetNode': (props: NodeProps<GadgetNode>) => 
+        <GadgetFlowNode {...props} onHandleDoubleClick={onHandleDoubleClick} />
+    };
+  }, [onHandleDoubleClick]);
+
+  return nodeTypes;
+};
+
 const edgeTypes: EdgeTypes = { 'customEdge': CustomEdge }
 
 const selector = (state: GameSlice) => ({
@@ -23,6 +33,8 @@ const selector = (state: GameSlice) => ({
     onConnect: state.onConnect,
     onConnectStart: state.onConnectStart,
     onConnectEnd: state.onConnectEnd,
+    onEdgeClick: state.onEdgeClick,
+    onHandleDoubleClick: state.onHandleDoubleClick,
     isValidConnection: state.isValidConnection,
     onBeforeDelete: state.onBeforeDelete,
     onNodeDrag: state.onNodeDrag,
@@ -33,10 +45,12 @@ const selector = (state: GameSlice) => ({
 });
 
 export function Flow() {
-    const { nodes, edges, onInit, onNodesChange, onEdgesChange, onConnect, onConnectStart, onConnectEnd,
-        isValidConnection, onBeforeDelete, onNodeDrag, onNodeDragStop,
+    const { nodes, edges, onInit, onNodesChange, onEdgesChange, onConnect, onConnectStart, onConnectEnd, onEdgeClick,
+        onHandleDoubleClick, isValidConnection, onBeforeDelete, onNodeDrag, onNodeDragStop,
         hideAnimatedTutorialContent, showAnimatedTutorialContent, settings } = useGameStateContext(useShallow(selector));
 
+    // Double clicking is handled within the CustomHandle component
+    const nodeTypes = useNodeTypesWithHandler(onHandleDoubleClick);
     const zoomProps = settings.zoomEnabled ? { minZoom: 0.1 } : { minZoom: 1, maxZoom: 1 }
 
     return <>
@@ -53,6 +67,7 @@ export function Flow() {
             onInit={onInit}
             onConnectStart={onConnectStart}
             onConnectEnd={onConnectEnd}
+            onEdgeClick={onEdgeClick}
             isValidConnection={isValidConnection}
             onNodeDrag={onNodeDrag}
             onNodeDragStart={hideAnimatedTutorialContent}
@@ -66,7 +81,8 @@ export function Flow() {
             zoomOnDoubleClick={false}
             autoPanOnConnect={false}
             autoPanOnNodeDrag={false}
-            connectionDragThreshold={0}
+            connectOnClick={false}
+            connectionDragThreshold={8}
         >
             <Background color="#bbb" size={1.8} variant={BackgroundVariant.Dots} />
         </ReactFlow>

@@ -1,3 +1,4 @@
+import { CellPosition, isOutputPosition } from "./CellPosition";
 import { Term, VariableName, getVariableList } from "./Term";
 
 export type NodePositionDeprecated = number | "output"
@@ -8,66 +9,54 @@ export interface InternalConnection {
     to: HolePosition
 }
 
-function getAllUniquePairs<T>(arr: T[]): [T, T][] {
-    const pairs: [T, T][] = [];
-    for (let i = 0; i < arr.length; i++) {
-        for (let j = i + 1; j < arr.length; j++) {
-            pairs.push([arr[i], arr[j]]);
-        }
-    }
-    return pairs;
-}
-
 function getPositionsInTerm(v: VariableName, t: Term): number[] {
-    if ("args" in t) {
-        let positions: number[] = []
-        for (let i = 0; i < t.args.length; i++) {
-            const arg = t.args[i]
-            if ("variable" in arg) {
-                if (arg.variable === v) {
-                    positions.push(i)
-                }
-            }
-        }
-        return positions
-    } else {
-        return []
-    }
+    if ("variable" in t) return [];
+
+    return t.args.flatMap((arg, i) => (
+        "variable" in arg && arg.variable == v ? [i] : []
+    ));
 }
 
-function toConnections(positions: [HolePosition, HolePosition][]): InternalConnection[] {
-    const connections = positions.map(pos => {
-        const [from, to] = pos
-        return { from, to }
-    })
+function makeSequentialConnections(positions: HolePosition[]) {
+    let connections: InternalConnection[] = []
+    for (let i = 0; i < positions.length - 1; i++) {
+        connections.push({ from: positions[i], to: positions[i + 1] })
+    }
     return connections
 }
 
-function makeConnectionsForVariable(inputs: Term[], output: Term, v: VariableName): InternalConnection[] {
-    const positionsInInputsStructured: HolePosition[][] = inputs.map((term, indexOfTerm) =>
-        getPositionsInTerm(v, term).map(variablePosition =>
-            [indexOfTerm, variablePosition]))
-    const positionsInOutput: HolePosition[] = getPositionsInTerm(v, output).map(variablePosition =>
-        ["output", variablePosition])
-    const positionsInInputs = positionsInInputsStructured.flat()
-    if (positionsInOutput.length === 0) {
-        let connections: InternalConnection[] = []
-        for (let i = 0; i < positionsInInputs.length - 1; i++) {
-            connections.push({ from: positionsInInputs[i], to: positionsInInputs[i + 1] })
+function makeConnectionsForVariable(terms: Map<CellPosition, Term>, v: VariableName): InternalConnection[] {
+    let positionsInInputs: HolePosition[] = []; 
+    let positionsInOutput: HolePosition[] = []; 
+
+    for (const [indexOfTerm, term] of terms.entries()) {
+        const indexOfTermDeprecated = isOutputPosition(indexOfTerm) ? 
+            "output" : indexOfTerm;
+        const arrayToPushTo = isOutputPosition(indexOfTerm) ?
+            positionsInOutput : positionsInInputs;
+
+        for (const variablePosition of getPositionsInTerm(v, term)) {
+            arrayToPushTo.push([indexOfTermDeprecated, variablePosition]);
         }
-        return connections
-    } else if (positionsInInputs.length === 0) {
-        return toConnections(getAllUniquePairs(positionsInOutput))
-    } else {
-        return (positionsInInputs.map(from =>
-            positionsInOutput.map(to => { return { from, to } }))).flat()
     }
+
+    // Three different strategies are employed in displaying
+    // connections, depending on where the holes lie.
+    if (positionsInOutput.length === 0)
+        return makeSequentialConnections(positionsInInputs);
+    
+    if (positionsInInputs.length === 0) 
+        return makeSequentialConnections(positionsInOutput);
+    
+    return positionsInInputs.flatMap(from =>
+            positionsInOutput.map(to => ( { from, to } )));
 }
 
-export function makeConnections(inputs: Term[], output: Term): InternalConnection[] {
-    const variableList = (inputs.concat(output)).map(getVariableList)
-    const variableListDeduplicated = Array.from(new Set(variableList.flat()))
-    const connections = variableListDeduplicated.map(v =>
-        makeConnectionsForVariable(inputs, output, v))
-    return connections.flat()
+export function makeConnections(terms: Map<CellPosition, Term>): InternalConnection[] {
+    const variableList = terms.values().flatMap(getVariableList);
+    const variableSet = new Set(variableList)
+    const connections = [...variableSet].flatMap(v => 
+        makeConnectionsForVariable(terms, v)
+    );
+    return connections;
 }

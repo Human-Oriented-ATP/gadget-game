@@ -93,7 +93,7 @@ export const pink_tutorial02: InteractiveLevel = {
         trigger: { ConnectionAdded: { from: { axiom: "r(f(X), X)" }, to: [{ gadgetId: "initial_gadget_1" }, 1] } }
     }, {
         content: {
-            jsx: <>Oops! The letters only become the same if the values below them are the same. <br /><br />To continue, remove the connection by clicking on <BrokenTargetConnector />.</>,
+            jsx: <>Oops! The letters only become the same if the values below them are the same. <br /><br />To continue, remove the connection by double-clicking on <BrokenTargetConnector />.</>,
         },
         trigger: { ConnectionRemoved: {} }
     }, {

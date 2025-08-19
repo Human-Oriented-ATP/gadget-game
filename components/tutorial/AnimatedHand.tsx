@@ -1,20 +1,24 @@
 import { useGameStateContext } from 'lib/state/StateContextProvider'
-import Image from 'next/image'
 import { useEffect, useState } from "react"
 import { useShallow } from 'zustand/react/shallow'
+import ClickingHand from '../assets/ClickingHand';
+import PointingHand from '../assets/PointingHand';
+
+
+export type EndClickType = "none" | "single" | "double"
 
 interface AnimatedHandProps {
     toX: number
     toY: number
     drawLine: boolean
     drawPlacementCircle: boolean
-    endWithClick: boolean
+    endWithClick: EndClickType
 }
 
 const NUMBER_OF_FRAMES = 100
 const MILLISECONDS_BETWEEN_FRAMES = 10
-const WAIT_BEFORE_ANIMATION = 500
 const WAIT_AFTER_ANIMATION = 500
+const CLICK_THRESHOLD = 0.9
 
 const IMAGE_SIZE = 70
 const CIRCLE_SIZE = 80
@@ -26,16 +30,40 @@ function easeAnimation(x: number) {
     return x * x * (3 - 2 * x)
 }
 
-function getMillisecondsUntilNextFrame(animationProgress: number, endWithClick: boolean) {
-    if (animationProgress === 0) {
-        if (!endWithClick)
-            return WAIT_BEFORE_ANIMATION
-        else
-            return MILLISECONDS_BETWEEN_FRAMES
-    } else if (animationProgress >= 1) {
+function getMillisecondsUntilNextFrame(animationProgress: number, endWithClick: EndClickType) {
+    if (animationProgress >= 1) {
         return WAIT_AFTER_ANIMATION
     } else {
-        return MILLISECONDS_BETWEEN_FRAMES
+        // Adjust frame timing to normalize speed
+        const speedMultiplier = endWithClick !== "none" ? CLICK_THRESHOLD : 1
+        return MILLISECONDS_BETWEEN_FRAMES / speedMultiplier
+    }
+}
+
+function getAnimationState(progress: number, endWithClick: EndClickType) {
+    if (endWithClick === "none") {
+        return {
+            movementProgress: progress,
+            showClick: false
+        }
+    }
+    
+    // Hand movement takes CLICK_THRESHOLD of the time, and clicking takes the rest
+    const movementProgress = Math.min(progress / CLICK_THRESHOLD, 1)
+    const clickProgress = Math.max((progress - CLICK_THRESHOLD) / (1 - CLICK_THRESHOLD), 0)
+    
+    let showClick = false
+    if (progress >= CLICK_THRESHOLD) {
+        if (endWithClick === "single") {
+            showClick = true
+        } else if (endWithClick === "double") {
+            showClick = clickProgress < 0.25 || 0.7 < clickProgress && clickProgress < 0.95;
+        }
+    }
+    
+    return {
+        movementProgress,
+        showClick
     }
 }
 
@@ -55,15 +83,18 @@ export function AnimatedHand(props: AnimatedHandProps) {
         return () => clearInterval(interval)
     }, [animationProgress, props.endWithClick])
 
-    const x = easeAnimation(animationProgress) * props.toX
-    const y = easeAnimation(animationProgress) * props.toY
+    const animState = getAnimationState(animationProgress, props.endWithClick)
+    const easedProgress = easeAnimation(animState.movementProgress)
+    
+    const x = easedProgress * props.toX
+    const y = easedProgress * props.toY
 
     const height = Math.abs(props.toY) + MARGIN
     const width = Math.abs(props.toX) + MARGIN
 
     const style = { 'left': `${width + x + OFFSET_ALIGNING_HAND_AND_LINE_X}px`, 'top': `${height + y + OFFSET_ALIGNING_HAND_AND_LINE_Y}px` }
 
-    const imageSource = props.endWithClick && animationProgress >= 0.999 ? "/clicking-hand.svg" : "/pointing-hand.svg"
+    const IconComponent = animState.showClick ? ClickingHand : PointingHand;
 
     return <div style={{ "width": `${width * 2}px`, "height": `${height * 2}px`, 'transform': 'translate(-50%,-50%)' }}>
         {props.drawPlacementCircle &&
@@ -77,7 +108,7 @@ export function AnimatedHand(props: AnimatedHandProps) {
                 </svg>
                 : <></>}
             <div className="absolute" style={style}>
-                <Image src={imageSource} width={IMAGE_SIZE} height={IMAGE_SIZE} alt="" className="stroke-black fill-green" />
+                <IconComponent width={IMAGE_SIZE} height={IMAGE_SIZE} className="stroke-black" />
             </div>
         </>}
     </div >

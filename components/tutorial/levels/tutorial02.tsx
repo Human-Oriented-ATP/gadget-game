@@ -26,7 +26,7 @@ const tutorial02DragIndicatorDeleteConnection: DragIndicatorProps<GadgetPosition
     },
     destination: { relativePosition: { x: -25, y: -30 } },
     drawLine: false,
-    endWithClick: true
+    endWithDoubleClick: true
 };
 
 function ConverterGadget() {
@@ -42,7 +42,7 @@ export const tutorial02: InteractiveLevel = {
     initialDiagram: tutorial02InitialDiagram,
     steps: [{
         content: {
-            jsx: <>The dotted line means that the connection is broken. Remove it by clicking on <BrokenTargetConnector />.</>,
+            jsx: <>The dotted line means that the connection is broken. Remove it by double-clicking on <BrokenTargetConnector />.</>,
             dragIndicator: tutorial02DragIndicatorDeleteConnection
         },
         trigger: { ConnectionRemoved: { to: [{ gadgetId: GOAL_GADGET_ID }, 0] } }
@@ -57,5 +57,12 @@ export const tutorial02: InteractiveLevel = {
             jsx: <>You can use this gadget to swap the numbers and complete the gadget machine</>
         },
         trigger: { GameCompleted: null }
+    }, 
+    {
+        content: {
+            jsx: <>Well done! Connections that {"aren't"} broken can be removed the same way. <br />
+            Clicking on a connection line once also removes it.
+            </>
+        }
     }]
 };

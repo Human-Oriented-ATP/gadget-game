@@ -1,0 +1,36 @@
+{
+  "name": "pilot-fwd-v2",
+  "displayNamesAs": "name",
+  "displayUnlistedProblems": false,
+  "displayEndParticipationButton": false,
+  "skipTime": 420,
+  "categories": [
+    {
+      "name": "Tutorial",
+      "problems": [
+        "tutorial01",
+        "tutorial01a",
+        "tutorial02",
+        "tutorial03",
+        "tutorial04",
+        "tutorial05",
+        "tutorial06"
+      ],
+      "numberOfUnlockedProblems": 10
+    },
+    {
+      "name": "Set I",
+      "problems": [
+        "jofwd01",
+        "jofwd02",
+        "t17",
+        "jofwd03",
+        "t18",
+        "jo02",
+        "ja58",
+        "t05a"
+      ],
+      "numberOfUnlockedProblems": 10
+    }
+  ]
+}

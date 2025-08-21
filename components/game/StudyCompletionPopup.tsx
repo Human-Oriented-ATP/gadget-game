@@ -5,7 +5,8 @@ import { useShallow } from 'zustand/react/shallow';
 
 const selector = (state: GameSlice) => ({
   isOpen: state.studyCompletionPopupIsOpen,
-  close: state.closeStudyCompletionPopup
+  close: state.closeStudyCompletionPopup,
+  config: state.setup.configurationIdentifier
 })
 
 
@@ -26,7 +27,11 @@ function CompletionPopupContent() {
 }
 
 export function StudyCompletionPopup() {
-  const { isOpen, close } = useGameStateContext(useShallow(selector))
+  const { isOpen, close, config } = useGameStateContext(useShallow(selector))
+
+  if (config === "internal") {
+    return <></>
+  }
 
   if (isOpen) {
     return <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-white/30" onClick={close}>

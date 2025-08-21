@@ -7,6 +7,7 @@ import { useShallow } from 'zustand/react/shallow';
 import { GameSlice } from 'lib/state/Store';
 import { useCallback, useEffect, useState } from 'react';
 import { clientSideCookies } from 'lib/util/ClientSideCookies';
+import { STUDY_DURATION_IN_S } from 'lib/constants';
 
 function formatTime(seconds: number): string {
   const minutes = Math.floor(seconds / 60);
@@ -91,8 +92,6 @@ function ShowCompletionCodeButton() {
 
   const openStudyCompletionPopup = useGameStateContext(useShallow((state) => state.openStudyCompletionPopup))
 
-  const STUDY_DURATION_IN_S = 30 * 60;
-
   useEffect(() => {
     let startTime = clientSideCookies.get("study_start_time");
 
@@ -113,7 +112,7 @@ function ShowCompletionCodeButton() {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [openStudyCompletionPopup, STUDY_DURATION_IN_S]);
+  }, [openStudyCompletionPopup]);
 
 
   if (!showButton) {

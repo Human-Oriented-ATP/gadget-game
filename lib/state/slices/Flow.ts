@@ -1,14 +1,17 @@
 import { CreateStateWithInitialValue } from '../Types';
-import { addEdge, applyEdgeChanges, applyNodeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag, OnNodesChange, ReactFlowInstance, XYPosition } from '@xyflow/react';
+import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
 import { toGadgetConnection, isValidConnection } from './Edges';
 import { initViewport } from 'lib/game/ViewportInitialisation';
 import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtilitiesStateInitializedFromData } from './FlowUtilities';
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
+import { DoubleClickHandler } from 'components/game/gadget/CustomHandle';
 
 export type FlowStateInitializedFromData = FlowUtilitiesStateInitializedFromData
 
 export type FlowState = FlowUtilitiesState
+
+type OnEdgeClick = React.MouseEvent<Element, MouseEvent>;
 
 export interface FlowActions {
   reset: () => void;
@@ -18,6 +21,8 @@ export interface FlowActions {
   onConnectStart: (event: MouseEvent | TouchEvent, params: OnConnectStartParams) => void;
   onConnectEnd: () => void;
   onConnect: OnConnect;
+  onEdgeClick: (event: OnEdgeClick, edge: Edge) => void;
+  onHandleDoubleClick: DoubleClickHandler;
   onNodeDrag: OnNodeDrag<GadgetNode>
   onNodeDragStop: (event: React.MouseEvent, node: GadgetNode, nodes: GadgetNode[]) => void;
 };
@@ -72,6 +77,16 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
       });
       const gadgetConnection = toGadgetConnection(connection)
       get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: gadgetConnection }])
+    },
+
+    onEdgeClick: (event: OnEdgeClick, edge: Edge) => {
+      const events = get().removeEdge(edge.id);
+      get().updateLogicalState(events);
+    },
+
+    onHandleDoubleClick: (event: React.MouseEvent, handleId: string) => {
+      const events = get().removeEdgesConnectedToHandle(handleId)
+      get().updateLogicalState(events)
     },
 
     onNodeDrag(event: React.MouseEvent, node: GadgetNode) {

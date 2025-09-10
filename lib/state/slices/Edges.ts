@@ -11,6 +11,7 @@ export interface EdgeStateInitializedFromData {
 
 export interface EdgeActions {
   reset: () => void;
+  removeEdge: (edgeId: string) => GameEvent[];
   removeEdgesConnectedToNode: (nodeId: string) => GameEvent[];
   removeEdgesConnectedToHandle: (handleId: string) => GameEvent[];
   getHandlesOfEdge: (edgeId: string) => { sourceHandle: string, targetHandle: string };
@@ -58,6 +59,15 @@ export const edgeSlice: CreateStateWithInitialValue<EdgeStateInitializedFromData
         sourceHandle: edge.sourceHandle,
         targetHandle: edge.targetHandle
       }
+    },
+    removeEdge: (edgeId: string) => {
+      const edgesToBeRemoved = get().edges.filter((edge) => edge.id == edgeId);
+      const removedGadgetConnections = edgesToBeRemoved.map((edge) => toGadgetConnection(edge as Connection))
+      const events: GameEvent[] = removedGadgetConnections.map((connection) => ({ ConnectionRemoved: connection }))
+      set({
+        edges: get().edges.filter((edge) => edge.id !== edgeId),
+      });
+      return events
     },
     removeEdgesConnectedToNode: (nodeId: string) => {
       const edgesToBeRemoved = get().edges.filter((edge) => edge.source === nodeId || edge.target === nodeId);

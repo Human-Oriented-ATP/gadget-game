@@ -20,7 +20,7 @@ export function LandingPage() {
   const [check4, setCheck4] = useState(false)
 
   return (
-    <div className="w-screen flex flex-col items-center text-center pt-10">
+    <div className="w-full flex flex-col items-center text-center pt-10">
       <h1 className="text-2xl p-4">Welcome to our study!</h1>
       <div className='text-justify max-w-(--breakpoint-lg) p-4'>
         <p className="p-2">By completing this study, you are participating in a study being performed by researchers from the University of Cambridge. The purpose of this research is to study human reasoning about new problems, and the results will inform mathematics, cognitive science, and AI research.</p>

@@ -9,7 +9,7 @@ export function ProblemSelection(props: { config: StudyConfiguration, allProblem
         <div className="p-4 pb-48">
             <ProblemCategoryGrid {...props} />
         </div>
-        <div className='fixed bottom-0 flex flex-col items-center w-screen bg-middle-gray p-6'>
+        <div className='fixed bottom-0 flex flex-col items-center w-full bg-middle-gray p-6'>
             <StartButton config={props.config} />
         </div>
         {props.config.displayEndParticipationButton && <div className="relative md:fixed bottom-0 left-0 p-2">

@@ -18,9 +18,8 @@ export function OpenTargetConnector() {
 }
 
 export function PinkHole({ value = "" }: { value?: string }) {
-    return <>
-        <div className="inline-block scale-90 absolute translate-y-[-3px] translate-x-[-5px]"><StaticHole value={value} isFunctionHole={true} /></div>
-        <div className="w-[23px] inline-block"></div>
-    </>
+    return <div className="inline-flex align-middle translate-x-[-3px] translate-y-[-3px] scale-90">
+        <StaticHole value={value} isFunctionHole={true} />
+    </div>
 }
 

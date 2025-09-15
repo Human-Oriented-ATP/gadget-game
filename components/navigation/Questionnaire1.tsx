@@ -77,7 +77,7 @@ export default function Questionnaire1({ redirectTo }: { redirectTo: string }) {
         }
     }, [])
 
-    return <div className="w-screen flex flex-col items-center">
+    return <div className="w-full flex flex-col items-center">
         <div className="w-max-screen-md">
             <h1 className="text-xl text-center pt-14">In this study you will play an online game!</h1>
             <div className="text-center p-4">Please answer a few questions about yourself before continuing.</div>

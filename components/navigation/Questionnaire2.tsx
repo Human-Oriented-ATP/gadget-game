@@ -64,7 +64,7 @@ export function Questionnaire2({ redirectTo = "../" }: { redirectTo?: string }) 
         }
     }, [])
 
-    return <div className="w-screen flex flex-col items-center">
+    return <div className="w-full flex flex-col items-center">
         <div className="max-w-(--breakpoint-md)">
             <h1 className="text-xl pt-14">Thank you for playing this long! Could you please answer the following questions?</h1>
             <div className="text-left p-4">This questionnaire marks the end of your participation in the study.<br />

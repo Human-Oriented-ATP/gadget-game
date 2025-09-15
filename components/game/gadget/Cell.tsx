@@ -26,7 +26,7 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
         const backgroundClassName = getCellClassNameFromLabel(props.term.label)
         const onHandleDoubleClick = props.onHandleDoubleClick;
         return <div className="flex items-center">
-            <div className={twJoin("m-1 border-black border-2 rounded-lg p-0.5", backgroundClassName, props.isGoalNode && "outline outline-offset-2 outline-2 outline-black")}>
+        <div className={twJoin("m-1 border-black border-2 rounded-lg p-0.5", backgroundClassName, props.isGoalNode && "outline-2 outline-offset-2 outline-black")}>
                 {props.term.args.map((arg, idx) => <Hole key={idx} term={arg}></Hole>)}
             </div>
             <CustomHandle 

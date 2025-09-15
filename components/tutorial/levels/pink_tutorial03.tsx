@@ -6,7 +6,7 @@ export const pink_tutorial03: InteractiveLevel = {
     steps: [{
         content: {
             jsx: <>Try this one on your own! <br />
-                The ordering of the numbers below <PinkHole /> is important as well.</>,
+                The ordering of the numbers below <PinkHole />is important as well.</>,
         },
     }]
 };

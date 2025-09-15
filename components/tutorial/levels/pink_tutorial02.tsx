@@ -83,7 +83,7 @@ export const pink_tutorial02: InteractiveLevel = {
     initialDiagram: initialDiagram,
     steps: [{
         content: {
-            jsx: <> Start by connecting the gadget with <PinkHole value="?" /> to <RedCell1 />.</>,
+            jsx: <> Start by connecting the gadget with <PinkHole value="?" />to <RedCell1 />.</>,
         },
         trigger: { ConnectionAdded: { from: { axiom: "r(f(X), X)" }, to: [{ gadgetId: "initial_gadget_1" }, 0] } }
     }, {

@@ -1,11 +1,11 @@
 import { GadgetConnection } from "./History";
 import { Axiom, GadgetId, GOAL_GADGET_ID } from "./Primitives";
-import { Term, makeTermWithFreshVariables } from "./Term";
+import { Relation, makeTermWithFreshVariables } from "./Term";
 import { Equation } from "./Unification";
 import { parseStatement } from "../parsing/Semantics";
 import { axiomToString, goalToString } from "./GameLogic";
 
-export type Statement = { axiom: Axiom } | { goal: Term }
+export type Statement = { axiom: Axiom } | { goal: Relation }
 
 export interface ProblemFileData {
     goal: string

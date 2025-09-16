@@ -1,9 +1,9 @@
-import { Term } from "./Term"
+import { Relation } from "./Term"
 
 export type GadgetId = string
 
 export interface Axiom {
-    hypotheses: Term[]
-    conclusion: Term
+    hypotheses: Relation[]
+    conclusion: Relation
 }
 export const GOAL_GADGET_ID = "goal"

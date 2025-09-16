@@ -1,4 +1,4 @@
-import { Assignment, assignTermDeeply, isFunctionTerm, isNumericalConstant, replaceWithRepresentatives, Term } from "./Term";
+import { Assignment, assignTermDeeply, isNumericalConstant, replaceWithRepresentatives, Term } from "./Term";
 import { ValueMap } from "lib/util/ValueMap";
 import { deepIncludes } from "lib/util/Array";
 
@@ -42,7 +42,7 @@ function getTermsToBeEnumerated(termEnumeration: TermEnumeration, holeTerms: Ter
     const toBeEnumerated = new Set<Term>()
     const setOfHoleTerms = new Set(holeTerms)
     setOfHoleTerms.forEach(term => {
-        if (!termEnumeration.has(term) && isFunctionTerm(term)) {
+        if (!termEnumeration.has(term) && "function" in term) {
             toBeEnumerated.add(term)
         }
     })

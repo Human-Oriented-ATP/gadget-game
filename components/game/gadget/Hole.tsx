@@ -4,14 +4,6 @@ import { getAssignedValue } from 'lib/game/TermEnumeration'
 import { StaticHole } from './StaticHole'
 import { GameSlice } from 'lib/state/Store'
 
-function isFunctionHole(term: Term) {
-    if ("variable" in term) {
-        return false
-    } else {
-        return term.args.length !== 0
-    }
-}
-
 interface HoleProps {
     term: Term
 }
@@ -27,7 +19,7 @@ const selector = (state: GameSlice) => ({
 export function Hole(props: HoleProps) {
     const { termEnumeration, assignment, focussedHole, focus, removeFocus } = useGameStateContext(selector)
 
-    const value = getAssignedValue(props.term, assignment, termEnumeration)
+    const value = getAssignedValue(props.term, assignment, termEnumeration);
 
     const makeFocusProps = (term: Term) => {
         if ("variable" in term) {
@@ -40,5 +32,5 @@ export function Hole(props: HoleProps) {
         }
     }
 
-    return <StaticHole value={value} isFunctionHole={isFunctionHole(props.term)} {...makeFocusProps(props.term)} onMouseLeave={removeFocus} />
+    return <StaticHole value={value} isFunctionHole={"function" in props.term} {...makeFocusProps(props.term)} onMouseLeave={removeFocus} />
 }

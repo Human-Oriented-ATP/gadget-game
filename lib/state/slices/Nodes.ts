@@ -2,8 +2,8 @@ import { applyNodeChanges, NodeChange, OnNodesChange } from '@xyflow/react';
 import { GadgetNode } from '../../../components/game/flow/GadgetFlowNode';
 import { CreateStateWithInitialValue } from '../Types';
 import { gadgetDndFromShelfSlice, GadgetDndFromShelfSlice } from './DragGadgetFromShelf';
-import { Term } from 'lib/game/Term';
-import { getTermOfHandle, isTargetHandle, makeHandleId } from 'lib/game/Handles';
+import { Relation } from 'lib/game/Term';
+import { getRelationOfHandle, isTargetHandle, makeHandleId } from 'lib/game/Handles';
 import { ConnectorStatus } from 'components/game/gadget/Connector';
 
 export type NodeStateInitializedFromData = {
@@ -19,7 +19,7 @@ export interface NodeActions {
   reset: () => void;
   onNodesChange: OnNodesChange<GadgetNode>;
   getGadgetNodeOfHandle: (handleId: string) => GadgetNode;
-  getTermOfHandle: (handleId: string) => Term;
+  getRelationOfHandle: (handleId: string) => Relation;
   abortAddingGadget: () => void;
   getHandlesOfNode: (nodeId: string) => string[];
   getTargetHandlesOfNode: (nodeId: string) => string[];
@@ -70,10 +70,10 @@ export const nodeSlice: CreateStateWithInitialValue<NodeStateInitializedFromData
       return node
     },
 
-    getTermOfHandle(handleId: string): Term {
+    getRelationOfHandle(handleId: string): Relation {
       const node = get().getGadgetNodeOfHandle(handleId)
-      const terms = node.data.terms
-      return getTermOfHandle(handleId, terms)
+      const relations = node.data.relations
+      return getRelationOfHandle(handleId, relations)
     },
 
     abortAddingGadget: () => {
@@ -94,7 +94,7 @@ export const nodeSlice: CreateStateWithInitialValue<NodeStateInitializedFromData
 
     getHandlesOfNode: (nodeId: string): string[] => {
       const node = get().getNode(nodeId)
-      const cellPositions = Array.from(node.data.terms.keys())
+      const cellPositions = Array.from(node.data.relations.keys())
       const handles = cellPositions.map((position) => makeHandleId(position, node.data.id))
       return handles
     },

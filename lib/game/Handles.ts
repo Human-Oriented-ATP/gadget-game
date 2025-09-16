@@ -1,5 +1,5 @@
 import { CellPosition, OUTPUT_POSITION } from 'lib/game/CellPosition';
-import { Term } from './Term';
+import { Relation } from './Term';
 
 export function makeHandleId(position: CellPosition, gadgetId: string): string {
     return `handle_${JSON.stringify(position)}_of_${gadgetId}`;
@@ -9,14 +9,14 @@ export function isTargetHandle(handleId: string): boolean {
     return handleId.slice(0, 10) !== `handle_${OUTPUT_POSITION}_`;
 }
 
-export function getTermOfHandle(handleId: string, gadgetTerms: Map<CellPosition, Term>) {
+export function getRelationOfHandle(handleId: string, relations: Map<CellPosition, Relation>) {
     const position = handleId.split("_")[1];
-    for (const [termPosition, term] of gadgetTerms) {
-        if (JSON.stringify(termPosition) === position) {
-            return term;
+    for (const [relationPosition, relation] of relations) {
+        if (JSON.stringify(relationPosition) === position) {
+            return relation;
         }
     }
-    throw Error("Term not found for handle " + handleId);
+    throw Error("Relation not found for handle " + handleId);
 }
 
 export function getGadgetIdFromHandle(handleId: string): string {

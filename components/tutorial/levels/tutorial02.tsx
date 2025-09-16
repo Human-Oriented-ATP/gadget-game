@@ -1,7 +1,7 @@
 import { Gadget } from "components/game/gadget/Gadget";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { InitialDiagram } from "lib/game/Initialization";
-import { parseTerm } from "lib/parsing/Semantics";
+import { parseRelation } from "lib/parsing/Semantics";
 import { DragIndicatorProps } from "../DragIndicator";
 import { GadgetPosition, InteractiveLevel } from "../InteractiveLevel";
 import { BrokenTargetConnector } from "../TutorialSetup";
@@ -33,7 +33,7 @@ function ConverterGadget() {
     return <div className="inline-block backdrop-blur-sm scale-75 align-middle">
         <Gadget id="tutorial_explanation"
             isOnShelf={true}
-            terms={new Map([[0, parseTerm("r(A, B)")], [-1, parseTerm("r(B, A)")]])} />
+            relations={new Map([[0, parseRelation("r(A, B)")], [-1, parseRelation("r(B, A)")]])} />
     </div>;
 }
 

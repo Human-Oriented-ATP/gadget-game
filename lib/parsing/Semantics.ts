@@ -1,7 +1,7 @@
-import { parseTermCst, parseStatementCst, parseProblemCst, parser } from "./Parser"
-import { Term } from "../game/Term"
+import { parseTermCst, parseStatementCst, parseProblemCst, parser, parseRelationCst } from "./Parser"
+import { Term, Relation } from "../game/Term"
 import { Statement, makeProblemFileDataFromStatements, ProblemFileData, isAxiom } from "../game/Initialization"
-import { ArgumentNode, CompoundTermNode, ProblemNode, StatementNode } from "./Nodes"
+import { FunctionNode, ProblemNode, RelationNode, StatementNode, TermNode } from "./Nodes"
 import { Axiom } from "lib/game/Primitives"
 
 const BaseVisitor = parser.getBaseCstVisitorConstructor()
@@ -12,24 +12,33 @@ class PrologAstBuilderVisitor extends BaseVisitor {
         this.validateVisitor()
     }
 
-    compoundTerm(node: CompoundTermNode): Term {
+    functionTerm(node: FunctionNode): Term {
+        const label = node.function[0].image
+        const args = node.args.map(arg => this.visit(arg))
+        return {
+            function: label,
+            args: args
+        }
+    }
+
+    term(node: TermNode): Term {
+        if (node.Number !== undefined) {
+            return { number: node.Number[0].image }
+        }
+        else if (node.Variable !== undefined) {
+            return { variable: node.Variable[0].image }
+        }
+        else {
+            return this.visit(node.functionTerm!)
+        }
+    }
+
+    relation(node: RelationNode): Relation {
         const label = node.label!![0].image
         const args = node.args.map(arg => this.visit(arg))
         return {
             label: label,
             args: args
-        }
-    }
-
-    argument(node: ArgumentNode): Term {
-        if (node.Number) {
-            return { label: node.Number!![0].image, args: [] }
-        }
-        else if (node.Variable) {
-            return { variable: node.Variable!![0].image }
-        }
-        else {
-            return this.visit(node.compoundTerm!!)
         }
     }
 
@@ -68,6 +77,12 @@ const astBuilder = new PrologAstBuilderVisitor()
 
 export function parseTerm(text: string): Term {
     const cst = parseTermCst(text)
+    const ast = astBuilder.visit(cst)
+    return ast
+}
+
+export function parseRelation(text: string): Relation {
+    const cst = parseRelationCst(text)
     const ast = astBuilder.visit(cst)
     return ast
 }

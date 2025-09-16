@@ -7,33 +7,45 @@ export class PrologParser extends CstParser {
         this.performSelfAnalysis();
     }
 
-    compoundTerm = this.RULE("compoundTerm", () => {
+    relation = this.RULE("relation", () => {
         this.CONSUME(Atom, { LABEL: "label" })
         this.CONSUME(LeftParen)
         this.AT_LEAST_ONE_SEP({
             SEP: Comma,
             DEF: () => {
-                this.SUBRULE(this.argument, { LABEL: "args" })
+                this.SUBRULE(this.term, { LABEL: "args" })
             }
         })
         this.CONSUME(RightParen)
     })
 
-    argument = this.RULE("argument", () => {
+    functionTerm = this.RULE("functionTerm", () => {
+        this.CONSUME(Atom, { LABEL: "function" })
+        this.CONSUME(LeftParen)
+        this.AT_LEAST_ONE_SEP({
+            SEP: Comma,
+            DEF: () => {
+                this.SUBRULE(this.term, { LABEL: "args" })
+            }
+        })
+        this.CONSUME(RightParen)
+    })
+
+    term = this.RULE("term", () => {
         this.OR([
             { ALT: () => this.CONSUME(Number) },
             { ALT: () => this.CONSUME(Variable) },
-            { ALT: () => this.SUBRULE(this.compoundTerm) }
+            { ALT: () => this.SUBRULE(this.functionTerm) }
         ])
     })
 
     statement = this.RULE("statement", () => {
-        this.OPTION(() => { this.SUBRULE(this.compoundTerm, { LABEL: "conclusion" }) })
+        this.OPTION(() => { this.SUBRULE(this.relation, { LABEL: "conclusion" }) })
         this.OPTION1(() => {
             this.CONSUME(Entails)
             this.MANY_SEP({
                 SEP: Comma,
-                DEF: () => { this.SUBRULE1(this.compoundTerm, { LABEL: "hypotheses" }) }
+                DEF: () => { this.SUBRULE1(this.relation, { LABEL: "hypotheses" }) }
             })
         })
         this.CONSUME(FullStop)
@@ -58,7 +70,14 @@ function handleErrors(errors: IRecognitionException[]) {
 
 export function parseTermCst(text: string): CstNode {
     parser.input = tokenize(text)
-    const cst = parser.argument()
+    const cst = parser.term()
+    handleErrors(parser.errors)
+    return cst
+}
+
+export function parseRelationCst(text: string): CstNode {
+    parser.input = tokenize(text)
+    const cst = parser.relation()
     handleErrors(parser.errors)
     return cst
 }

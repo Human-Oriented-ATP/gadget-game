@@ -1,14 +1,19 @@
 import { CstNode, IToken } from 'chevrotain';
 
-export interface CompoundTermNode {
-    label: IToken[]
+export interface FunctionNode {
+    function: IToken[]
     args: CstNode[]
 }
 
-export interface ArgumentNode {
+export interface TermNode {
     Number?: IToken[]
     Variable?: IToken[]
-    compoundTerm?: CstNode[]
+    functionTerm?: CstNode[]
+}
+
+export interface RelationNode {
+    label: IToken[]
+    args: CstNode[]
 }
 
 export interface StatementNode {

@@ -16,7 +16,8 @@ export function getGadgetRelations(statement: string, id: GadgetId): Map<CellPos
         relations.set(OUTPUT_POSITION, axiomWithFreshVariables.conclusion)
         return relations
     } else {
-        return new Map<CellPosition, Relation>([[0, parsed.goal]]);
+        const freshGoal = makeRelationWithFreshLabels(parsed.goal, GOAL_GADGET_ID, "nc");
+        return new Map<CellPosition, Relation>([[0, freshGoal]]);
     }
 }
 

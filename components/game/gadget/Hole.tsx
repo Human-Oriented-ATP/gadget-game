@@ -21,14 +21,29 @@ export function Hole(props: HoleProps) {
 
     const value = getAssignedValue(props.term, assignment, termEnumeration);
 
+    // Make use of assigned values so that number terms share
+    // the same representative as the holes they are unified with.
+    const findRepresentativeWithNumbers = (term: Term) => {
+        if ("function" in term) throw Error("Unreachable case");
+        if ("number" in term) return term.label;
+
+        const termValue = assignment.getAssignedValue(term.variable);
+        if (termValue === undefined || !("number" in termValue)) 
+            return assignment.findRepresentative(term.variable);
+        return termValue.label;
+    }
+
     const makeFocusProps = (term: Term) => {
-        if ("variable" in term) {
-            return {
-                isFocussed: focussedHole === term.variable,
-                onMouseEnter: () => focus(term.variable),
-            }
-        } else {
-            return undefined
+        if ("function" in term) return undefined;
+
+        const termRepresentative = findRepresentativeWithNumbers(term);
+        const focussedRepresentative = focussedHole === undefined ? 
+              undefined
+            : findRepresentativeWithNumbers(focussedHole);
+
+        return {
+            isFocussed: termRepresentative === focussedRepresentative,
+            onMouseEnter: () => focus(term),
         }
     }
 

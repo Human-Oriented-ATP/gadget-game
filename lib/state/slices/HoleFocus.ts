@@ -1,13 +1,14 @@
+import { Term } from 'lib/game/Term';
 import { GetState, SetState } from '../Types';
 
 export interface HoleFocusState {
-  focussedHole: string | undefined
+  focussedHole: Term | undefined
   showHoleFocus: boolean
 }
 
 export interface HoleFocusActions {
   reset: () => void
-  focus: (term: string) => void
+  focus: (term: Term) => void
   removeFocus: () => void
 };
 
@@ -20,9 +21,9 @@ export const holeFocusSlice = (set: SetState<HoleFocusSlice>, get: GetState<Hole
     reset: () => {
       set({ focussedHole: undefined, showHoleFocus: true })
     },
-    focus: (variableName: string) => {
+    focus: (term: Term) => {
       if (get().showHoleFocus) {
-        set({ focussedHole: variableName })
+        set({ focussedHole: term })
       } else {
         set({ focussedHole: undefined })
       }

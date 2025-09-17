@@ -8,6 +8,7 @@ import { Connection, Edge } from "@xyflow/react";
 import { toGadgetConnection } from "./Edges";
 import { TutorialSlice, tutorialSlice, TutorialStateInitializedFromData } from "./Tutorial";
 import { DisjointSetWithAssignment } from "lib/util/DisjointSetWithAssignment";
+import { calculateHoleAssignment } from "lib/game/HoleUnification";
 
 export type UnificationStateInitializedFromData = TutorialStateInitializedFromData
 
@@ -15,6 +16,7 @@ export type UnificationState = {
   termEnumeration: TermEnumeration
   equationIsSatisfied: ValueMap<GadgetConnection, boolean>
   assignment: Assignment
+  holeAssignment: Assignment
 }
 
 export type UnificationActions = {
@@ -31,6 +33,7 @@ export const unificationSlice: CreateStateWithInitialValue<UnificationStateIniti
     termEnumeration: new ValueMap<Term, number>(),
     equationIsSatisfied: new ValueMap<GadgetConnection, boolean>(),
     assignment: new DisjointSetWithAssignment(),
+    holeAssignment: new DisjointSetWithAssignment(),
 
     reset: () => {
       tutorialSlice(initialState, set, get).reset()
@@ -38,14 +41,16 @@ export const unificationSlice: CreateStateWithInitialValue<UnificationStateIniti
         termEnumeration: new ValueMap<Term, number>(),
         equationIsSatisfied: new ValueMap<GadgetConnection, boolean>(),
         assignment: new DisjointSetWithAssignment(),
+        holeAssignment: new DisjointSetWithAssignment()
       })
     },
 
     runUnification: () => {
       const equations = get().getCurrentEquations()
       const { assignment, equationIsSatisfied } = unifyRelationEquations<GadgetConnection>(equations)
+      const holeAssignment = calculateHoleAssignment(equations);
       const newTermEnumeration = updateEnumeration(get().termEnumeration, get().getCurrentHoleTerms(), assignment)
-      set({ equationIsSatisfied: equationIsSatisfied, assignment, termEnumeration: newTermEnumeration })
+      set({ equationIsSatisfied: equationIsSatisfied, holeAssignment, assignment, termEnumeration: newTermEnumeration })
     },
 
     edgeIsSatisfied: (edge: Edge) => {

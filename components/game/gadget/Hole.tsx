@@ -11,24 +11,29 @@ interface HoleProps {
 const selector = (state: GameSlice) => ({
     termEnumeration: state.termEnumeration,
     assignment: state.assignment,
+    holeAssignment: state.holeAssignment,
     focussedHole: state.focussedHole,
     focus: state.focus,
     removeFocus: state.removeFocus
 })
 
 export function Hole(props: HoleProps) {
-    const { termEnumeration, assignment, focussedHole, focus, removeFocus } = useGameStateContext(selector)
+    const { termEnumeration, assignment, holeAssignment, focussedHole, focus, removeFocus } = useGameStateContext(selector)
 
     const value = getAssignedValue(props.term, assignment, termEnumeration);
 
     const makeFocusProps = (term: Term) => {
-        if ("variable" in term) {
-            return {
-                isFocussed: focussedHole === term.variable,
-                onMouseEnter: () => focus(term.variable),
-            }
-        } else {
-            return undefined
+        if ("function" in term) return undefined; 
+        const termLabel = "number" in term ? term.label : term.variable; 
+        if (termLabel === undefined) return undefined;
+        const termRepresentative = holeAssignment.findRepresentative(termLabel);
+
+        const focussedRepresentative = focussedHole === undefined ? undefined
+            : holeAssignment.findRepresentative(focussedHole);
+
+        return {
+            isFocussed: termRepresentative === focussedRepresentative, 
+            onMouseEnter: () => focus(termLabel),
         }
     }
 

@@ -63,7 +63,13 @@ export const parser: PrologParser = new PrologParser()
 
 function handleErrors(errors: IRecognitionException[]) {
     if (errors.length > 0) {
-        const msg = errors.map((error) => `[${error.name}] ${error.message}`).join('\n')
+        const getPos = (error: IRecognitionException) => {
+            const makeMsg = error.token.startLine !== null 
+                && error.token.startColumn !== null;
+            if (!makeMsg) return "";
+            return `. Occurs on ${error.token.startLine}:${error.token.startColumn}`
+        }
+        const msg = errors.map((error) => `[${error.name}] ${error.message}${getPos(error)}`).join('\n')
         throw new Error(msg)
     }
 }

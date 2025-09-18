@@ -1,6 +1,6 @@
 import { CreateStateWithInitialValue } from "../Types"
 import { GadgetId } from "lib/game/Primitives"
-import { Equation } from "lib/game/Unification";
+import { RelationEquation } from "lib/game/Unification";
 import { Term } from "lib/game/Term";
 import { ValueMap } from "lib/util/ValueMap";
 import { SetupReadonlyState, setupSlice } from "./Setup";
@@ -32,8 +32,8 @@ export type HistoryActions = {
   getStatementOfGadget: (gadgetId: GadgetId) => string
   getSomeGadgetWithAxiom: (axiom: string) => GadgetId
   getCurrentHoleTerms: () => Term[]
-  getEquationOfConnection: (connection: GadgetConnection) => Equation
-  getCurrentEquations: () => ValueMap<GadgetConnection, Equation>
+  getEquationOfConnection: (connection: GadgetConnection) => RelationEquation
+  getCurrentEquations: () => ValueMap<GadgetConnection, RelationEquation>
 }
 
 export type HistorySlice = SetupReadonlyState & GadgetDndFromShelfSlice & HistoryStateInitializedFromData & HistoryState & HistoryActions
@@ -125,7 +125,7 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       return getSomeGadgetWithAxiom(axiom, initialDiagram, events)
     },
 
-    getEquationOfConnection: (connection: GadgetConnection): Equation => {
+    getEquationOfConnection: (connection: GadgetConnection): RelationEquation => {
       const initialDiagram = get().setup.initialDiagram
       const events = get().getEvents()
       return getEquationOfConnection(connection, initialDiagram, events)

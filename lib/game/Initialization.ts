@@ -1,18 +1,17 @@
 import { GadgetConnection } from "./History";
 import { Axiom, GadgetId, GOAL_GADGET_ID } from "./Primitives";
-import { Term, makeTermWithFreshVariables } from "./Term";
-import { Equation } from "./Unification";
+import { Relation } from "./Term";
 import { parseStatement } from "../parsing/Semantics";
 import { axiomToString, goalToString } from "./GameLogic";
 
-export type Statement = { axiom: Axiom } | { goal: Term }
+export type Statement = { axiom: Axiom } | { goal: Relation }
 
 export interface ProblemFileData {
     goal: string
     axioms: string[]
 }
 
-export function isGoal(statement: Statement): statement is { goal: Term } {
+export function isGoal(statement: Statement): statement is { goal: Relation } {
     return "goal" in statement
 }
 
@@ -58,22 +57,5 @@ export function makeInitializationDataFromProblemFileData(problemFileData: Probl
     return {
         initialDiagram,
         axioms: problemFileData.axioms
-    }
-}
-
-export function getEquationFromInitialConnection(connection: GadgetConnection, initialDiagram: InitialDiagram): Equation {
-    try {
-        const sourceGadget = initialDiagram.gadgets.get(connection.from)!
-        const targetGadget = initialDiagram.gadgets.get(connection.to[0])!
-        const sourceGadgetStatement: Statement = parseStatement(sourceGadget.statement)
-        const targetGadgetStatement: Statement = parseStatement(targetGadget.statement)
-        if (isGoal(sourceGadgetStatement)) {
-            throw new Error("Invalid connection in initial diagram: goal gadget cannot be a source.")
-        }
-        const sourceTerm = sourceGadgetStatement.axiom.conclusion
-        const targetTerm = isGoal(targetGadgetStatement) ? targetGadgetStatement.goal : targetGadgetStatement.axiom.hypotheses[connection.to[1]]
-        return [makeTermWithFreshVariables(sourceTerm, connection.from!), makeTermWithFreshVariables(targetTerm, connection.to[0]!)]
-    } catch (error) {
-        throw new Error(`Invalid connection in initial diagram: possibly gadget ${connection.from} or ${connection.to} is missing in the diagram.`)
     }
 }

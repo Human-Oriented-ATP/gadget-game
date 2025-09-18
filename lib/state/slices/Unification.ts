@@ -1,6 +1,6 @@
 import { GadgetConnection } from "lib/game/History";
 import { CreateStateWithInitialValue } from "../Types";
-import { unifyEquations } from "lib/game/Unification";
+import { unifyRelationEquations } from "lib/game/Unification";
 import { Assignment, Term } from "lib/game/Term";
 import { ValueMap } from "lib/util/ValueMap";
 import { TermEnumeration, updateEnumeration } from "lib/game/TermEnumeration";
@@ -43,7 +43,7 @@ export const unificationSlice: CreateStateWithInitialValue<UnificationStateIniti
 
     runUnification: () => {
       const equations = get().getCurrentEquations()
-      const { assignment, equationIsSatisfied } = unifyEquations<GadgetConnection>(equations)
+      const { assignment, equationIsSatisfied } = unifyRelationEquations<GadgetConnection>(equations)
       const newTermEnumeration = updateEnumeration(get().termEnumeration, get().getCurrentHoleTerms(), assignment)
       set({ equationIsSatisfied: equationIsSatisfied, assignment, termEnumeration: newTermEnumeration })
     },

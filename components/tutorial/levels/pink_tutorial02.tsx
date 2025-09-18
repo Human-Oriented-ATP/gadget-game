@@ -2,7 +2,7 @@ import { DragIndicatorProps } from "../DragIndicator";
 import { GadgetPosition, InteractiveLevel, TUTORIAL_SETTINGS } from "../InteractiveLevel";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { InitialDiagram } from "lib/game/Initialization";
-import { parseTerm } from "lib/parsing/Semantics";
+import { parseRelation } from "lib/parsing/Semantics";
 import { Gadget } from "components/game/gadget/Gadget";
 import { BrokenTargetConnector, PinkHole } from "../TutorialSetup";
 
@@ -62,19 +62,19 @@ const connectGadgets2: DragIndicatorProps<GadgetPosition> = {
 
 function RedCell1() {
     return <div className="inline-block backdrop-blur-sm scale-75 align-middle pl-1">
-        <Gadget id="tutorial_g_1" isOnShelf={true} terms={new Map([[0, parseTerm(`r(A,1)`)]])} />
+        <Gadget id="tutorial_g_1" isOnShelf={true} relations={new Map([[0, parseRelation(`r(A,1)`)]])} />
     </div>
 }
 
 function RedCell2() {
     return <div className="inline-block backdrop-blur-sm scale-75 align-middle pl-1">
-        <Gadget id="tutorial_g_2" isOnShelf={true} terms={new Map([[0, parseTerm(`r(A,2)`)]])} />
+        <Gadget id="tutorial_g_2" isOnShelf={true} relations={new Map([[0, parseRelation(`r(A,2)`)]])} />
     </div>
 }
 
 function TopOnlyGadget() {
     return <div className="inline-block backdrop-blur-sm scale-75 align-middle">
-        <Gadget id="tutorial_g_3" isOnShelf={true} terms={new Map([[0, parseTerm(`r(X, C)`)], [-1, parseTerm('r(X, B)')]])} />
+        <Gadget id="tutorial_g_3" isOnShelf={true} relations={new Map([[0, parseRelation(`r(X, C)`)], [-1, parseRelation('r(X, B)')]])} />
     </div>
 }
 

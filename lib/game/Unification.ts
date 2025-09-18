@@ -67,14 +67,16 @@ function unifyEquation(currentAssignment: Assignment, equation: TermEquation): b
     if (lhs.function !== rhs.function) return false;
     if (lhs.args.length !== rhs.args.length) return false;
 
+    let unifiedSuccessfully = true;
+
     for (let i = 0; i < lhs.args.length; i++) {
         const lhsArg = lhs.args[i]
         const rhsArg = rhs.args[i]
         if (!unifyEquation(currentAssignment, [lhsArg, rhsArg]))
-            return false;
+            unifiedSuccessfully = false;
     }
 
-    return true;
+    return unifiedSuccessfully; 
 }
 
 export function unifyTermEquations<T>(equations: ValueMap<T, TermEquation>): UnificationResult<T> {

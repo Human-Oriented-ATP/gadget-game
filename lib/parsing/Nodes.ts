@@ -12,6 +12,10 @@ export interface TermNode {
 }
 
 export interface RelationNode {
+    normalRelation?: CstNode[]
+}
+
+export interface NormalRelationNode {
     label: IToken[]
     args: CstNode[]
 }

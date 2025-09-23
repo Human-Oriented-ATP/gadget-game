@@ -8,6 +8,12 @@ export class PrologParser extends CstParser {
     }
 
     relation = this.RULE("relation", () => {
+        this.OR([
+            { ALT: () => this.SUBRULE(this.normalRelation) }
+        ])
+    })
+
+    normalRelation = this.RULE("normalRelation", () => {
         this.CONSUME(Atom, { LABEL: "label" })
         this.CONSUME(LeftParen)
         this.AT_LEAST_ONE_SEP({
@@ -63,7 +69,13 @@ export const parser: PrologParser = new PrologParser()
 
 function handleErrors(errors: IRecognitionException[]) {
     if (errors.length > 0) {
-        const msg = errors.map((error) => `[${error.name}] ${error.message}`).join('\n')
+        const getPos = (error: IRecognitionException) => {
+            const makeMsg = error.token.startLine !== null 
+                && error.token.startColumn !== null;
+            if (!makeMsg) return "";
+            return `. Occurs on ${error.token.startLine}:${error.token.startColumn}`
+        }
+        const msg = errors.map((error) => `[${error.name}] ${error.message}${getPos(error)}`).join('\n')
         throw new Error(msg)
     }
 }

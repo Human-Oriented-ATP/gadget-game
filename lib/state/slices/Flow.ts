@@ -1,7 +1,7 @@
 import { CreateStateWithInitialValue } from '../Types';
 import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
-import { toGadgetConnection, isValidConnection } from './Edges';
+import { isValidConnection, toGeneralConnection } from 'lib/game/Connection';
 import { initViewport } from 'lib/game/ViewportInitialisation';
 import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtilitiesStateInitializedFromData } from './FlowUtilities';
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
@@ -75,8 +75,8 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
       set({
         edges: addEdge({ ...connection, type: 'customEdge' }, get().edges),
       });
-      const gadgetConnection = toGadgetConnection(connection)
-      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: gadgetConnection }])
+      const generalConnection = toGeneralConnection(connection)!;
+      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: generalConnection }])
     },
 
     onEdgeClick: (event: OnEdgeClick, edge: Edge) => {

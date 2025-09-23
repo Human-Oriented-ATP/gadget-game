@@ -4,6 +4,8 @@ import { Term, Relation, Assignment, VariableName, assignTermDeeply, occursIn } 
 
 export type TermEquation = [Term, Term]
 export type RelationEquation = [Relation, Relation]
+export type GeneralEquation = { type: "term", equation: TermEquation }
+                            | { type: "relation", equation: RelationEquation }
 
 export interface UnificationResult<T> {
     assignment: Assignment
@@ -67,36 +69,33 @@ function unifyEquation(currentAssignment: Assignment, equation: TermEquation): b
     if (lhs.function !== rhs.function) return false;
     if (lhs.args.length !== rhs.args.length) return false;
 
+    let unifiedSuccessfully = true;
+
     for (let i = 0; i < lhs.args.length; i++) {
         const lhsArg = lhs.args[i]
         const rhsArg = rhs.args[i]
         if (!unifyEquation(currentAssignment, [lhsArg, rhsArg]))
-            return false;
+            unifiedSuccessfully = false;
     }
 
-    return true;
+    return unifiedSuccessfully;
 }
 
-export function unifyTermEquations<T>(equations: ValueMap<T, TermEquation>): UnificationResult<T> {
+export function unifyEquations<T>(equations: ValueMap<T, GeneralEquation>): UnificationResult<T> {
     const equationIsSatisfied = new ValueMap<T, boolean>()
     const assignment: Assignment = new DisjointSetWithAssignment()
-    equations.forEach((equation, key) => {
-        const unifiedSuccessfully = unifyEquation(assignment, equation)
-        equationIsSatisfied.set(key, unifiedSuccessfully)
-    })
-    return { assignment, equationIsSatisfied }
-}
-
-export function unifyRelationEquations<T>(equations: ValueMap<T, RelationEquation>): UnificationResult<T> {
-    const equationIsSatisfied = new ValueMap<T, boolean>()
-    const assignment: Assignment = new DisjointSetWithAssignment()
-    equations.forEach((equation, key) => {
+    equations.forEach((generalEquation, key) => {
         let unifiedSuccessfully = true;
-        const [lhs, rhs] = equation; 
+        let lhsArgs: Term[], rhsArgs: Term[];
+        if (generalEquation.type === "relation") {
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => v.args);
+        } else {
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => [v]);
+        };
 
-        for (let i = 0; i < lhs.args.length; i++) {
-            const lhsArg = lhs.args[i]
-            const rhsArg = rhs.args[i]
+        for (let i = 0; i < lhsArgs.length; i++) {
+            const lhsArg = lhsArgs[i]
+            const rhsArg = rhsArgs[i]
             if (!unifyEquation(assignment, [lhsArg, rhsArg]))
                 unifiedSuccessfully = false;
         }

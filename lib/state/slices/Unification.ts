@@ -1,11 +1,10 @@
-import { GadgetConnection } from "lib/game/History";
 import { CreateStateWithInitialValue } from "../Types";
-import { unifyRelationEquations } from "lib/game/Unification";
+import { unifyEquations } from "lib/game/Unification";
 import { Assignment, Term } from "lib/game/Term";
 import { ValueMap } from "lib/util/ValueMap";
 import { TermEnumeration, updateEnumeration } from "lib/game/TermEnumeration";
 import { Connection, Edge } from "@xyflow/react";
-import { toGadgetConnection } from "./Edges";
+import { GeneralConnection, toGeneralConnection } from "lib/game/Connection";
 import { TutorialSlice, tutorialSlice, TutorialStateInitializedFromData } from "./Tutorial";
 import { DisjointSetWithAssignment } from "lib/util/DisjointSetWithAssignment";
 
@@ -13,7 +12,7 @@ export type UnificationStateInitializedFromData = TutorialStateInitializedFromDa
 
 export type UnificationState = {
   termEnumeration: TermEnumeration
-  equationIsSatisfied: ValueMap<GadgetConnection, boolean>
+  equationIsSatisfied: ValueMap<GeneralConnection, boolean>
   assignment: Assignment
 }
 
@@ -29,28 +28,28 @@ export const unificationSlice: CreateStateWithInitialValue<UnificationStateIniti
   return {
     ...tutorialSlice(initialState, set, get),
     termEnumeration: new ValueMap<Term, number>(),
-    equationIsSatisfied: new ValueMap<GadgetConnection, boolean>(),
+    equationIsSatisfied: new ValueMap<GeneralConnection, boolean>(),
     assignment: new DisjointSetWithAssignment(),
 
     reset: () => {
       tutorialSlice(initialState, set, get).reset()
       set({
         termEnumeration: new ValueMap<Term, number>(),
-        equationIsSatisfied: new ValueMap<GadgetConnection, boolean>(),
+        equationIsSatisfied: new ValueMap<GeneralConnection, boolean>(),
         assignment: new DisjointSetWithAssignment(),
       })
     },
 
     runUnification: () => {
       const equations = get().getCurrentEquations()
-      const { assignment, equationIsSatisfied } = unifyRelationEquations<GadgetConnection>(equations)
+      const { assignment, equationIsSatisfied } = unifyEquations<GeneralConnection>(equations)
       const newTermEnumeration = updateEnumeration(get().termEnumeration, get().getCurrentHoleTerms(), assignment)
       set({ equationIsSatisfied: equationIsSatisfied, assignment, termEnumeration: newTermEnumeration })
     },
 
     edgeIsSatisfied: (edge: Edge) => {
-      const gadgetConnection = toGadgetConnection(edge as Connection)
-      const isSatisfied = get().equationIsSatisfied.get(gadgetConnection)
+      const generalConnection = toGeneralConnection(edge as Connection)!
+      const isSatisfied = get().equationIsSatisfied.get(generalConnection)
       if (isSatisfied === undefined) throw Error(`Edge is not in the equationIsSatisfied map ${JSON.stringify(edge)}`)
       return isSatisfied
     },

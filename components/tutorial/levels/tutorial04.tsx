@@ -1,6 +1,6 @@
 import { InitialDiagram } from "lib/game/Initialization";
 import { DragIndicatorProps } from "../DragIndicator";
-import { GadgetPosition, InteractiveLevel } from "../InteractiveLevel";
+import { fromGadgetSelector, GadgetPosition, InteractiveLevel } from "../InteractiveLevel";
 import { RESTRICTIVE_SETTINGS } from "../InteractiveLevel";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 
@@ -55,19 +55,19 @@ export const tutorial04: InteractiveLevel = {
             jsx: <>You can create multiple connections from one gadget by drawing multiple lines.</>,
             dragIndicator: tutorial04DragIndicator1
         },
-        trigger: { ConnectionAdded: { to: [{ gadgetId: "initial_gadget_2" }, 0] } }
+        trigger: { ConnectionAdded: fromGadgetSelector({ to: [{ gadgetId: "initial_gadget_2" }, 0] }) }
     }, {
         content: {
             jsx: <>You can create multiple connections from one gadget by drawing multiple lines.</>,
             dragIndicator: tutorial04DragIndicator2
         },
-        trigger: { ConnectionAdded: { to: [{ gadgetId: "initial_gadget_2" }, 1] } }
+        trigger: { ConnectionAdded: fromGadgetSelector({ to: [{ gadgetId: "initial_gadget_2" }, 1] }) }
     }, {
         content: {
             jsx: <>You can create multiple connections from one gadget by drawing multiple lines.</>,
             dragIndicator: tutorial04DragIndicator3
         },
-        trigger: { ConnectionAdded: { to: [{ gadgetId: "initial_gadget_2" }, 2] } }
+        trigger: { ConnectionAdded: fromGadgetSelector({ to: [{ gadgetId: "initial_gadget_2" }, 2] }) }
     }, {
         content: {
             jsx: <>Now make the final connection to finish the level!</>,

@@ -68,7 +68,11 @@ function BrokenConnection() {
 }
 
 function hasPinkCircleTerm(relation: Relation) {
-    return relation.args.some(term => "function" in term)
+    if ("equals" in relation) {
+        return relation.equals.some(term => "function" in term);
+    } else {
+        return relation.args.some(term => "function" in term);
+    }
 }
 
 function hasPinkCircle(axiom: Axiom) {

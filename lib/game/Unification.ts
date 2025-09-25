@@ -1,6 +1,6 @@
 import { ValueMap } from "../util/ValueMap";
 import { DisjointSetWithAssignment } from "../util/DisjointSetWithAssignment";
-import { Term, Relation, Assignment, VariableName, assignTermDeeply, occursIn } from "./Term";
+import { Term, Relation, Assignment, VariableName, assignTermDeeply, occursIn, getRelationArgs } from "./Term";
 
 export type TermEquation = [Term, Term]
 export type RelationEquation = [Relation, Relation]
@@ -88,7 +88,7 @@ export function unifyEquations<T>(equations: ValueMap<T, GeneralEquation>): Unif
         let unifiedSuccessfully = true;
         let lhsArgs: Term[], rhsArgs: Term[];
         if (generalEquation.type === "relation") {
-            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => v.args);
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(getRelationArgs);
         } else {
             [lhsArgs, rhsArgs] = generalEquation.equation.map(v => [v]);
         };

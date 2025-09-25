@@ -1,5 +1,5 @@
 import { CstNode, CstParser, IRecognitionException } from "chevrotain"
-import { Atom, Comma, Entails, FullStop, LeftParen, NewLine, Number, RightParen, Variable, allTokens, tokenize } from "./Lexer"
+import { Equals, Atom, Comma, Entails, FullStop, LeftParen, NewLine, Number, RightParen, Variable, allTokens, tokenize } from "./Lexer"
 
 export class PrologParser extends CstParser {
     constructor() {
@@ -9,8 +9,18 @@ export class PrologParser extends CstParser {
 
     relation = this.RULE("relation", () => {
         this.OR([
+            { ALT: () => this.SUBRULE(this.equalityRelation) },
             { ALT: () => this.SUBRULE(this.normalRelation) }
         ])
+    })
+
+    equalityRelation = this.RULE("equalityRelation", () => {
+        this.CONSUME(Equals)
+        this.CONSUME(LeftParen)
+        this.SUBRULE(this.term, { LABEL: "leftTerm" })
+        this.CONSUME(Comma)
+        this.SUBRULE1(this.term, { LABEL: "rightTerm" })
+        this.CONSUME(RightParen)
     })
 
     normalRelation = this.RULE("normalRelation", () => {

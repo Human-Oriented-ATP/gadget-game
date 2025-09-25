@@ -33,7 +33,11 @@ export function termToString(t: Term): string {
 }
 
 export function relationToString(r: Relation): string {
-    return r.label + "(" + r.args.map(termToString).join(", ") + ")"
+    if ("equals" in r) {
+        return "eq(" + termToString(r.equals[0]) + ", " + termToString(r.equals[1]) + ")";
+    } else {
+        return r.label + "(" + r.args.map(termToString).join(", ") + ")";
+    }
 }
 
 // export function equationToString(equation: Equation) {

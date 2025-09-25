@@ -1,5 +1,6 @@
 import { Relation } from "./Term"
 
+export type EqualityPosition = "bottom" | "top"
 export type GadgetId = string
 
 export interface Axiom {

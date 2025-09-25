@@ -3,8 +3,10 @@ import { GadgetNode } from '../../../components/game/flow/GadgetFlowNode';
 import { CreateStateWithInitialValue } from '../Types';
 import { gadgetDndFromShelfSlice, GadgetDndFromShelfSlice } from './DragGadgetFromShelf';
 import { Relation } from 'lib/game/Term';
-import { getRelationOfHandle, isTargetHandle, makeHandleId } from 'lib/game/Handles';
+import { getRelationOfHandle, isTargetHandle, makeEqualityHandleId, makeHandleId } from 'lib/game/Handles';
 import { ConnectorStatus } from 'components/game/gadget/Connector';
+import { EqualityPosition } from 'lib/game/Primitives';
+import { OUTPUT_POSITION } from 'lib/game/CellPosition';
 
 export type NodeStateInitializedFromData = {
   nodes: GadgetNode[],
@@ -94,8 +96,19 @@ export const nodeSlice: CreateStateWithInitialValue<NodeStateInitializedFromData
 
     getHandlesOfNode: (nodeId: string): string[] => {
       const node = get().getNode(nodeId)
-      const cellPositions = Array.from(node.data.relations.keys())
-      const handles = cellPositions.map((position) => makeHandleId(position, node.data.id))
+      const cellPositions = Array.from(node.data.relations.keys());
+      const getCellHandles = pos => {
+        const relation = node.data.relations.get(pos)!;
+        const gadgetId = node.data.id;
+        const cellHandles = [makeHandleId(pos, gadgetId)];
+        if ("equals" in relation && pos === OUTPUT_POSITION)
+          cellHandles.push(...["bottom", "top"].map(
+            (eqPos: EqualityPosition) => makeEqualityHandleId(gadgetId, eqPos))
+          );
+        return cellHandles;
+      }
+
+      const handles = cellPositions.flatMap(getCellHandles);
       return handles
     },
 

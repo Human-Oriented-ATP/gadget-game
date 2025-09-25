@@ -3,7 +3,7 @@ import { GameProps } from "components/game/Game";
 import { GameStateInitializedFromData } from "./Store";
 import { ReadonlyGameSetup } from './slices/Setup';
 import { InitialDiagram, InitialDiagramGadget } from "lib/game/Initialization";
-import { makeHandleId } from 'lib/game/Handles';
+import { makeEqualityHandleId, makeHandleId } from 'lib/game/Handles';
 import { GadgetId } from "lib/game/Primitives";
 import { GadgetProps } from "components/game/gadget/Gadget";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
@@ -44,15 +44,28 @@ function getInitialNodes(props: GameProps): GadgetNode[] {
 }
 
 function getInitialEdge(generalConnection: GeneralConnection, label: string): Edge {
-    const connection = generalConnection.connection;
-    return {
-        id: label,
-        source: connection.from,
-        sourceHandle: makeHandleId(OUTPUT_POSITION, connection.from),
-        target: connection.to[0],
-        targetHandle: makeHandleId(connection.to[1], connection.to[0]),
-        type: 'customEdge',
+    if (generalConnection.type === "equality") {
+        const connection = generalConnection.connection;
+        return {
+            id: label,
+            source: connection.from[0],
+            sourceHandle: makeEqualityHandleId(...connection.from),
+            target: connection.to[0],
+            targetHandle: makeEqualityHandleId(...connection.to),
+            type: 'customEdge',
+        }
+    } else {
+        const connection = generalConnection.connection;
+        return {
+            id: label,
+            source: connection.from,
+            sourceHandle: makeHandleId(OUTPUT_POSITION, connection.from),
+            target: connection.to[0],
+            targetHandle: makeHandleId(connection.to[1], connection.to[0]),
+            type: 'customEdge',
+        }
     }
+
 }
 
 function getInitialEdges(initialDiagram: InitialDiagram): Edge[] {

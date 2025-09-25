@@ -11,10 +11,10 @@ import { GadgetId } from 'lib/game/Primitives';
 import { unificationSlice, UnificationSlice, UnificationState, UnificationStateInitializedFromData } from './Unification';
 import { ConnectorStatus } from 'components/game/gadget/Connector';
 import { calculateProximityConnection, ConnectionWithHandles, getPositionOfHandle, HandlesWithPositions } from 'lib/util/calculateProximityConnection';
+import { relationsMatch } from 'lib/game/Term';
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { isAboveGadgetShelf } from 'lib/util/XYPosition';
 import { saveLevelCompletedAsCookie } from 'lib/study/CompletedProblems';
-import { relationsMatch } from 'lib/game/Term';
 
 export type FlowUtilitiesStateInitializedFromData = UnificationStateInitializedFromData & NodeStateInitializedFromData & EdgeStateInitializedFromData & {
   rf: ReactFlowInstance
@@ -198,18 +198,26 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
       }
 
       const doesNotYetExist = !get().connectionExists(connection);
-      const equation =  get().getEquationOfConnection(generalConnection);
-      if (equation.type !== "relation")
-        throw Error(`${JSON.stringify(generalConnection)} converted to wrong type of equation: ${JSON.stringify(equation)}`);
-      const [lhs, rhs] = equation.equation;
-      const relationsOk = relationsMatch(lhs, rhs);
-      const createsNoCycle = get().doesNotCreateACycle(connection);
-      return relationsOk && createsNoCycle && doesNotYetExist;
+
+      if (generalConnection.type === 'equality') {
+        const equalityConnection = generalConnection.connection;
+        const gadgetsDifferent = equalityConnection.from[0] !== equalityConnection.to[0];
+        return gadgetsDifferent && doesNotYetExist;
+      } else {
+        const equation =  get().getEquationOfConnection(generalConnection);
+        if (equation.type !== "relation")
+          throw Error(`${JSON.stringify(generalConnection)} converted to wrong type of equation: ${JSON.stringify(equation)}`);
+        const [lhs, rhs] = equation.equation;
+        const relationsOk = relationsMatch(lhs, rhs);
+        const createsNoCycle = get().doesNotCreateACycle(connection);
+        return relationsOk && createsNoCycle && doesNotYetExist;
+      }
     },
 
     isValidProximityConnection: (connection: ConnectionWithHandles) => {
       const generalConnection = toGeneralConnection(connection);
-      if (generalConnection === undefined) {
+      if (generalConnection === undefined || generalConnection.type === 'equality') {
+        // Don't do proximity connections for equality handles or invalid connections
         return false;
       }
 

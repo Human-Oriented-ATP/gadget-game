@@ -1,4 +1,4 @@
-import { GadgetSelector, Trigger, ConnectionSelector, GadgetConnectionSelector } from "components/tutorial/InteractiveLevel";
+import { GadgetSelector, Trigger, ConnectionSelector, EqualityConnectionSelector, GadgetConnectionSelector } from "components/tutorial/InteractiveLevel";
 import { CreateStateWithInitialValue } from "../Types"
 import { HistorySlice, historySlice, HistoryState, HistoryStateInitializedFromData } from "./History";
 import { GeneralConnection } from "lib/game/Connection";
@@ -88,15 +88,24 @@ export const tutorialSlice: CreateStateWithInitialValue<TutorialStateInitialized
 
     triggersConnection: (connection: GeneralConnection, trigger: ConnectionSelector): boolean => {
       if (trigger.type === undefined) return true;
+      if (trigger.type !== connection.type) return false;
 
       const matchesTuple = (actual: [string, any], expected: [GadgetSelector, any]) =>
         get().gadgetMatchesSelector(actual[0], expected[0]) && actual[1] === expected[1];
 
-      const { from, to } = connection.connection;
-      const triggerConn = trigger.connection as GadgetConnectionSelector;
+      if (connection.type === "gadget") {
+        const { from, to } = connection.connection;
+        const triggerConn = trigger.connection as GadgetConnectionSelector;
 
-      return (!triggerConn.from || get().gadgetMatchesSelector(from, triggerConn.from)) &&
-              (!triggerConn.to || matchesTuple(to, triggerConn.to));
+        return (!triggerConn.from || get().gadgetMatchesSelector(from, triggerConn.from)) &&
+               (!triggerConn.to || matchesTuple(to, triggerConn.to));
+      } else {
+        const { from, to } = connection.connection;
+        const triggerConn = trigger.connection as EqualityConnectionSelector;
+
+        return (!triggerConn.from || matchesTuple(from, triggerConn.from)) &&
+               (!triggerConn.to || matchesTuple(to, triggerConn.to));
+      }
     },
 
     getCurrentTrigger: () => {

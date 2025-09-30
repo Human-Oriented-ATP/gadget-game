@@ -11,7 +11,8 @@ export function makeEqualityHandleId(gadgetId: string, equalityPosition: Equalit
 }
 
 export function isTargetHandle(handleId: string): boolean {
-    return handleId.slice(0, 10) !== `handle_${OUTPUT_POSITION}_`;
+    const outputHandleStart =  `handle_${OUTPUT_POSITION}_`
+    return handleId.startsWith("handle") && !handleId.startsWith(outputHandleStart);
 }
 
 export function isEqualityHandle(handleId: string): boolean {

@@ -197,7 +197,14 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
         return false;
       }
 
-      const doesNotYetExist = !get().connectionExists(connection);
+      let doesNotYetExist = !get().connectionExists(connection);
+      if (generalConnection.type === "equality") {
+        const reversedConnection: Connection = {
+          source: connection.target, target: connection.source,
+          sourceHandle: connection.targetHandle, targetHandle: connection.sourceHandle
+        };
+        doesNotYetExist &&= !get().connectionExists(reversedConnection);
+      }
 
       if (generalConnection.type === 'equality') {
         const equalityConnection = generalConnection.connection;

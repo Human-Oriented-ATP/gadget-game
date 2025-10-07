@@ -31,11 +31,7 @@ export function replaceWithRepresentatives(t: Term, assignment: Assignment): Ter
     if ("variable" in t) {
         return { variable: assignment.findRepresentative(t.variable) }
     } else if ("number" in t) {
-        let label;
-        if (t.label !== undefined) {
-            label = assignment.findRepresentative(t.label);
-        }
-        return {number: t.number, label}
+        return { number: t.number }
     } else {
         return { function: t.function, args: t.args.map(arg => replaceWithRepresentatives(arg, assignment)) }
     }

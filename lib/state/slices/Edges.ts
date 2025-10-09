@@ -2,6 +2,7 @@ import { CreateStateWithInitialValue } from '../Types';
 import { Connection, Edge } from '@xyflow/react';
 import { toGeneralConnection } from "lib/game/Connection";
 import { GameEvent } from "lib/game/History";
+import { isGadgetHandle } from 'lib/game/Handles';
 
 export interface EdgeStateInitializedFromData {
   edges: Edge[],
@@ -69,9 +70,10 @@ export const edgeSlice: CreateStateWithInitialValue<EdgeStateInitializedFromData
       return get().edges.some((edge) => edge.sourceHandle === connection.sourceHandle && edge.targetHandle === connection.targetHandle);
     },
     doesNotCreateACycle: (connection: Connection) => {
+      if (!isGadgetHandle(connection.sourceHandle!)) return true;
       const { source, target } = connection
       if (source === target) return false
-      const edges = get().edges
+      const edges = get().edges.filter(edge => isGadgetHandle(edge.sourceHandle!));
       let currentNodes = new Set<string>([source])
       while (true) {
         const incomingEdges = edges.filter((edge) => currentNodes.has(edge.target))

@@ -15,6 +15,10 @@ export function isTargetHandle(handleId: string): boolean {
     return handleId.startsWith("handle") && !handleId.startsWith(outputHandleStart);
 }
 
+export function isGadgetHandle(handleId: string): boolean {
+    return handleId.slice(0, 6) === `handle`;
+}
+
 export function isEqualityHandle(handleId: string): boolean {
     return handleId.slice(0, 14) === `equalityhandle`;
 }

@@ -1,6 +1,6 @@
 import { ValueMap } from "../util/ValueMap";
 import { DisjointSetWithAssignment } from "../util/DisjointSetWithAssignment";
-import { Term, Relation, Assignment, VariableName, assignTermDeeply, occursIn } from "./Term";
+import { Term, Relation, Assignment, VariableName, assignTermDeeply, occursIn, relationsMatch } from "./Term";
 
 export type TermEquation = [Term, Term]
 export type RelationEquation = [Relation, Relation]
@@ -94,7 +94,12 @@ export function unifyRelationEquations<T>(equations: ValueMap<T, RelationEquatio
     const assignment: Assignment = new DisjointSetWithAssignment()
     equations.forEach((equation, key) => {
         let unifiedSuccessfully = true;
-        const [lhs, rhs] = equation; 
+        const [lhs, rhs] = equation;
+
+        if (!relationsMatch(lhs, rhs)) {
+            equationIsSatisfied.set(key, false);
+            return;
+        }
 
         for (let i = 0; i < lhs.args.length; i++) {
             const lhsArg = lhs.args[i]

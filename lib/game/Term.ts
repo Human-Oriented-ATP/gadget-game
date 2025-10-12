@@ -120,6 +120,10 @@ export function aritiesMatch(r1: Relation, r2: Relation): boolean {
     return r1.args.length === r2.args.length;
 }
 
+export function relationsMatch(r1: Relation, r2: Relation): boolean {
+    return r1.args.length === r2.args.length && r1.label == r2.label; 
+}
+
 export function isNumericalConstant(t: Term): number | undefined {
     if ("number" in t) {
         if (isNaN(Number(t.number))) {

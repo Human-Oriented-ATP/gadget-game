@@ -4,7 +4,7 @@ import { useGameStateContext } from "lib/state/StateContextProvider"
 import { StaticHole } from "./gadget/StaticHole"
 import { Axiom } from "lib/game/Primitives"
 import { parseAxiom } from "lib/parsing/Semantics"
-import { Term } from "lib/game/Term"
+import { Relation } from "lib/game/Term"
 import { useShallow } from "zustand/react/shallow"
 
 function HelpSection(props: { title: string, children: React.ReactNode }) {
@@ -67,17 +67,13 @@ function BrokenConnection() {
     </div>
 }
 
-function hasPinkCircleTerm(term: Term) {
-    if ("variable" in term) {
-        return false
-    } else {
-        return term.args.some(variableTerm => "args" in variableTerm && variableTerm.args.length !== 0)
-    }
+function hasPinkCircleTerm(relation: Relation) {
+    return relation.args.some(term => "function" in term)
 }
 
 function hasPinkCircle(axiom: Axiom) {
-    const terms = [...axiom.hypotheses, axiom.conclusion]
-    return terms.some(hasPinkCircleTerm)
+    const relations = [...axiom.hypotheses, axiom.conclusion]
+    return relations.some(hasPinkCircleTerm)
 }
 
 function hasPinkCircleAxiom(axioms: string[]) {

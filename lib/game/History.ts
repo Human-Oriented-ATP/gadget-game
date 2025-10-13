@@ -1,9 +1,9 @@
 import { ValueMap } from "lib/util/ValueMap";
 import { CellPosition, OUTPUT_POSITION } from "./CellPosition";
-import { getGadgetTerms } from "./GameLogic";
+import { getGadgetRelations } from "./GameLogic";
 import { InitialDiagram } from "./Initialization";
 import { GadgetId } from "./Primitives";
-import { Equation } from "./Unification";
+import { RelationEquation } from "./Unification";
 
 export type GadgetConnection = { from: GadgetId, to: [GadgetId, CellPosition] }
 
@@ -93,44 +93,37 @@ export function getSomeGadgetWithAxiom(axiom: string, initialDiagram: InitialDia
     throw Error(`No gadget with axiom ${axiom} found`)
 }
 
-function getTermsOfGadget(gadgetId: GadgetId, initialDiagram: InitialDiagram, events: GameEvent[]) {
+function getRelationsOfGadget(gadgetId: GadgetId, initialDiagram: InitialDiagram, events: GameEvent[]) {
     const statement = getStatementOfGadget(gadgetId, initialDiagram, events)
-    const terms = getGadgetTerms(statement, gadgetId)
-    return terms
+    const relations = getGadgetRelations(statement, gadgetId)
+    return relations
 }
 
-function getCurrentCellTerms(initialDiagram: InitialDiagram, events: GameEvent[]) {
+function getCurrentCellRelations(initialDiagram: InitialDiagram, events: GameEvent[]) {
     const gadgets = getCurrentGadgets(initialDiagram, events)
-    const terms = gadgets.flatMap(gadgetId =>
-        Array.from(getTermsOfGadget(gadgetId, initialDiagram, events).values()))
-    return terms
+    const relations = gadgets.flatMap(gadgetId =>
+        Array.from(getRelationsOfGadget(gadgetId, initialDiagram, events).values()))
+    return relations
 }
 
 export function getCurrentHoleTerms(initialDiagram: InitialDiagram, events: GameEvent[]) {
-    const terms = getCurrentCellTerms(initialDiagram, events)
-    const holeTerms = terms.flatMap((term => {
-        if ("variable" in term) {
-            throw Error(`Invalid term! A cell cannot have a single variable as a term: ${term}`)
-        } else {
-            return term.args
-        }
-    }))
-    return holeTerms
+    const relations = getCurrentCellRelations(initialDiagram, events)
+    return relations.flatMap(term => term.args)
 }
 
-export function getEquationOfConnection(connection: GadgetConnection, initialDiagram: InitialDiagram, events: GameEvent[]): Equation {
-    const lhsTerms = getTermsOfGadget(connection.from, initialDiagram, events)
-    const rhsTerms = getTermsOfGadget(connection.to[0], initialDiagram, events)
-    const lhs = lhsTerms.get(OUTPUT_POSITION)
-    const rhs = rhsTerms.get(connection.to[1])
+export function getEquationOfConnection(connection: GadgetConnection, initialDiagram: InitialDiagram, events: GameEvent[]): RelationEquation {
+    const lhsRelations = getRelationsOfGadget(connection.from, initialDiagram, events)
+    const rhsRelations = getRelationsOfGadget(connection.to[0], initialDiagram, events)
+    const lhs = lhsRelations.get(OUTPUT_POSITION)
+    const rhs = rhsRelations.get(connection.to[1])
     if (lhs === undefined || rhs === undefined)
-        throw Error(`Connection has undefined terms: \n${JSON.stringify(connection)}\nlhs: ${JSON.stringify(lhsTerms)}\nrhs: ${JSON.stringify(rhsTerms)}`)
+        throw Error(`Connection has undefined relations: \n${JSON.stringify(connection)}\nlhs: ${JSON.stringify(lhsRelations)}\nrhs: ${JSON.stringify(rhsRelations)}`)
     return [lhs!, rhs!]
 }
 
 export function getCurrentEquations(initialDiagram: InitialDiagram, events: GameEvent[]) {
     const connections = getCurrentConnections(initialDiagram, events)
-    const connectionsWithEquations: Array<[GadgetConnection, Equation]> = connections.map((connection) =>
+    const connectionsWithEquations: Array<[GadgetConnection, RelationEquation]> = connections.map((connection) =>
         [connection, getEquationOfConnection(connection, initialDiagram, events)])
     return new ValueMap(connectionsWithEquations)
 }

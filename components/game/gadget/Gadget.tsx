@@ -8,33 +8,33 @@ import { InternalConnection, makeConnections } from '../../../lib/game/GadgetInt
 import { twJoin } from 'tailwind-merge'
 import { calculateHolePosition } from '../../../lib/game/calculateHolePosition'
 import { GadgetId, GOAL_GADGET_ID } from 'lib/game/Primitives'
-import { Term } from 'lib/game/Term'
+import { Relation } from 'lib/game/Term'
 import { HandleDoubleClickProps } from './CustomHandle'
 
 export type GadgetProps = {
     id: GadgetId;
-    terms: Map<CellPosition, Term>;
+    relations: Map<CellPosition, Relation>;
     isOnShelf: boolean;
 }
 
-function hasOutputNode(terms: Map<CellPosition, Term>): boolean {
-    const positions = Array.from(terms.keys())
+function hasOutputNode(relations: Map<CellPosition, Relation>): boolean {
+    const positions = Array.from(relations.keys())
     return positions.some(isOutputPosition)
 }
 
-function hasInputNode(terms: Map<CellPosition, Term>): boolean {
-    const positions = Array.from(terms.keys())
+function hasInputNode(relations: Map<CellPosition, Relation>): boolean {
+    const positions = Array.from(relations.keys())
     return positions.some(isInputPosition)
 }
 
 
 function GadgetInputNodes(props: GadgetProps & HandleDoubleClickProps) {
-    const terms: [CellPosition, Term][] = Array.from(props.terms.entries())
+    const relations: [CellPosition, Relation][] = Array.from(props.relations.entries())
     return <>
-        {terms.map(([cellPosition, term]) => {
+        {relations.map(([cellPosition, relation]) => {
             if (isInputPosition(cellPosition)) {
                 return <Cell key={cellPosition}
-                    term={term}
+                    relation={relation}
                     position={cellPosition}
                     gadgetId={props.id}
                     isOnShelf={props.isOnShelf}
@@ -46,10 +46,10 @@ function GadgetInputNodes(props: GadgetProps & HandleDoubleClickProps) {
 }
 
 function GadgetOutputNode(props: GadgetProps & HandleDoubleClickProps) {
-    const term = props.terms.get(OUTPUT_POSITION)
-    if (term === undefined) return <></>
+    const relation = props.relations.get(OUTPUT_POSITION)
+    if (relation === undefined) return <></>
     return <Cell 
-        term={term} 
+        relation={relation} 
         position={OUTPUT_POSITION}
         gadgetId={props.id} 
         isOnShelf={props.isOnShelf} 
@@ -72,19 +72,19 @@ export function Gadget(props: GadgetProps & HandleDoubleClickProps) {
             return { start, end, fromInput, toOutput }
         }
 
-        const connections = makeConnections(props.terms);
+        const connections = makeConnections(props.relations);
         const drawingData = connections.map(calculateInternalConnectionDrawingData)
         setConnectionState({ connections: drawingData })
 
-    }, [props.terms, props.id])
+    }, [props.relations, props.id])
 
     return <div className="text-center relative">
         {/* <span style={{ color: "grey" }}>{props.id}</span> */}
-        <div className={twJoin("flex", hasInputNode(props.terms) && "space-x-8")} id={props.id}>
+        <div className={twJoin("flex", hasInputNode(props.relations) && "space-x-8")} id={props.id}>
             <div className="flex flex-col items-start">
                 <GadgetInputNodes {...props} />
             </div>
-            <div className={twJoin("flex flex-col justify-center", !hasOutputNode(props.terms) && "hidden")}>
+            <div className={twJoin("flex flex-col justify-center", !hasOutputNode(props.relations) && "hidden")}>
                 <GadgetOutputNode {...props} />
             </div>
         </div>

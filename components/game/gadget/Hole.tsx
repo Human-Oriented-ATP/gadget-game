@@ -23,8 +23,7 @@ export function Hole(props: HoleProps) {
     const value = getAssignedValue(props.term, assignment, termEnumeration);
 
     const makeFocusProps = (term: Term) => {
-        if ("function" in term) return undefined; 
-        const termLabel = "number" in term ? term.label : term.variable; 
+        const termLabel = "variable" in term ? term.variable : term.identifier; 
         if (termLabel === undefined) return undefined;
         const termRepresentative = holeAssignment.findRepresentative(termLabel);
 

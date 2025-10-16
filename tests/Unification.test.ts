@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
-import { TermEquation, unifyTermEquations } from "../lib/game/Unification";
-import { parseTerm } from '../lib/parsing/Semantics';
+import { RelationEquation, TermEquation, unifyRelationEquations, unifyTermEquations } from "../lib/game/Unification";
+import { parseRelation, parseTerm } from '../lib/parsing/Semantics';
 import { ValueMap } from '../lib/util/ValueMap';
 
 type EquationId = string
@@ -8,6 +8,11 @@ type EquationId = string
 function parseEquation(eq: string): TermEquation {
     const [lhs, rhs] = eq.split("=")
     return [parseTerm(lhs), parseTerm(rhs)]
+}
+
+function parseRelationEquation(eq: string): RelationEquation {
+    const [lhs, rhs] = eq.split("=")
+    return [parseRelation(lhs), parseRelation(rhs)]
 }
 
 test("Empty unification", () => {
@@ -128,3 +133,42 @@ test("Circular equality with transitivity twice invalid", () => {
 
     expect(assignment.findRepresentative("B")).toEqual(assignment.findRepresentative("A"))
 })
+
+test("Empty relation unification", () => {
+    const emptyListOfEquations = new ValueMap<EquationId, RelationEquation>()
+    const res = unifyRelationEquations(emptyListOfEquations)
+    expect(Array.from(res.equationIsSatisfied.keys()).length === 0);
+    const assignment = res.assignment
+    expect(assignment.getAssignedValues.length).toBe(0)
+})
+
+test("Rejection of non-matching relations", () => {
+    const equations = new ValueMap<EquationId, RelationEquation>([ 
+        ["eq1", parseRelationEquation("r(A,B)=r(E,B,C)")],
+        ["eq2", parseRelationEquation("r(A,B,C)=r(E,B)")],
+        ["eq3", parseRelationEquation("g(A,B,C)=r(E,B,C)")],
+    ]);
+
+    const { equationIsSatisfied, assignment } = unifyRelationEquations(equations)
+    expect(equationIsSatisfied.values().every(bool => !bool)).toEqual(true);
+    
+    // Unification did not proceed
+    expect(assignment.findRepresentative("A")).not.toEqual(assignment.findRepresentative("E"));
+})
+
+test("Matching relations proceed with unification", () => {
+    const equations = new ValueMap<EquationId, RelationEquation>([ 
+        ["eq1", parseRelationEquation("r(A,1)=r(C,1)")],
+        ["eq2", parseRelationEquation("r(1,F)=r(2,G)")],
+    ]);
+
+    const { equationIsSatisfied, assignment } = unifyRelationEquations(equations);
+    expect(Array.from(equationIsSatisfied.entries())).toEqual([["eq1", true], ["eq2", false]]);
+    
+    
+    // Unification did proceed
+    expect(assignment.findRepresentative("A")).toEqual(assignment.findRepresentative("C"));
+    expect(assignment.findRepresentative("F")).toEqual(assignment.findRepresentative("G"));
+})
+
+

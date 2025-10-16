@@ -3,7 +3,7 @@ import { Assignment, shapesMatch, Term } from "./Term";
 import { RelationEquation } from "./Unification";
 import { DisjointSetWithAssignment } from "lib/util/DisjointSetWithAssignment";
 
-function getLabel(t: Term): string | undefined {
+export function getLabel(t: Term): string | undefined {
     if ("variable" in t) return t.variable;
     return t.identifier;
 }

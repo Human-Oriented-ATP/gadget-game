@@ -3,6 +3,7 @@ import { Term } from 'lib/game/Term'
 import { getAssignedValue } from 'lib/game/TermEnumeration'
 import { StaticHole } from './StaticHole'
 import { GameSlice } from 'lib/state/Store'
+import { getLabel } from 'lib/game/HoleUnification'
 
 interface HoleProps {
     term: Term
@@ -23,7 +24,7 @@ export function Hole(props: HoleProps) {
     const value = getAssignedValue(props.term, assignment, termEnumeration);
 
     const makeFocusProps = (term: Term) => {
-        const termLabel = "variable" in term ? term.variable : term.identifier; 
+        const termLabel = getLabel(term);
         if (termLabel === undefined) return undefined;
         const termRepresentative = holeAssignment.findRepresentative(termLabel);
 

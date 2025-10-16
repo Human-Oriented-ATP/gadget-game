@@ -48,7 +48,7 @@ export const unificationSlice: CreateStateWithInitialValue<UnificationStateIniti
     runUnification: () => {
       const equations = get().getCurrentEquations()
       const { assignment, equationIsSatisfied } = unifyRelationEquations<GadgetConnection>(equations)
-      const holeAssignment = calculateHoleAssignment(equations);
+      const holeAssignment = calculateHoleAssignment(equations, equationIsSatisfied);
       const newTermEnumeration = updateEnumeration(get().termEnumeration, get().getCurrentHoleTerms(), assignment)
       set({ equationIsSatisfied: equationIsSatisfied, holeAssignment, assignment, termEnumeration: newTermEnumeration })
     },

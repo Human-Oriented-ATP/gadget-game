@@ -1,4 +1,3 @@
-import { LapTimerIcon } from "@radix-ui/react-icons"
 import { DisjointSetWithAssignment } from "../util/DisjointSetWithAssignment"
 import { Axiom } from "./Primitives"
 

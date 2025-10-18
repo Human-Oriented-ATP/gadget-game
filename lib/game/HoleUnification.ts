@@ -3,7 +3,7 @@ import { Assignment, shapesMatch, Term } from "./Term";
 import { RelationEquation } from "./Unification";
 import { DisjointSetWithAssignment } from "lib/util/DisjointSetWithAssignment";
 
-export function getLabel(t: Term): string | undefined {
+export function getIdentifier(t: Term): string | undefined {
     if ("variable" in t) return t.variable;
     return t.identifier;
 }
@@ -15,8 +15,8 @@ export function calculateHoleAssignment<T>(equations: ValueMap<T, RelationEquati
         if (!shapesMatch(lhs, rhs)) return;
 
         for (let i = 0; i < lhs.args.length; i++) {
-            const lhsLabel = getLabel(lhs.args[i]);
-            const rhsLabel = getLabel(rhs.args[i]);
+            const lhsLabel = getIdentifier(lhs.args[i]);
+            const rhsLabel = getIdentifier(rhs.args[i]);
             if (lhsLabel !== undefined && rhsLabel !== undefined)
                 assignment.unite(lhsLabel, rhsLabel);
         }

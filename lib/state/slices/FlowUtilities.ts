@@ -14,7 +14,7 @@ import { calculateProximityConnection, ConnectionWithHandles, getPositionOfHandl
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { isAboveGadgetShelf } from 'lib/util/XYPosition';
 import { saveLevelCompletedAsCookie } from 'lib/study/CompletedProblems';
-import { relationsMatch } from 'lib/game/Term';
+import { shapesMatch } from 'lib/game/Term';
 
 export type FlowUtilitiesStateInitializedFromData = UnificationStateInitializedFromData & NodeStateInitializedFromData & EdgeStateInitializedFromData & {
   rf: ReactFlowInstance
@@ -202,7 +202,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
       if (equation.type !== "relation")
         throw Error(`${JSON.stringify(generalConnection)} converted to wrong type of equation: ${JSON.stringify(equation)}`);
       const [lhs, rhs] = equation.equation;
-      const relationsOk = relationsMatch(lhs, rhs);
+      const relationsOk = shapesMatch(lhs, rhs);
       const createsNoCycle = get().doesNotCreateACycle(connection);
       return relationsOk && createsNoCycle && doesNotYetExist;
     },

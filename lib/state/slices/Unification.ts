@@ -7,6 +7,7 @@ import { Connection, Edge } from "@xyflow/react";
 import { GeneralConnection, toGeneralConnection } from "lib/game/Connection";
 import { TutorialSlice, tutorialSlice, TutorialStateInitializedFromData } from "./Tutorial";
 import { DisjointSetWithAssignment } from "lib/util/DisjointSetWithAssignment";
+import { calculateHoleAssignment } from "lib/game/HoleUnification";
 
 export type UnificationStateInitializedFromData = TutorialStateInitializedFromData
 
@@ -14,6 +15,7 @@ export type UnificationState = {
   termEnumeration: TermEnumeration
   equationIsSatisfied: ValueMap<GeneralConnection, boolean>
   assignment: Assignment
+  holeAssignment: Assignment
 }
 
 export type UnificationActions = {
@@ -30,6 +32,7 @@ export const unificationSlice: CreateStateWithInitialValue<UnificationStateIniti
     termEnumeration: new ValueMap<Term, number>(),
     equationIsSatisfied: new ValueMap<GeneralConnection, boolean>(),
     assignment: new DisjointSetWithAssignment(),
+    holeAssignment: new DisjointSetWithAssignment(),
 
     reset: () => {
       tutorialSlice(initialState, set, get).reset()
@@ -37,14 +40,16 @@ export const unificationSlice: CreateStateWithInitialValue<UnificationStateIniti
         termEnumeration: new ValueMap<Term, number>(),
         equationIsSatisfied: new ValueMap<GeneralConnection, boolean>(),
         assignment: new DisjointSetWithAssignment(),
+        holeAssignment: new DisjointSetWithAssignment()
       })
     },
 
     runUnification: () => {
       const equations = get().getCurrentEquations()
       const { assignment, equationIsSatisfied } = unifyEquations<GeneralConnection>(equations)
+      const holeAssignment = calculateHoleAssignment(equations, equationIsSatisfied);
       const newTermEnumeration = updateEnumeration(get().termEnumeration, get().getCurrentHoleTerms(), assignment)
-      set({ equationIsSatisfied: equationIsSatisfied, assignment, termEnumeration: newTermEnumeration })
+      set({ equationIsSatisfied: equationIsSatisfied, holeAssignment, assignment, termEnumeration: newTermEnumeration })
     },
 
     edgeIsSatisfied: (edge: Edge) => {

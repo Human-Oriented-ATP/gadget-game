@@ -180,4 +180,16 @@ test("Matching relations proceed with unification", () => {
     expect(assignment.findRepresentative("F")).toEqual(assignment.findRepresentative("G"));
 })
 
+test("Mix of general equations correclty handled", () => {
+    const equations = new ValueMap<EquationId, GeneralEquation>([ 
+        ["eq1", {type: "relation", equation: parseRelationEquation("r(A,C)=r(B,1)")}],
+        ["eq2", {type: "term", equation: parseTermEquation("B=3")}],
+    ]);
+
+    const { equationIsSatisfied, assignment } = unifyEquations(equations);
+
+    expect(assignment.findRepresentative("A")).toEqual(assignment.findRepresentative("B"));
+    expect(assignment.getAssignedValue("A")).toEqual(parseTerm("3"));
+})
+
 

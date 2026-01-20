@@ -11,7 +11,7 @@ import { GadgetId } from 'lib/game/Primitives';
 import { unificationSlice, UnificationSlice, UnificationState, UnificationStateInitializedFromData } from './Unification';
 import { ConnectorStatus } from 'components/game/gadget/Connector';
 import { calculateProximityConnection, ConnectionWithHandles, getPositionOfHandle, HandlesWithPositions } from 'lib/util/calculateProximityConnection';
-import { relationsMatch } from 'lib/game/Term';
+import { shapesMatch } from 'lib/game/Term';
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { isAboveGadgetShelf } from 'lib/util/XYPosition';
 import { saveLevelCompletedAsCookie } from 'lib/study/CompletedProblems';
@@ -215,7 +215,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
         if (equation.type !== "relation")
           throw Error(`${JSON.stringify(generalConnection)} converted to wrong type of equation: ${JSON.stringify(equation)}`);
         const [lhs, rhs] = equation.equation;
-        const relationsOk = relationsMatch(lhs, rhs);
+        const relationsOk = shapesMatch(lhs, rhs);
         const createsNoCycle = get().doesNotCreateACycle(connection);
         return relationsOk && createsNoCycle && doesNotYetExist;
       }

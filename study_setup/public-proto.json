@@ -1,0 +1,163 @@
+{
+    "name": "public-proto",
+    "displayNamesAs": "number",
+    "displayUnlistedProblems": false,
+    "displayEndParticipationButton": false,
+    "categories": [
+        {
+            "name": "Tutorial",
+            "problems": [
+                "tutorial01",
+                "tutorial01a",
+                "tutorial02",
+                "tutorial03",
+                "tutorial04",
+                "tutorial05",
+                "tutorial06"
+            ],
+            "numberOfUnlockedProblems": 1
+        },
+        {
+            "name": "Beginner No Pink",
+            "problems": [
+                "t17",
+                "t18",
+                "t19",
+                "t_e10",
+                "t_e03",
+                "t_e10",
+                "ja_e05",
+                "ja55a",
+                "t23",
+                "t24",
+                "t33a",
+                "ja48a"
+            ],
+            "numberOfUnlockedProblems": 3
+        },
+        {
+            "name": "Beginner-Intermediate No Pink",
+            "problems": [
+                "ja23"
+            ],
+            "numberOfUnlockedProblems": 3
+        },
+        {
+            "name": "Beginner-Intermediate Fwd No Pink",
+            "problems": [
+                "ja23",
+                "ja55a",
+                "ja55b",
+                "ja56",
+                "ja57",
+                "ja58"
+            ],
+            "numberOfUnlockedProblems": 3
+        },
+        {
+            "name": "Mystery Gadget Tutorial",
+            "problems": [
+                "pink_tutorial01",
+                "pink_tutorial02",
+                "pink_tutorial03",
+                "pink_tutorial04",
+                "pink_tutorial05"
+            ],
+            "categoryUnlockThreshold": 0,
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Beginner (and Beginner-Intermediate) Pink",
+            "problems": [
+                "t08",
+                "t11",
+                "t33",
+                "t43",
+                "t_e04",
+                "ja_e05",
+                "t65",
+                "t66",
+                "t67",
+                "t71",
+                "t73",
+                "t74",
+                "t76"    
+            ],
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Intermediate",
+            "problems": [
+                "t_e08",
+                "t12",
+                "t_e02",
+                "t_e05",
+                "t04",
+                "t16",
+                "t20",
+                "t05",
+                "t_e09",
+                "t10",
+                "ja05",
+                "t29",
+                "t36",
+                "t40",
+                "t41",
+                "t42",
+                "t44"
+            ],
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Advanced",
+            "problems": [
+                "t02",
+                "t14",
+                "t_e06",
+                "t01",
+                "t07",
+                "ja02",
+                "ja12a",
+                "ja12b",
+                "ja08",
+                "ja07a",
+                "ja08a",
+                "t39",
+                "ja09a",
+                "t22c",
+                "t25",
+                "t27",
+                "t28",
+                "ja01",
+                "t32",
+                "t34",
+                "t37a"
+            ],
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Expert",
+            "problems": [
+                "t06",
+                "ja03",
+                "ja04",
+                "ja6a",
+                "t21",
+                "t09",
+                "t31",
+                "ja16",
+                "ja17"
+            ],
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Legend",
+            "problems": [
+                "f01a",
+                "t30",
+                "t35"
+            ],
+            "numberOfUnlockedProblems": 1000
+        }
+    ]
+}

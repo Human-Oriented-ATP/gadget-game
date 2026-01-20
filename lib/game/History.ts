@@ -1,11 +1,10 @@
 import { ValueMap } from "lib/util/ValueMap";
-import { CellPosition, OUTPUT_POSITION } from "./CellPosition";
+import { OUTPUT_POSITION } from "./CellPosition";
 import { getGadgetRelations } from "./GameLogic";
 import { InitialDiagram } from "./Initialization";
 import { GadgetId } from "./Primitives";
 import { GeneralEquation } from "./Unification";
 import { GeneralConnection, connectionsAreEqual } from "./Connection";
-import { connection } from "next/server";
 
 export type GameEvent = { GameCompleted: null }
     | { GadgetAdded: { gadgetId: GadgetId, axiom: string } }

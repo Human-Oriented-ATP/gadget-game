@@ -95,8 +95,10 @@ export const tutorialSlice: CreateStateWithInitialValue<TutorialStateInitialized
       const { from, to } = connection.connection;
       const triggerConn = trigger.connection as GadgetConnectionSelector;
 
-      return (!triggerConn.from || get().gadgetMatchesSelector(from, triggerConn.from)) &&
-              (!triggerConn.to || matchesTuple(to, triggerConn.to));
+      const isFromValid = !triggerConn.from || get().gadgetMatchesSelector(from, triggerConn.from);
+      const isToValid = !triggerConn.to || matchesTuple(to, triggerConn.to);
+
+      return isFromValid && isToValid;
     },
 
     getCurrentTrigger: () => {

@@ -13,7 +13,7 @@ export function connectionsAreEqual(connection1: GeneralConnection, connection2:
         return false;
 
     const gadget1 = connection1.connection;
-    const gadget2 = connection2.connection as GadgetConnection;
+    const gadget2 = connection2.connection;
     return gadget1.from === gadget2.from
         && gadget1.to[0] === gadget2.to[0]
         && gadget1.to[1] === gadget2.to[1];

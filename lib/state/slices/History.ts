@@ -1,13 +1,14 @@
 import { CreateStateWithInitialValue } from "../Types"
 import { GadgetId } from "lib/game/Primitives"
-import { RelationEquation } from "lib/game/Unification";
+import { GeneralEquation } from "lib/game/Unification";
 import { Term } from "lib/game/Term";
 import { ValueMap } from "lib/util/ValueMap";
 import { SetupReadonlyState, setupSlice } from "./Setup";
 import { GadgetDndFromShelfSlice, gadgetDndFromShelfSlice, GadgetDndFromShelfState } from "./DragGadgetFromShelf";
 import { synchronizeHistory } from "lib/study/synchronizeHistory";
 import { GameHistory } from "lib/study/GameHistory";
-import { GadgetConnection, GameEvent, getCurrentEquations, getCurrentHoleTerms, getEquationOfConnection, getEvents, getSomeGadgetWithAxiom, getStatementOfGadget } from "lib/game/History";
+import { GeneralConnection } from "lib/game/Connection";
+import { GameEvent, getCurrentEquations, getCurrentHoleTerms, getEquationOfConnection, getEvents, getSomeGadgetWithAxiom, getStatementOfGadget } from "lib/game/History";
 
 const HISTORY_UPLOAD_DELAY = 30 * 1000
 
@@ -32,8 +33,8 @@ export type HistoryActions = {
   getStatementOfGadget: (gadgetId: GadgetId) => string
   getSomeGadgetWithAxiom: (axiom: string) => GadgetId
   getCurrentHoleTerms: () => Term[]
-  getEquationOfConnection: (connection: GadgetConnection) => RelationEquation
-  getCurrentEquations: () => ValueMap<GadgetConnection, RelationEquation>
+  getEquationOfConnection: (connection: GeneralConnection) => GeneralEquation
+  getCurrentEquations: () => ValueMap<GeneralConnection, GeneralEquation>
 }
 
 export type HistorySlice = SetupReadonlyState & GadgetDndFromShelfSlice & HistoryStateInitializedFromData & HistoryState & HistoryActions
@@ -125,7 +126,7 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       return getSomeGadgetWithAxiom(axiom, initialDiagram, events)
     },
 
-    getEquationOfConnection: (connection: GadgetConnection): RelationEquation => {
+    getEquationOfConnection: (connection: GeneralConnection): GeneralEquation => {
       const initialDiagram = get().setup.initialDiagram
       const events = get().getEvents()
       return getEquationOfConnection(connection, initialDiagram, events)

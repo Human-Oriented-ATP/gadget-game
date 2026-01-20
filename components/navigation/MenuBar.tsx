@@ -10,12 +10,21 @@ const LEVEL_COMPLETED_MESSAGE = <>
     <StarIcon className='w-8 h-8 inline-block ml-2' />
 </>
 
+function BrokenLine() {
+    return <svg height={12} width={40}>
+        <g className="stroke-black animate-dashdraw" strokeDasharray={5}>
+            <line x1={0} y1={0} x2={40} y2={0} strokeWidth="3px" fill="transparent"/>
+        </g> 
+    </svg>
+}
+
 const BROKEN_CONNECTION_MESSAGE = <>
     <ExclamationTriangleIcon className='w-8 h-8 inline-block mr-2' />
-    Broken connection! Double-click the connector
-    <span className="inline-block mx-0.5 align-text-bottom"><Connector type={'target'} isInline={true} status={"BROKEN"} /></span>
-    below to remove
+    Broken connection! Click the line{" "}
+    <span className="inline-block mx-0.5 align-text-bottom"><BrokenLine /></span> 
+    {" "}to remove
 </>
+
 
 const EMPTY_MESSAGE = <></>
 

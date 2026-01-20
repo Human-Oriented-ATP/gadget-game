@@ -1,6 +1,6 @@
 import { ValueMap } from "lib/util/ValueMap";
 import { Assignment, shapesMatch, Term } from "./Term";
-import { RelationEquation } from "./Unification";
+import { GeneralEquation } from "./Unification";
 import { DisjointSetWithAssignment } from "lib/util/DisjointSetWithAssignment";
 
 export function getIdentifier(t: Term): string | undefined {
@@ -8,15 +8,25 @@ export function getIdentifier(t: Term): string | undefined {
     return t.identifier;
 }
 
-export function calculateHoleAssignment<T>(equations: ValueMap<T, RelationEquation>, equationIsSatisfied: ValueMap<T, boolean>): Assignment {
+export function calculateHoleAssignment<T>(equations: ValueMap<T, GeneralEquation>, equationIsSatisfied: ValueMap<T, boolean>): Assignment {
     const assignment = new DisjointSetWithAssignment<string, never>();
-    equations.forEach(([lhs, rhs], key) => {
+    equations.forEach((generalEquation, key) => {
         if (!equationIsSatisfied.get(key)) return;
-        if (!shapesMatch(lhs, rhs)) return;
+        
+        let lhsArgs: Term[], rhsArgs: Term[];
+        if (generalEquation.type === "relation") {
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => v.args);
+            if (!shapesMatch(...generalEquation.equation)) {
+              equationIsSatisfied.set(key, false);
+              return;
+            }
+        } else {
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => [v]);
+        };
 
-        for (let i = 0; i < lhs.args.length; i++) {
-            const lhsLabel = getIdentifier(lhs.args[i]);
-            const rhsLabel = getIdentifier(rhs.args[i]);
+        for (let i = 0; i < lhsArgs.length; i++) {
+            const lhsLabel = getIdentifier(lhsArgs[i]);
+            const rhsLabel = getIdentifier(rhsArgs[i]);
             if (lhsLabel !== undefined && rhsLabel !== undefined)
                 assignment.unite(lhsLabel, rhsLabel);
         }

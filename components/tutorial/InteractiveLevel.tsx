@@ -17,11 +17,24 @@ export type LevelConfiguration = {
 
 export type GadgetSelector = { gadgetId: GadgetId } | { axiom: string } | "ANY_GADGET";
 
+export type GadgetConnectionSelector = {
+    from?: GadgetSelector,
+    to?: [GadgetSelector, CellPosition]
+}
+
+export type ConnectionSelector =
+    | { type: "gadget", connection: GadgetConnectionSelector }
+    | { type?: undefined }
+
+export function fromGadgetSelector(selector: GadgetConnectionSelector): ConnectionSelector {
+    return {type: "gadget", connection: selector};
+}
+
 export type Trigger = { GameCompleted: null }
     | { GadgetAdded: GadgetSelector }
-    | { ConnectionAdded: { from?: GadgetSelector, to?: [GadgetSelector, CellPosition] } }
+    | { ConnectionAdded: ConnectionSelector }
     | { GadgetRemoved: GadgetSelector }
-    | { ConnectionRemoved: { from?: GadgetSelector, to?: [GadgetSelector, CellPosition] } };
+    | { ConnectionRemoved: ConnectionSelector };
 
 export type GadgetPosition =
     { gadget: GadgetSelector } & AdjustablePosition

@@ -3,19 +3,20 @@ import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { InitialDiagram } from "lib/game/Initialization";
 import { parseRelation } from "lib/parsing/Semantics";
 import { DragIndicatorProps } from "../DragIndicator";
-import { GadgetPosition, InteractiveLevel } from "../InteractiveLevel";
+import { fromGadgetSelector, GadgetPosition, InteractiveLevel } from "../InteractiveLevel";
 import { BrokenTargetConnector } from "../TutorialSetup";
 import { RESTRICTIVE_SETTINGS } from "../InteractiveLevel";
+import { gadgetToGeneralConnection } from "lib/game/Connection";
 
 const tutorial02InitialDiagram: InitialDiagram = {
     gadgets: new Map([
         [GOAL_GADGET_ID, { statement: ":-r(1, 2)", position: { x: -300, y: 0 } }],
         ["initial_gadget_1", { statement: "r(2, 1).", position: { x: -600, y: -50 } }],
     ]),
-    connections: [{
+    connections: [gadgetToGeneralConnection({
         from: "initial_gadget_1",
         to: [GOAL_GADGET_ID, 0]
-    }]
+    })]
 };
 
 const tutorial02DragIndicatorDeleteConnection: DragIndicatorProps<GadgetPosition> = {
@@ -45,7 +46,7 @@ export const tutorial02: InteractiveLevel = {
             jsx: <>The dotted line means that the connection is broken. Remove it by double-clicking on <BrokenTargetConnector />.</>,
             dragIndicator: tutorial02DragIndicatorDeleteConnection
         },
-        trigger: { ConnectionRemoved: { to: [{ gadgetId: GOAL_GADGET_ID }, 0] } }
+        trigger: { ConnectionRemoved: fromGadgetSelector({ to: [{ gadgetId: GOAL_GADGET_ID }, 0] }) }
     }, {
         content: {
             jsx: <>Now add the swapper gadget<ConverterGadget />to the work bench</>,

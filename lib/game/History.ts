@@ -1,23 +1,16 @@
 import { ValueMap } from "lib/util/ValueMap";
-import { CellPosition, OUTPUT_POSITION } from "./CellPosition";
+import { OUTPUT_POSITION } from "./CellPosition";
 import { getGadgetRelations } from "./GameLogic";
 import { InitialDiagram } from "./Initialization";
 import { GadgetId } from "./Primitives";
-import { RelationEquation } from "./Unification";
-
-export type GadgetConnection = { from: GadgetId, to: [GadgetId, CellPosition] }
-
-function isEqualConnection(connection1: GadgetConnection, connection2: GadgetConnection) {
-    return connection1.from === connection2.from
-        && connection1.to[0] === connection2.to[0]
-        && connection1.to[1] === connection2.to[1]
-}
+import { GeneralEquation } from "./Unification";
+import { GeneralConnection, connectionsAreEqual } from "./Connection";
 
 export type GameEvent = { GameCompleted: null }
     | { GadgetAdded: { gadgetId: GadgetId, axiom: string } }
-    | { ConnectionAdded: GadgetConnection }
+    | { ConnectionAdded: GeneralConnection }
     | { GadgetRemoved: { gadgetId: GadgetId } }
-    | { ConnectionRemoved: GadgetConnection };
+    | { ConnectionRemoved: GeneralConnection };
 
 export type Log = [GameEvent, Date][]
 
@@ -44,18 +37,18 @@ function getCurrentGadgets(initialDiagram: InitialDiagram, events: GameEvent[]) 
 }
 
 function getConnectionEvents(events: GameEvent[]) {
-    return events.filter((event): event is { ConnectionAdded: GadgetConnection } | { ConnectionRemoved: GadgetConnection } =>
+    return events.filter((event): event is { ConnectionAdded: GeneralConnection } | { ConnectionRemoved: GeneralConnection } =>
         "ConnectionAdded" in event || "ConnectionRemoved" in event)
 }
 
 function getCurrentConnections(initialDiagram: InitialDiagram, events: GameEvent[]) {
-    let connections: GadgetConnection[] = [...initialDiagram.connections]
+    let connections: GeneralConnection[] = [...initialDiagram.connections]
     const connectionEvents = getConnectionEvents(events)
     for (const event of connectionEvents) {
         if ("ConnectionAdded" in event) {
             connections.push(event.ConnectionAdded)
         } else {
-            const index = connections.findIndex((connection) => isEqualConnection(connection, event.ConnectionRemoved))
+            const index = connections.findIndex((connection) => connectionsAreEqual(connection, event.ConnectionRemoved))
             if (index === -1) throw Error(`Invalid history log: Connection that is to be removed has not been added before 
                         ${JSON.stringify(event.ConnectionRemoved)}`)
             connections.splice(index, 1)
@@ -108,22 +101,23 @@ function getCurrentCellRelations(initialDiagram: InitialDiagram, events: GameEve
 
 export function getCurrentHoleTerms(initialDiagram: InitialDiagram, events: GameEvent[]) {
     const relations = getCurrentCellRelations(initialDiagram, events)
-    return relations.flatMap(term => term.args)
+    return relations.flatMap(relation => relation.args)
 }
 
-export function getEquationOfConnection(connection: GadgetConnection, initialDiagram: InitialDiagram, events: GameEvent[]): RelationEquation {
+export function getEquationOfConnection(generalConnection: GeneralConnection, initialDiagram: InitialDiagram, events: GameEvent[]): GeneralEquation {
+    const connection = generalConnection.connection;
     const lhsRelations = getRelationsOfGadget(connection.from, initialDiagram, events)
     const rhsRelations = getRelationsOfGadget(connection.to[0], initialDiagram, events)
     const lhs = lhsRelations.get(OUTPUT_POSITION)
     const rhs = rhsRelations.get(connection.to[1])
     if (lhs === undefined || rhs === undefined)
         throw Error(`Connection has undefined relations: \n${JSON.stringify(connection)}\nlhs: ${JSON.stringify(lhsRelations)}\nrhs: ${JSON.stringify(rhsRelations)}`)
-    return [lhs!, rhs!]
+    return {type: "relation", equation: [lhs!, rhs!]}
 }
 
 export function getCurrentEquations(initialDiagram: InitialDiagram, events: GameEvent[]) {
     const connections = getCurrentConnections(initialDiagram, events)
-    const connectionsWithEquations: Array<[GadgetConnection, RelationEquation]> = connections.map((connection) =>
+    const connectionsWithEquations: Array<[GeneralConnection, GeneralEquation]> = connections.map((connection) =>
         [connection, getEquationOfConnection(connection, initialDiagram, events)])
     return new ValueMap(connectionsWithEquations)
 }

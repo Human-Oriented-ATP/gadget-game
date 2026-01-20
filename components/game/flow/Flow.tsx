@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { NodeTypes, EdgeTypes, ReactFlow, Background, BackgroundVariant, NodeProps } from '@xyflow/react';
+import { NodeTypes, EdgeTypes, ReactFlow, Background, BackgroundVariant, NodeProps, ConnectionMode } from '@xyflow/react';
 import { useGameStateContext } from 'lib/state/StateContextProvider';
 import { GameSlice } from 'lib/state/Store';
 import { useShallow } from 'zustand/react/shallow';
@@ -83,6 +83,7 @@ export function Flow() {
             autoPanOnNodeDrag={false}
             connectOnClick={false}
             connectionDragThreshold={8}
+            connectionMode={ConnectionMode.Loose}
         >
             <Background color="#bbb" size={1.8} variant={BackgroundVariant.Dots} />
         </ReactFlow>

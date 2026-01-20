@@ -8,6 +8,12 @@ export class PrologParser extends CstParser {
     }
 
     relation = this.RULE("relation", () => {
+        this.OR([
+            { ALT: () => this.SUBRULE(this.normalRelation) }
+        ])
+    })
+
+    normalRelation = this.RULE("normalRelation", () => {
         this.CONSUME(Atom, { LABEL: "label" })
         this.CONSUME(LeftParen)
         this.AT_LEAST_ONE_SEP({

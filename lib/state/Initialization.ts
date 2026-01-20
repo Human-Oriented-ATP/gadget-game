@@ -10,7 +10,7 @@ import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { getGadgetRelations } from "lib/game/GameLogic";
 import { Edge, ReactFlowInstance } from "@xyflow/react";
 import { DEFAULT_SETTINGS } from "components/tutorial/InteractiveLevel";
-import { GadgetConnection } from "lib/game/History";
+import { GeneralConnection } from "lib/game/Connection";
 import { OUTPUT_POSITION } from 'lib/game/CellPosition';
 
 function getGadgetProps(id: GadgetId, gadget: InitialDiagramGadget): GadgetProps {
@@ -43,7 +43,8 @@ function getInitialNodes(props: GameProps): GadgetNode[] {
     return initialNodes
 }
 
-function getInitialEdge(connection: GadgetConnection, label: string): Edge {
+function getInitialEdge(generalConnection: GeneralConnection, label: string): Edge {
+    const connection = generalConnection.connection;
     return {
         id: label,
         source: connection.from,

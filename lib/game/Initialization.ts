@@ -1,4 +1,4 @@
-import { GadgetConnection } from "./History";
+import { GeneralConnection } from "./Connection";
 import { Axiom, GadgetId, GOAL_GADGET_ID } from "./Primitives";
 import { Relation } from "./Term";
 import { parseStatement } from "../parsing/Semantics";
@@ -37,7 +37,7 @@ export type InitialDiagramGadget = {
 
 export interface InitialDiagram {
     gadgets: Map<GadgetId, InitialDiagramGadget>
-    connections: GadgetConnection[]
+    connections: GeneralConnection[]
 }
 
 export interface InitializationData {

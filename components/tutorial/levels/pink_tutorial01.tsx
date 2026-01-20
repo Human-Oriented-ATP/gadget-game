@@ -3,6 +3,7 @@ import { GadgetPosition, InteractiveLevel, TUTORIAL_SETTINGS } from "../Interact
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { InitialDiagram } from "lib/game/Initialization";
 import { PinkHole } from "../TutorialSetup";
+import { gadgetToGeneralConnection } from "lib/game/Connection";
 
 const firstAxiomDragPoint: GadgetPosition = {
     elementId: "axiom_0",
@@ -20,10 +21,10 @@ const initialDiagram: InitialDiagram = {
         [GOAL_GADGET_ID, { statement: ":-b(A)", position: { x: 0, y: 0 } }],
         ["initial_gadget_1", { statement: "b(A) :- r(A, 1), r(A, 1)", position: { x: -200, y: -40 } }],
     ]),
-    connections: [{
+    connections: [gadgetToGeneralConnection({
         from: "initial_gadget_1",
         to: [GOAL_GADGET_ID, 0]
-    }]
+    })]
 };
 
 const connectGadgets1: DragIndicatorProps<GadgetPosition> = {

@@ -9,7 +9,7 @@ import { GadgetIdGeneratorSlice, gadgetIdGeneratorSlice } from './GadgetIdGenera
 import { axiomToGadget } from 'lib/game/GameLogic';
 import { GadgetId } from 'lib/game/Primitives';
 import { unificationSlice, UnificationSlice, UnificationState, UnificationStateInitializedFromData } from './Unification';
-import { ConnectorStatus } from 'components/game/gadget/Connector';
+import { ConnectorStatus } from 'components/game/gadget/handles/ConnectorTypes';
 import { calculateProximityConnection, ConnectionWithHandles, getPositionOfHandle, HandlesWithPositions } from 'lib/util/calculateProximityConnection';
 import { shapesMatch } from 'lib/game/Term';
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
@@ -211,7 +211,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
         const gadgetsDifferent = equalityConnection.from[0] !== equalityConnection.to[0];
         return gadgetsDifferent && doesNotYetExist;
       } else {
-        const equation =  get().getEquationOfConnection(generalConnection);
+        const equation = get().getEquationOfConnection(generalConnection);
         if (equation.type !== "relation")
           throw Error(`${JSON.stringify(generalConnection)} converted to wrong type of equation: ${JSON.stringify(equation)}`);
         const [lhs, rhs] = equation.equation;

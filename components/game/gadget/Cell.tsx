@@ -3,7 +3,9 @@ import { Hole } from './Hole';
 import { twJoin } from 'tailwind-merge';
 import { makeHandleId, makeEqualityHandleId } from 'lib/game/Handles';
 import { getRelationArgs, Relation } from 'lib/game/Term';
-import { CustomHandle, HandleDoubleClickProps } from './CustomHandle';
+import { CustomEqualityHandle } from './handles/CustomEqualityHandle';
+import { CustomCellHandle } from './handles/CustomCellHandle';
+import { HandleDoubleClickProps } from './handles/ConnectorTypes';
 import { getCellClassNameFromLabel } from 'lib/util/CellColors';
 import { CellPosition, isOutputPosition } from '../../../lib/game/CellPosition';
 
@@ -28,7 +30,7 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
     const needsEqualityHandles = "equals" in props.relation && isOutputPosition(props.position);
     const equalityHandlePadding = needsEqualityHandles && "py-2";
     const needsEqualityHandleIDs = needsEqualityHandles && !props.isOnShelf;
-    const makeIdForPos = pos => needsEqualityHandleIDs ? 
+    const makeIdForPos = pos => needsEqualityHandleIDs ?
         makeEqualityHandleId(props.gadgetId, pos) : undefined;
 
     return <div className="flex items-center">
@@ -41,16 +43,15 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
             {relationArgs.map((arg, idx) => <Hole key={idx} term={arg}></Hole>)}
         </div>
 
-        <CustomHandle
-                type={handleType}
-                handleId={handleId}
-                onHandleDoubleClick={props.onHandleDoubleClick}
-            />
+        <CustomCellHandle
+            type={handleType}
+            handleId={handleId}
+            onHandleDoubleClick={props.onHandleDoubleClick}
+        />
 
         {needsEqualityHandles && (["bottom", "top"] as const).map(pos => (
-            <CustomHandle
+            <CustomEqualityHandle
                 key={pos}
-                type="equality"
                 equalityPosition={pos}
                 handleId={makeIdForPos(pos)}
                 onHandleDoubleClick={props.onHandleDoubleClick}

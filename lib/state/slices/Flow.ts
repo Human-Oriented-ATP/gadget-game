@@ -5,7 +5,7 @@ import { isValidConnection, toGeneralConnection } from 'lib/game/Connection';
 import { initViewport } from 'lib/game/ViewportInitialisation';
 import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtilitiesStateInitializedFromData } from './FlowUtilities';
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
-import { DoubleClickHandler } from 'components/game/gadget/CustomHandle';
+import { DoubleClickHandler } from 'components/game/gadget/handles/ConnectorTypes';
 import { isEqualityHandle } from 'lib/game/Handles';
 
 export type FlowStateInitializedFromData = FlowUtilitiesStateInitializedFromData
@@ -73,7 +73,7 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
     onConnect: (connection: Connection) => {
       if (!isValidConnection(connection)) throw Error(`Connection is not valid ${connection}`)
       const isEqualityConnection = isEqualityHandle(connection.sourceHandle);
-      const edgeRemovalEvents = isEqualityConnection ? [] : 
+      const edgeRemovalEvents = isEqualityConnection ? [] :
         get().removeEdgesConnectedToHandle(connection.targetHandle);
       set({
         edges: addEdge({ ...connection, type: 'customEdge' }, get().edges),

@@ -4,7 +4,7 @@ import { CreateStateWithInitialValue } from '../Types';
 import { gadgetDndFromShelfSlice, GadgetDndFromShelfSlice } from './DragGadgetFromShelf';
 import { Relation } from 'lib/game/Term';
 import { getRelationOfHandle, isTargetHandle, makeEqualityHandleId, makeHandleId } from 'lib/game/Handles';
-import { ConnectorStatus } from 'components/game/gadget/Connector';
+import { ConnectorStatus } from 'components/game/gadget/handles/ConnectorTypes';
 import { EqualityPosition } from 'lib/game/Primitives';
 import { OUTPUT_POSITION } from 'lib/game/CellPosition';
 

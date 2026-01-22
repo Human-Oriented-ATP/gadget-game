@@ -1,5 +1,5 @@
 import { Crosshair1Icon } from "@radix-ui/react-icons"
-import { Connector } from "./gadget/Connector"
+import { CellConnector } from "./gadget/handles/CellConnector"
 import { useGameStateContext } from "lib/state/StateContextProvider"
 import { StaticHole } from "./gadget/StaticHole"
 import { Axiom } from "lib/game/Primitives"
@@ -28,15 +28,15 @@ function DeleteKeyIcon() {
 }
 
 function SourceConnector() {
-    return <div className="inline-block scale-75"><Connector type="source" isInline={true} /></div>
+    return <div className="inline-block scale-75"><CellConnector type="source" isInline={true} /></div>
 }
 
 function TargetConnector() {
-    return <div className="inline-block scale-75"><Connector type="target" isInline={true} /></div>
+    return <div className="inline-block scale-75"><CellConnector type="target" isInline={true} /></div>
 }
 
 function OpenTargetConnector() {
-    return <div className="inline-block scale-75"><Connector type="target" isInline={true} status={"OPEN"} /></div>
+    return <div className="inline-block scale-75"><CellConnector type="target" isInline={true} status={"OPEN"} /></div>
 }
 
 function PinkHole({ value = "" }: { value?: string }) {
@@ -59,10 +59,10 @@ function BrokenConnection() {
                 className="stroke-black stroke-linecap-square stroke-2 fill-none" style={pathStyle} />
         </svg>
         <div className="absolute bottom-0 left-0">
-            <Connector type="source" isInline={true} status={"BROKEN"} />
+            <CellConnector type="source" isInline={true} status={"BROKEN"} />
         </div>
         <div className="absolute bottom-0 left-[60px]">
-            <Connector type="target" isInline={true} status={"BROKEN"} />
+            <CellConnector type="target" isInline={true} status={"BROKEN"} />
         </div>
     </div>
 }
@@ -95,7 +95,7 @@ export function HelpContent() {
                 <HelpItem>The machine is not complete if there are any broken <span className="break-keep">connections<BrokenConnection /></span></HelpItem>
                 <HelpItem>Draw a line from<SourceConnector />to<TargetConnector />to create a connection</HelpItem>
                 <HelpItem>Double-click on<TargetConnector />or<SourceConnector />to remove its connections</HelpItem>
-                <HelpItem>You can also click once on a single connection line to remove it</HelpItem> 
+                <HelpItem>You can also click once on a single connection line to remove it</HelpItem>
                 {proximityConnectEnabled &&
                     <HelpItem>Move gadgets close to each other and they will connect automatically</HelpItem>}
             </HelpSection>

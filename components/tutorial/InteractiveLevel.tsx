@@ -2,7 +2,7 @@ import { AdjustablePosition, DragIndicatorProps } from "./DragIndicator";
 import { InitialDiagram } from "lib/game/Initialization";
 import { InitialViewportSetting } from "lib/game/ViewportInitialisation";
 import { CellPosition } from "lib/game/CellPosition";
-import { GadgetId } from "lib/game/Primitives";
+import { GadgetId, EqualityPosition } from "lib/game/Primitives";
 
 export type LevelConfiguration = {
     zoomEnabled: boolean
@@ -22,8 +22,14 @@ export type GadgetConnectionSelector = {
     to?: [GadgetSelector, CellPosition]
 }
 
+export type EqualityConnectionSelector = {
+    from?: [GadgetSelector, EqualityPosition],
+    to?: [GadgetSelector, EqualityPosition]
+}
+
 export type ConnectionSelector =
     | { type: "gadget", connection: GadgetConnectionSelector }
+    | { type: "equality", connection: EqualityConnectionSelector }
     | { type?: undefined }
 
 export function fromGadgetSelector(selector: GadgetConnectionSelector): ConnectionSelector {

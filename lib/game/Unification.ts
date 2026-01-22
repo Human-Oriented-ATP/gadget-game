@@ -87,9 +87,11 @@ export function unifyEquations<T>(equations: ValueMap<T, GeneralEquation>): Unif
     equations.forEach((generalEquation, key) => {
         let unifiedSuccessfully = true;
 
-        let lhsArgs: Term[], rhsArgs: Term[];
+        let lhsArgs: readonly Term[], rhsArgs: readonly Term[];
         if (generalEquation.type === "relation") {
-            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => v.args);
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => 
+              "args" in v ? v.args : v.equals
+            );
             if (!shapesMatch(...generalEquation.equation)) {
               equationIsSatisfied.set(key, false);
               return;

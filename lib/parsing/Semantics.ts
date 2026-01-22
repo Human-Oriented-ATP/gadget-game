@@ -1,7 +1,7 @@
 import { parseTermCst, parseStatementCst, parseProblemCst, parser, parseRelationCst } from "./Parser"
 import { Term, Relation } from "../game/Term"
 import { Statement, makeProblemFileDataFromStatements, ProblemFileData, isAxiom } from "../game/Initialization"
-import { FunctionNode, ProblemNode, RelationNode, StatementNode, TermNode, NormalRelationNode } from "./Nodes"
+import { FunctionNode, ProblemNode, RelationNode, StatementNode, TermNode, NormalRelationNode, EqualityRelationNode } from "./Nodes"
 import { Axiom } from "lib/game/Primitives"
 
 const BaseVisitor = parser.getBaseCstVisitorConstructor()
@@ -34,7 +34,11 @@ class PrologAstBuilderVisitor extends BaseVisitor {
     }
 
     relation(node: RelationNode): Relation {
-        return this.visit(node.normalRelation!)
+        if (node.equalityRelation !== undefined) {
+            return this.visit(node.equalityRelation)
+        } else {
+            return this.visit(node.normalRelation!)
+        }
     }
 
     normalRelation(node: NormalRelationNode): Relation {
@@ -43,6 +47,14 @@ class PrologAstBuilderVisitor extends BaseVisitor {
         return {
             label: label,
             args: args
+        }
+    }
+
+    equalityRelation(node: EqualityRelationNode): Relation {
+        const leftTerm = this.visit(node.leftTerm[0])
+        const rightTerm = this.visit(node.rightTerm[0])
+        return {
+            equals: [leftTerm, rightTerm] as const
         }
     }
 

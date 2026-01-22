@@ -2,8 +2,9 @@ import { ValueMap } from "lib/util/ValueMap";
 import { OUTPUT_POSITION } from "./CellPosition";
 import { getGadgetRelations } from "./GameLogic";
 import { InitialDiagram } from "./Initialization";
-import { GadgetId } from "./Primitives";
+import { EqualityPosition, GadgetId } from "./Primitives";
 import { GeneralEquation } from "./Unification";
+import { getRelationArgs } from "./Term";
 import { GeneralConnection, connectionsAreEqual } from "./Connection";
 
 export type GameEvent = { GameCompleted: null }
@@ -101,18 +102,37 @@ function getCurrentCellRelations(initialDiagram: InitialDiagram, events: GameEve
 
 export function getCurrentHoleTerms(initialDiagram: InitialDiagram, events: GameEvent[]) {
     const relations = getCurrentCellRelations(initialDiagram, events)
-    return relations.flatMap(relation => relation.args)
+    return relations.flatMap(relation => getRelationArgs(relation))
 }
 
 export function getEquationOfConnection(generalConnection: GeneralConnection, initialDiagram: InitialDiagram, events: GameEvent[]): GeneralEquation {
-    const connection = generalConnection.connection;
-    const lhsRelations = getRelationsOfGadget(connection.from, initialDiagram, events)
-    const rhsRelations = getRelationsOfGadget(connection.to[0], initialDiagram, events)
-    const lhs = lhsRelations.get(OUTPUT_POSITION)
-    const rhs = rhsRelations.get(connection.to[1])
-    if (lhs === undefined || rhs === undefined)
-        throw Error(`Connection has undefined relations: \n${JSON.stringify(connection)}\nlhs: ${JSON.stringify(lhsRelations)}\nrhs: ${JSON.stringify(rhsRelations)}`)
-    return {type: "relation", equation: [lhs!, rhs!]}
+    if (generalConnection.type === "equality") {
+        const getPosition = (v: [string, EqualityPosition]) => v[1] === "top" ? 0 : 1;
+
+        const connection = generalConnection.connection;
+        const lhsRelations = getRelationsOfGadget(connection.from[0], initialDiagram, events)
+        const rhsRelations = getRelationsOfGadget(connection.to[0], initialDiagram, events)
+        const lhsRelation = lhsRelations.get(OUTPUT_POSITION);
+        const rhsRelation = rhsRelations.get(OUTPUT_POSITION);
+        if (lhsRelation === undefined || rhsRelation === undefined)
+            throw Error(`Connection has undefined relations: \n${JSON.stringify(connection)}\nlhs: ${JSON.stringify(lhsRelations)}\nrhs: ${JSON.stringify(rhsRelations)}`)
+        if (!("equals" in lhsRelation && "equals" in rhsRelation))
+            throw Error("Equality connection not between equality relations: "
+                        + `\n${JSON.stringify(connection)}\nlhs: ${JSON.stringify(lhsRelation)}\nrhs: ${JSON.stringify(rhsRelation)}`);
+        
+        const lhs = lhsRelation.equals[getPosition(connection.from)];
+        const rhs = rhsRelation.equals[getPosition(connection.to)];
+        return {type: "term", equation: [lhs, rhs]}
+    } else {
+        const connection = generalConnection.connection;
+        const lhsRelations = getRelationsOfGadget(connection.from, initialDiagram, events)
+        const rhsRelations = getRelationsOfGadget(connection.to[0], initialDiagram, events)
+        const lhs = lhsRelations.get(OUTPUT_POSITION)
+        const rhs = rhsRelations.get(connection.to[1])
+        if (lhs === undefined || rhs === undefined)
+            throw Error(`Connection has undefined relations: \n${JSON.stringify(connection)}\nlhs: ${JSON.stringify(lhsRelations)}\nrhs: ${JSON.stringify(rhsRelations)}`)
+        return {type: "relation", equation: [lhs!, rhs!]}
+    }
 }
 
 export function getCurrentEquations(initialDiagram: InitialDiagram, events: GameEvent[]) {

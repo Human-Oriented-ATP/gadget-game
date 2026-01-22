@@ -9,17 +9,17 @@ import { ConnectionLineComponent } from './ConnectionLineComponent';
 import { ControlButtons } from './ControlButtons';
 import '@xyflow/react/dist/base.css';
 import './flow.css'
-import { DoubleClickHandler } from '../gadget/CustomHandle';
+import { DoubleClickHandler } from '../gadget/handles/ConnectorTypes';
 
 const useNodeTypesWithHandler = (onHandleDoubleClick: DoubleClickHandler) => {
-  const nodeTypes = useMemo(() => {
-    return {
-      'gadgetNode': (props: NodeProps<GadgetNode>) => 
-        <GadgetFlowNode {...props} onHandleDoubleClick={onHandleDoubleClick} />
-    };
-  }, [onHandleDoubleClick]);
+    const nodeTypes = useMemo(() => {
+        return {
+            'gadgetNode': (props: NodeProps<GadgetNode>) =>
+                <GadgetFlowNode {...props} onHandleDoubleClick={onHandleDoubleClick} />
+        };
+    }, [onHandleDoubleClick]);
 
-  return nodeTypes;
+    return nodeTypes;
 };
 
 const edgeTypes: EdgeTypes = { 'customEdge': CustomEdge }

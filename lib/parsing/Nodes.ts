@@ -13,11 +13,17 @@ export interface TermNode {
 
 export interface RelationNode {
     normalRelation?: CstNode[]
+    equalityRelation?: CstNode[]
 }
 
 export interface NormalRelationNode {
     label: IToken[]
     args: CstNode[]
+}
+
+export interface EqualityRelationNode {
+    leftTerm: CstNode[]
+    rightTerm: CstNode[]
 }
 
 export interface StatementNode {

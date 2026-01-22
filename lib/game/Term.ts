@@ -15,7 +15,7 @@ export type IdentifierName = string
 export type Term 
     = {number: string, identifier?: IdentifierName } | { variable: VariableName } 
     | { function: FunctionName, args: Term[], identifier?: IdentifierName }
-export type Relation = { label: LabelName, args: Term[] }
+export type Relation = { label: LabelName, args: Term[] } | { equals: readonly [Term, Term] }
 
 export function occursInNaive(v: string, term: Term): boolean {
     if ("variable" in term) {
@@ -56,7 +56,11 @@ export function getTermVariableList(t: Term): VariableName[] {
 }
 
 export function getVariableList(r: Relation): VariableName[] {
-  return r.args.flatMap(arg => getTermVariableList(arg));
+    if ("equals" in r) {
+        return r.equals.flatMap(arg => getTermVariableList(arg));
+    } else {
+        return r.args.flatMap(arg => getTermVariableList(arg));
+    }
 }
 
 export function getVariableSet(r: Relation): Set<VariableName> {
@@ -95,12 +99,21 @@ export function makeTermWithFreshLabels(t: Term, prefix: string, number_prefix: 
 }
 
 export function makeRelationWithFreshLabels(r: Relation, prefix: string, number_prefix: string): Relation {
-  return {
-    label: r.label,
-    args: r.args.map((arg, p) =>
-      makeTermWithFreshLabels(arg, prefix, `${number_prefix},${p}`)
-    )
-  }
+    if ("equals" in r) {
+        return {
+            equals: [
+                makeTermWithFreshLabels(r.equals[0], prefix, `${number_prefix},0`),
+                makeTermWithFreshLabels(r.equals[1], prefix, `${number_prefix},1`)
+            ] as const
+        }
+    } else {
+        return {
+            label: r.label,
+            args: r.args.map((arg, p) =>
+                makeTermWithFreshLabels(arg, prefix, `${number_prefix},${p}`)
+            )
+        }
+    }
 }
 
 // Have variable names be unique across axioms, and also assign every
@@ -114,7 +127,11 @@ export function makeAxiomWithFreshLabels(axiom: Axiom, prefix: string): Axiom {
 }
 
 export function shapesMatch(r1: Relation, r2: Relation): boolean {
-  return r1.args.length === r2.args.length && r1.label == r2.label;
+    if ("equals" in r1 || "equals" in r2) {
+       return "equals" in r1 && "equals" in r2; 
+    } else {
+        return r1.args.length === r2.args.length && r1.label == r2.label;
+    }
 }
 
 export function isNumericalConstant(t: Term): number | undefined {
@@ -125,4 +142,20 @@ export function isNumericalConstant(t: Term): number | undefined {
       return Number(t.number);
     }
   } else return undefined;
+}
+
+export function getRelationLabel(r: Relation): string {
+    if ("equals" in r) {
+        return "eq";
+    } else {
+        return r.label;
+    }
+}
+
+export function getRelationArgs(r: Relation): Term[] {
+    if ("equals" in r) {
+        return [r.equals[0], r.equals[1]];
+    } else {
+        return r.args;
+    }
 }

@@ -4,11 +4,6 @@ w(1,3).
 g(4,3,3).
 r(5,3,3).
 
-
-r(xr(A,B),A,B).
-g(xr(A,B),A,B).
-w(xw(A),A).
-
 r(A,B,C) :- r(A,C,B).
 g(A,B,C) :- g(A,C,B).
 g(A,1,A).

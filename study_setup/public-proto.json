@@ -38,7 +38,7 @@
         {
             "name": "Beginner-Intermediate No Pink",
             "problems": [
-                "ja05a"
+                "ja55a"
             ],
             "numberOfUnlockedProblems": 1000
         },
@@ -46,7 +46,6 @@
             "name": "Beginner-Intermediate Fwd No Pink",
             "problems": [
                 "ja23",
-                "ja55a",
                 "ja55b",
                 "ja56",
                 "ja57",
@@ -60,7 +59,8 @@
                 "t16a",
                 "t25a",
                 "t29a",
-                "t_e02"
+                "t_e02",
+                "ja05a"
             ],
             "numberOfUnlockedProblems": 3
         },
@@ -136,7 +136,7 @@
                 "t_e05",
                 "t_e09"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Intermediate-Advanced Pink",
@@ -157,7 +157,7 @@
                 "t70",
                 "t77"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Advanced Pink",

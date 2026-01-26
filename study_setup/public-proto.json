@@ -15,7 +15,7 @@
                 "tutorial05",
                 "tutorial06"
             ],
-            "numberOfUnlockedProblems": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Beginner No Pink",
@@ -33,14 +33,14 @@
                 "t33a",
                 "ja48a"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Beginner-Intermediate No Pink",
             "problems": [
-                "ja23"
+                "ja05a"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Beginner-Intermediate Fwd No Pink",
@@ -52,7 +52,40 @@
                 "ja57",
                 "ja58"
             ],
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Intermediate No Pink (maybe merge with below?)",
+            "problems": [
+                "t16a",
+                "t25a",
+                "t29a",
+                "t_e02"
+            ],
             "numberOfUnlockedProblems": 3
+        },
+        {
+            "name": "Intermediate-Advanced No Pink",
+            "problems": [
+                "ja24",
+                "ja33",
+                "t05a",
+                "ja07",
+                "ja08",
+                "t25",
+                "t27a"
+            ],
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Advanced No Pink",
+            "problems": [
+                "ja09",
+                "ja10",
+                "ja43",
+                "t72"
+            ],
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Mystery Gadget Tutorial",
@@ -63,7 +96,6 @@
                 "pink_tutorial04",
                 "pink_tutorial05"
             ],
-            "categoryUnlockThreshold": 0,
             "numberOfUnlockedProblems": 1000
         },
         {
@@ -81,57 +113,73 @@
                 "t71",
                 "t73",
                 "t74",
-                "t76"    
+                "t76",
+                "t_e08"
             ],
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Intermediate",
+            "name": "Intermediate Pink",
             "problems": [
-                "t_e08",
-                "t12",
-                "t_e02",
-                "t_e05",
+                "ja30",
+                "ja46",
+                "ja49",
                 "t04",
+                "t10",
+                "t12",
                 "t16",
                 "t20",
-                "t05",
-                "t_e09",
-                "t10",
-                "ja05",
-                "t29",
                 "t36",
+                "t44",
+                "t68",
+                "t78",
+                "t_e05",
+                "t_e09"
+            ],
+            "numberOfUnlockedProblems": 3
+        },
+        {
+            "name": "Intermediate-Advanced Pink",
+            "problems": [
+                "ja12a",
+                "ja14",
+                "ja26",
+                "ja28a",
+                "ja31",
+                "ja32",
+                "ja34",
+                "t41",
+                "t42",
+                "ja45",
+                "ja51",
+                "t14",
+                "t22a",
+                "t70",
+                "t77"
+            ],
+            "numberOfUnlockedProblems": 3
+        },
+        {
+            "name": "Advanced Pink",
+            "problems": [
+                "ja01",
+                "ja02a",
+                "ja15",
+                "ja27",
+                "t01",
+                "t02",
+                "t07",
+                "t22b",
+                "t28",
+                "t32",
+                "t37",
+                "t38",
+                "t39",
                 "t40",
                 "t41",
                 "t42",
-                "t44"
-            ],
-            "numberOfUnlockedProblems": 1000
-        },
-        {
-            "name": "Advanced",
-            "problems": [
-                "t02",
-                "t14",
-                "t_e06",
-                "t01",
-                "t07",
-                "ja02",
-                "ja12a",
-                "ja12b",
-                "ja08",
-                "ja07a",
-                "ja08a",
-                "t39",
-                "ja09a",
-                "t22c",
-                "t25",
-                "t27",
-                "t28",
-                "ja01",
-                "t32",
-                "t34",
-                "t37a"
+                "t44a",
+                "t_e06"
             ],
             "numberOfUnlockedProblems": 1000
         },

@@ -18,7 +18,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Beginner Lite",
+            "name": "Lite World 1",
             "problems": [
                 "t17",
                 "t18",
@@ -37,19 +37,13 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Beginner-Intermediate Lite",
+            "name": "Lite World 2",
             "problems": [
                 "ja05a",
                 "ja23",
                 "ja55b",
                 "ja56",
-                "ja58"
-            ],
-            "numberOfUnlockedProblems": 1000
-        },
-        {
-            "name": "Intermediate Lite",
-            "problems": [
+                "ja58",
                 "t16a",
                 "t25a",
                 "t29a",
@@ -59,7 +53,7 @@
             "numberOfUnlockedProblems": 3
         },
         {
-            "name": "Intermediate-Advanced Lite",
+            "name": "Lite World 3",
             "problems": [
                 "ja24",
                 "ja33",
@@ -67,13 +61,7 @@
                 "ja07",
                 "ja08",
                 "t25",
-                "t27a"
-            ],
-            "numberOfUnlockedProblems": 1000
-        },
-        {
-            "name": "Advanced Lite",
-            "problems": [
+                "t27a",
                 "ja09",
                 "ja10",
                 "ja43",
@@ -93,7 +81,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Beginner Pro",
+            "name": "Pro World 1",
             "problems": [
                 "t08",
                 "t11",
@@ -113,7 +101,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Intermediate Pro",
+            "name": "Pro World 2",
             "problems": [
                 "ja30",
                 "ja46",
@@ -133,7 +121,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Intermediate-Advanced Pro",
+            "name": "Pro World 3",
             "problems": [
                 "ja12a",
                 "ja14",
@@ -154,7 +142,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Advanced Pro",
+            "name": "Pro World 4",
             "problems": [
                 "ja01",
                 "ja02a",
@@ -178,7 +166,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Expert",
+            "name": "Expert World",
             "problems": [
                 "t06",
                 "ja03",
@@ -193,7 +181,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Legend",
+            "name": "Legend World",
             "problems": [
                 "f01a",
                 "t30",

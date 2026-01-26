@@ -5,7 +5,7 @@
     "displayEndParticipationButton": false,
     "categories": [
         {
-            "name": "Tutorial",
+            "name": "Tutorial Lite",
             "problems": [
                 "tutorial01",
                 "tutorial01a",
@@ -18,7 +18,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Beginner No Pink",
+            "name": "Beginner Lite",
             "problems": [
                 "t17",
                 "t18",
@@ -28,6 +28,7 @@
                 "t_e10",
                 "ja_e05",
                 "ja55a",
+                "ja57",
                 "t23",
                 "t24",
                 "t33a",
@@ -36,25 +37,18 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Beginner-Intermediate No Pink",
+            "name": "Beginner-Intermediate Lite",
             "problems": [
-                "ja55a"
-            ],
-            "numberOfUnlockedProblems": 1000
-        },
-        {
-            "name": "Beginner-Intermediate Fwd No Pink",
-            "problems": [
+                "ja05a",
                 "ja23",
                 "ja55b",
                 "ja56",
-                "ja57",
                 "ja58"
             ],
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Intermediate No Pink (maybe merge with below?)",
+            "name": "Intermediate Lite",
             "problems": [
                 "t16a",
                 "t25a",
@@ -65,7 +59,7 @@
             "numberOfUnlockedProblems": 3
         },
         {
-            "name": "Intermediate-Advanced No Pink",
+            "name": "Intermediate-Advanced Lite",
             "problems": [
                 "ja24",
                 "ja33",
@@ -78,7 +72,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Advanced No Pink",
+            "name": "Advanced Lite",
             "problems": [
                 "ja09",
                 "ja10",
@@ -99,7 +93,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Beginner (and Beginner-Intermediate) Pink",
+            "name": "Beginner Pro",
             "problems": [
                 "t08",
                 "t11",
@@ -119,7 +113,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Intermediate Pink",
+            "name": "Intermediate Pro",
             "problems": [
                 "ja30",
                 "ja46",
@@ -139,7 +133,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Intermediate-Advanced Pink",
+            "name": "Intermediate-Advanced Pro",
             "problems": [
                 "ja12a",
                 "ja14",
@@ -160,7 +154,7 @@
             "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Advanced Pink",
+            "name": "Advanced Pro",
             "problems": [
                 "ja01",
                 "ja02a",

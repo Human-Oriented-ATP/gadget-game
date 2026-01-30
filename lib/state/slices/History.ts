@@ -1,20 +1,15 @@
 import { CreateStateWithInitialValue } from "../Types"
-import { GadgetId } from "lib/game/Primitives"
-import { GeneralEquation } from "lib/game/Unification";
-import { Term } from "lib/game/Term";
-import { ValueMap } from "lib/util/ValueMap";
-import { SetupReadonlyState, setupSlice } from "./Setup";
-import { GadgetDndFromShelfSlice, gadgetDndFromShelfSlice, GadgetDndFromShelfState } from "./DragGadgetFromShelf";
+import { SetupReadonlyState } from "./Setup";
 import { synchronizeHistory } from "lib/study/synchronizeHistory";
 import { GameHistory } from "lib/study/GameHistory";
-import { GeneralConnection } from "lib/game/Connection";
-import { GameEvent, getCurrentEquations, getCurrentHoleTerms, getEquationOfConnection, getEvents, getSomeGadgetWithAxiom, getStatementOfGadget } from "lib/game/History";
+import { GameEvent, getEvents } from "lib/game/History";
+import { handleQueriesSlice, HandleQueriesSlice } from "./HandleQueries";
 
 const HISTORY_UPLOAD_DELAY = 30 * 1000
 
 export type HistoryStateInitializedFromData = SetupReadonlyState
 
-export type HistoryState = GadgetDndFromShelfState & {
+export type HistoryState = {
   log: [GameEvent, Date][]
   timeoutId: NodeJS.Timeout | undefined
   startTime: Date
@@ -30,28 +25,21 @@ export type HistoryActions = {
   uploadHistoryAsynchronously: () => void;
   getGadgetBeingAddedEvent: () => GameEvent[]
   getEvents(): GameEvent[]
-  getStatementOfGadget: (gadgetId: GadgetId) => string
-  getSomeGadgetWithAxiom: (axiom: string) => GadgetId
-  getCurrentHoleTerms: () => Term[]
-  getEquationOfConnection: (connection: GeneralConnection) => GeneralEquation
-  getCurrentEquations: () => ValueMap<GeneralConnection, GeneralEquation>
 }
 
-export type HistorySlice = SetupReadonlyState & GadgetDndFromShelfSlice & HistoryStateInitializedFromData & HistoryState & HistoryActions
+export type HistorySlice = HandleQueriesSlice & HistoryStateInitializedFromData & HistoryState & HistoryActions
 
 export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFromData, HistorySlice> = (initialState, set, get): HistorySlice => {
   return {
-    ...setupSlice(initialState),
-    ...gadgetDndFromShelfSlice(set, get),
+    ...handleQueriesSlice(initialState, set, get),
     log: [],
     timeoutId: undefined,
     startTime: new Date(),
     finalHistoryUploaded: false,
 
     reset: () => {
-      gadgetDndFromShelfSlice(set, get).reset()
+      handleQueriesSlice(initialState, set, get).reset()
       set({
-        ...initialState,
         log: [],
         timeoutId: undefined,
         startTime: new Date(),
@@ -64,6 +52,7 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       const eventsWithTime: [GameEvent, Date][] = events.map((event) => [event, time])
       const newLog = [...get().log, ...eventsWithTime]
       set({ log: newLog })
+      get().updateLogicalStateWithEvents(events)
     },
 
     makeHistoryObject: () => {
@@ -113,36 +102,5 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       const gadgetBeingAddedEvent = get().getGadgetBeingAddedEvent()
       return [...getEvents(get().log), ...gadgetBeingAddedEvent]
     },
-
-    getStatementOfGadget: (gadgetId: GadgetId) => {
-      const initialDiagram = get().setup.initialDiagram
-      const events = get().getEvents()
-      return getStatementOfGadget(gadgetId, initialDiagram, events)
-    },
-
-    getSomeGadgetWithAxiom: (axiom: string) => {
-      const initialDiagram = get().setup.initialDiagram
-      const events = get().getEvents()
-      return getSomeGadgetWithAxiom(axiom, initialDiagram, events)
-    },
-
-    getEquationOfConnection: (connection: GeneralConnection): GeneralEquation => {
-      const initialDiagram = get().setup.initialDiagram
-      const events = get().getEvents()
-      return getEquationOfConnection(connection, initialDiagram, events)
-    },
-
-    getCurrentHoleTerms: () => {
-      const initialDiagram = get().setup.initialDiagram
-      const events = get().getEvents()
-      return getCurrentHoleTerms(initialDiagram, events)
-    },
-
-    getCurrentEquations: () => {
-      const initialDiagram = get().setup.initialDiagram
-      const events = get().getEvents()
-      return getCurrentEquations(initialDiagram, events)
-    },
-
   }
 }

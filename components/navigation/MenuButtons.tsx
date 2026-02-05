@@ -29,7 +29,7 @@ function MainMenuButton() {
   const mainButtonAction = useCallback(() => {
     uploadHistory()
     router.push('../')
-  }, [])
+  }, [router, uploadHistory])
 
   return <div className='m-1'>
     <Button onClick={mainButtonAction}>Main menu</Button>
@@ -44,7 +44,7 @@ function RestartLevelButton() {
       uploadHistory()
       reset()
     }
-  }, [])
+  }, [reset, uploadHistory])
 
   return <div className='m-1'>
     <Button onClick={restartLevel}>Restart level</Button>

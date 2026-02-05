@@ -1,7 +1,7 @@
 "use server"
 
 import { sql } from "../util/Database";
-import { getPlayerId } from "./synchronizeHistory";
+import { getPlayerId } from "./playerId";
 import { UserEnvironment } from "../util/userAgent";
 import { GameHistory } from "./GameHistory";
 

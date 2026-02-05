@@ -1,7 +1,7 @@
 "use server"
 
 import { sql } from "../util/Database";
-import { getPlayerId } from "./synchronizeHistory";
+import { getPlayerId } from "./playerId";
 import { StudyConfiguration } from "./Types";
 import { cookies } from "next/headers";
 import { getProblemList } from "./LevelConfiguration";

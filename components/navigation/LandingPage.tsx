@@ -19,12 +19,12 @@ export function LandingPage() {
       {isTouchDevice && (
         <div className="max-w-(--breakpoint-lg) p-4 mb-4">
           <div className="bg-yellow-100 border-2 border-yellow-500 rounded-lg p-8">
-            <h2 className="text-2xl font-bold mb-4">⚠️ Sorry, we don't yet support touch devices!</h2>
+            <h2 className="text-2xl font-bold mb-4">⚠️ Sorry, we don&apos;t yet support touch devices!</h2>
             <p className="text-lg mb-4">
-              We've detected that you're using a touch device (phone or tablet).
+              We&apos;ve detected that you&apos;re using a touch device (phone or tablet).
             </p>
             <p className="text-base">
-              The game is not currently compatible with touch devices and will not function properly. We're hoping to add support in the future, but for now, we recommend using a desktop or laptop computer to access the game.
+              The game is not currently compatible with touch devices and will not function properly. We&apos;re hoping to add support in the future, but for now, we recommend using a desktop or laptop computer to access the game.
             </p>
           </div>
         </div>

@@ -3,9 +3,10 @@ import { FlowSlice, flowSlice, FlowStateInitializedFromData } from './slices/Flo
 import { HelpPopupSlice, helpPopupSlice } from './slices/HelpPopup'
 import { devtools } from 'zustand/middleware'
 import { StudyCompletionPopupSlice, studyCompletionPopupSlice } from './slices/StudyCompletionPopup'
+import { BugReportPopupSlice, bugReportPopupSlice } from './slices/BugReportPopup'
 
 export type GameStateInitializedFromData = FlowStateInitializedFromData
-export type GameSlice = FlowSlice & HelpPopupSlice & StudyCompletionPopupSlice & {
+export type GameSlice = FlowSlice & HelpPopupSlice & StudyCompletionPopupSlice & BugReportPopupSlice & {
   reset: () => void
 }
 
@@ -17,10 +18,12 @@ export const createGameStore = (initialState: GameStateInitializedFromData) => {
     ...flowSlice(initialState, set, get),
     ...helpPopupSlice(set),
     ...studyCompletionPopupSlice(set),
+    ...bugReportPopupSlice(set),
     reset: () => {
       flowSlice(initialState, set, get).reset()
       helpPopupSlice(set).reset()
       studyCompletionPopupSlice(set).reset()
+      bugReportPopupSlice(set).reset()
     }
   })))
 }

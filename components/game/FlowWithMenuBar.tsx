@@ -6,6 +6,7 @@ import { GadgetShelf } from "./flow/GadgetShelf";
 import { HelpPopup } from "./HelpPopup";
 import { InteractiveOverlay } from "components/tutorial/InteractiveOverlay";
 import { StudyCompletionPopup } from "./StudyCompletionPopup";
+import { BugReportPopover } from "components/navigation/BugReportPopover";
 
 export default function FlowWithMenuBar() {
   return <div className='h-dvh flex flex-col select-none'>
@@ -16,6 +17,7 @@ export default function FlowWithMenuBar() {
       <InteractiveOverlay />
       <HelpPopup />
       <StudyCompletionPopup />
+      <BugReportPopover />
     </div>
   </div>
 }

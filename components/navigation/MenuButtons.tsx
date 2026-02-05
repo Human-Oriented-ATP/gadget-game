@@ -124,6 +124,17 @@ function ShowCompletionCodeButton() {
   }
 }
 
+function ReportBugButton() {
+  const openBugReportPopup = useGameStateContext(useShallow((state) => state.openBugReportPopup))
+  return (
+    <div className='m-1'>
+      <Button onClick={openBugReportPopup}>
+        Report a bug
+      </Button>
+    </div>
+  );
+}
+
 const selector = (state: GameSlice) => ({
   isTutorialLevel: state.setup.settings.isTutorialLevel,
   skipTime: state.setup.settings.skipTime,
@@ -139,7 +150,7 @@ export function MenuButtons() {
   const showSkipButton = skipTime !== undefined && nextLevelHref !== undefined
 
   return <>
-    <ShowCompletionCodeButton />
+    <ReportBugButton />
     <HelpButton />
     {showMainMenuButton && <MainMenuButton />}
     {!isTutorialLevel && <RestartLevelButton />}

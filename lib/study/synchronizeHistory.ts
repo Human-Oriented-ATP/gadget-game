@@ -32,14 +32,13 @@ export async function getPlayerId(): Promise<string> {
     }
 }
 
-export async function synchronizeHistory(historyString: string) {
+export async function synchronizeHistory(history: GameHistory) {
     "use server"
     try {
         const playerId = await getPlayerId()
-        const history: GameHistory = JSON.parse(historyString)
         const log: string = JSON.stringify(history.log);
         const lastSynchronized = new Date().toISOString();
-        const startTime = history.startTime.toString();
+        const startTime = new Date(history.startTime).toISOString();
         await sql`INSERT INTO study_data (player_id, problem_id, config, start, latest, history, completed) VALUES 
             (${playerId}, ${history.problemId}, ${history.configId}, ${startTime}, ${lastSynchronized}, ${log}, ${history.completed})
             ON CONFLICT (player_id, problem_id, start) DO UPDATE

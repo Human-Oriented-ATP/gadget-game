@@ -84,7 +84,7 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       const history = get().makeHistoryObject()
       if (history !== undefined && !get().finalHistoryUploaded) {
         console.log("uploading")
-        synchronizeHistory(JSON.stringify(history))
+        synchronizeHistory(history)
       }
     },
 

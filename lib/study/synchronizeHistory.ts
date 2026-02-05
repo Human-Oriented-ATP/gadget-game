@@ -1,36 +1,8 @@
 "use server"
 
 import { sql } from "../util/Database";
-import { promisify } from "node:util"
-import { randomBytes } from "node:crypto";
-import { cookies } from "next/headers";
 import { GameHistory } from "./GameHistory";
-
-async function generateNewPlayerId(): Promise<string> {
-    const newPlayerId = (await promisify(randomBytes)(20)).toString('hex');
-    return newPlayerId
-}
-
-async function setPlayerId(playerId: string) {
-    const MILLISECONDS_IN_A_YEAR = 1000 * 60 * 60 * 24 * 365;
-    (await cookies()).set('id', playerId, { 
-        expires: new Date(Date.now() + MILLISECONDS_IN_A_YEAR) 
-    });
-    (await cookies()).set('start_time', new Date().toISOString(), { 
-        expires: new Date(Date.now() + MILLISECONDS_IN_A_YEAR) 
-    });
-}
-
-export async function getPlayerId(): Promise<string> {
-    const playerId = (await cookies()).get('id');
-    if (playerId === undefined) {
-        const newPlayerId = await generateNewPlayerId()
-        setPlayerId(newPlayerId)
-        return newPlayerId
-    } else {
-        return playerId.value
-    }
-}
+import { getPlayerId } from "./playerId";
 
 export async function synchronizeHistory(history: GameHistory) {
     "use server"

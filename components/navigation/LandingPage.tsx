@@ -1,8 +1,9 @@
 "use client"
 
 import { StartButton } from "components/primitive/buttons/StartFirstUnsolvedLevel"
-import Link from "next/link"
+import { useRouter } from "next/navigation"
 import { useState } from "react"
+import { initializePlayerId } from "lib/study/playerId"
 
 function CheckItem(props: { setIsChecked: (checked: boolean) => void, children: React.ReactNode }) {
   return <div>
@@ -14,10 +15,16 @@ function CheckItem(props: { setIsChecked: (checked: boolean) => void, children: 
 }
 
 export function LandingPage() {
+  const router = useRouter();
   const [check1, setCheck1] = useState(false)
   const [check2, setCheck2] = useState(false)
   const [check3, setCheck3] = useState(false)
   const [check4, setCheck4] = useState(false)
+
+  const handleStart = async () => {
+    await initializePlayerId();
+    router.push('pilot-fwd-v2/game/tutorial01');
+  }
 
   return (
     <div className="w-full flex flex-col items-center text-center pt-10">
@@ -43,9 +50,9 @@ export function LandingPage() {
       </div>
       <div className="p-6">
         {check1 && check2 && check3 && check4 ?
-          <Link href={`pilot-fwd-v2/game/tutorial01`}>
+          <div onClick={handleStart}>
             <StartButton />
-          </Link>
+          </div>
           : <StartButton className="border-2 border-black rounded-lg p-5 px-10 hover:bg-black hover:text-white text-2xl cursor-not-allowed bg-palette-gray opacity-40 " />}
       </div>
       <div className="absolute top-0 right-0 p-2 text-sm">Contact: kmc61@cam.ac.uk </div>

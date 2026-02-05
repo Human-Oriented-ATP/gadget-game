@@ -140,7 +140,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
     handleCompletedLevel() {
       set({ levelIsCompleted: true })
       get().logEvents([{ GameCompleted: null }])
-      get().uploadFinalHistory()
+      get().uploadHistory()
       const problemId = get().setup.problemId
       saveLevelCompletedAsCookie(problemId)
     },

@@ -17,7 +17,6 @@ export type HistoryState = GadgetDndFromShelfState & {
   log: [GameEvent, Date][]
   timeoutId: NodeJS.Timeout | undefined
   startTime: Date
-  finalHistoryUploaded: boolean
 }
 
 export type HistoryActions = {
@@ -25,7 +24,6 @@ export type HistoryActions = {
   logEvents: (events: GameEvent[]) => void;
   makeHistoryObject: () => GameHistory | undefined;
   uploadHistory: () => void;
-  uploadFinalHistory: () => void;
   uploadHistoryAsynchronously: () => void;
   getGadgetBeingAddedEvent: () => GameEvent[]
   getEvents(): GameEvent[]
@@ -45,7 +43,6 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
     log: [],
     timeoutId: undefined,
     startTime: new Date(),
-    finalHistoryUploaded: false,
 
     reset: () => {
       gadgetDndFromShelfSlice(set, get).reset()
@@ -53,8 +50,7 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
         ...initialState,
         log: [],
         timeoutId: undefined,
-        startTime: new Date(),
-        finalHistoryUploaded: false
+        startTime: new Date()
       })
     },
 
@@ -82,15 +78,10 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       clearTimeout(get().timeoutId)
       set({ timeoutId: undefined })
       const history = get().makeHistoryObject()
-      if (history !== undefined && !get().finalHistoryUploaded) {
+      if (history !== undefined) {
         console.log("uploading")
         synchronizeHistory(history)
       }
-    },
-
-    uploadFinalHistory: async () => {
-      get().uploadHistory()
-      set({ finalHistoryUploaded: true })
     },
 
     uploadHistoryAsynchronously: async () => {

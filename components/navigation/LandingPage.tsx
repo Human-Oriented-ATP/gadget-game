@@ -2,16 +2,34 @@
 
 import { StartButton } from "components/primitive/buttons/StartFirstUnsolvedLevel"
 import { useRouter } from "next/navigation"
-import { initializePlayerId } from "lib/study/playerId"
+import { initializePlayerId, hasPlayerId } from "lib/study/playerId"
 import { useTouchDevice } from "lib/util/useTouchDevice"
+import { useEffect, useState } from "react"
 
 export function LandingPage() {
   const router = useRouter();
   const isTouchDevice = useTouchDevice()
+  const [isChecking, setIsChecking] = useState(true)
+
+  useEffect(() => {
+    const checkAndRedirect = async () => {
+      const playerIdExists = await hasPlayerId()
+      if (playerIdExists) {
+        router.push('public-v0')
+      } else {
+        setIsChecking(false)
+      }
+    }
+    checkAndRedirect()
+  }, [router])
 
   const handleStart = async () => {
     await initializePlayerId();
-    router.push('pilot-fwd-v2/game/tutorial01');
+    router.push('public-v0/game/tutorial01');
+  }
+
+  if (isChecking) {
+    return null // or a loading spinner
   }
 
   return (

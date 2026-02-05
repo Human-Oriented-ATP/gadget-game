@@ -37,3 +37,8 @@ export async function getPlayerId(): Promise<string> {
     }
     return playerId.value;
 }
+
+export async function hasPlayerId(): Promise<boolean> {
+    const playerId = (await cookies()).get('id');
+    return playerId !== undefined;
+}

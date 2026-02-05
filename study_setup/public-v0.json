@@ -1,5 +1,5 @@
 {
-    "name": "public-proto",
+    "name": "public-v0",
     "displayNamesAs": "number",
     "displayUnlistedProblems": false,
     "displayEndParticipationButton": false,
@@ -23,7 +23,6 @@
                 "t17",
                 "t18",
                 "t19",
-                "t_e10",
                 "t_e03",
                 "t_e10",
                 "ja_e05",
@@ -33,14 +32,14 @@
                 "t33a",
                 "ja48a"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Beginner-Intermediate No Pink",
             "problems": [
                 "ja23"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Beginner-Intermediate Fwd No Pink",
@@ -52,7 +51,7 @@
                 "ja57",
                 "ja58"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Mystery Gadget Tutorial",

@@ -25,11 +25,12 @@
     },
     "scripts": {
         "dev": "next dev",
-        "build": "npm run migrate && next build",
+        "build": "npm run validate:configs && npm run migrate && next build",
         "start": "next start",
-        "lint": "tsc --noEmit && eslint .",
+        "lint": "npm run validate:configs && tsc --noEmit && eslint .",
         "test": "vitest",
-        "migrate": "node --env-file-if-exists=.env.local migrate.mjs"
+        "migrate": "node --env-file-if-exists=.env.local migrate.mjs",
+        "validate:configs": "node scripts/validate-configs.mjs"
     },
     "browserslist": {
         "production": [

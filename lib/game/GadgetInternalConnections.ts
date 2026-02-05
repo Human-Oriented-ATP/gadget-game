@@ -1,5 +1,5 @@
 import { CellPosition, isOutputPosition } from "./CellPosition";
-import { Relation, VariableName, getVariableList } from "./Term";
+import { Relation, VariableName, getRelationArgs, getVariableList } from "./Term";
 
 export type NodePositionDeprecated = number | "output"
 export type HolePosition = [NodePositionDeprecated, number]
@@ -10,7 +10,9 @@ export interface InternalConnection {
 }
 
 function getPositionsInRelation(v: VariableName, r: Relation): number[] {
-    return r.args.flatMap((arg, i) => (
+    const args = getRelationArgs(r);
+
+    return args.flatMap((arg, i) => (
         "variable" in arg && arg.variable == v ? [i] : []
     ));
 }

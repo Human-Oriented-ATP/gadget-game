@@ -1,11 +1,12 @@
 import { CreateStateWithInitialValue } from '../Types';
 import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
-import { toGadgetConnection, isValidConnection } from './Edges';
+import { isValidConnection, toGeneralConnection } from 'lib/game/Connection';
 import { initViewport } from 'lib/game/ViewportInitialisation';
 import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtilitiesStateInitializedFromData } from './FlowUtilities';
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
-import { DoubleClickHandler } from 'components/game/gadget/CustomHandle';
+import { DoubleClickHandler } from 'components/game/gadget/handles/ConnectorTypes';
+import { isEqualityHandle } from 'lib/game/Handles';
 
 export type FlowStateInitializedFromData = FlowUtilitiesStateInitializedFromData
 
@@ -71,12 +72,14 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
 
     onConnect: (connection: Connection) => {
       if (!isValidConnection(connection)) throw Error(`Connection is not valid ${connection}`)
-      const edgeRemovalEvents = get().removeEdgesConnectedToHandle(connection.targetHandle)
+      const isEqualityConnection = isEqualityHandle(connection.sourceHandle);
+      const edgeRemovalEvents = isEqualityConnection ? [] :
+        get().removeEdgesConnectedToHandle(connection.targetHandle);
       set({
         edges: addEdge({ ...connection, type: 'customEdge' }, get().edges),
       });
-      const gadgetConnection = toGadgetConnection(connection)
-      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: gadgetConnection }])
+      const generalConnection = toGeneralConnection(connection)!;
+      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: generalConnection }])
     },
 
     onEdgeClick: (event: OnEdgeClick, edge: Edge) => {

@@ -1,16 +1,17 @@
 import { CreateStateWithInitialValue } from '../Types';
 import { addEdge, Connection, ReactFlowInstance, XYPosition } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
-import { EdgeSlice, edgeSlice, EdgeStateInitializedFromData, toGadgetConnection } from './Edges';
+import { EdgeSlice, edgeSlice, EdgeStateInitializedFromData } from './Edges';
+import { toGeneralConnection } from 'lib/game/Connection';
 import { NodeSlice, nodeSlice, NodeState, NodeStateInitializedFromData } from './Nodes';
 import { GameEvent } from "lib/game/History";
 import { GadgetIdGeneratorSlice, gadgetIdGeneratorSlice } from './GadgetIdGenerator';
 import { axiomToGadget } from 'lib/game/GameLogic';
 import { GadgetId } from 'lib/game/Primitives';
 import { unificationSlice, UnificationSlice, UnificationState, UnificationStateInitializedFromData } from './Unification';
-import { ConnectorStatus } from 'components/game/gadget/Connector';
+import { ConnectorStatus } from 'components/game/gadget/handles/ConnectorTypes';
 import { calculateProximityConnection, ConnectionWithHandles, getPositionOfHandle, HandlesWithPositions } from 'lib/util/calculateProximityConnection';
-import { aritiesMatch, labelsMatch } from 'lib/game/Term';
+import { shapesMatch } from 'lib/game/Term';
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { isAboveGadgetShelf } from 'lib/util/XYPosition';
 import { saveLevelCompletedAsCookie } from 'lib/study/CompletedProblems';
@@ -191,16 +192,42 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
     },
 
     isValidConnection: (connection: Connection) => {
-      const gadgetConnection = toGadgetConnection(connection)
-      const [lhs, rhs] = get().getEquationOfConnection(gadgetConnection)
-      const arityOk = aritiesMatch(lhs, rhs)
-      const colorsOk = labelsMatch(lhs, rhs)
-      const createsNoCycle = get().doesNotCreateACycle(connection)
-      const doesNotYetExist = !get().connectionExists(connection)
-      return colorsOk && arityOk && createsNoCycle && doesNotYetExist
+      const generalConnection = toGeneralConnection(connection);
+      if (generalConnection === undefined) {
+        return false;
+      }
+
+      let doesNotYetExist = !get().connectionExists(connection);
+      if (generalConnection.type === "equality") {
+        const reversedConnection: Connection = {
+          source: connection.target, target: connection.source,
+          sourceHandle: connection.targetHandle, targetHandle: connection.sourceHandle
+        };
+        doesNotYetExist &&= !get().connectionExists(reversedConnection);
+      }
+
+      if (generalConnection.type === 'equality') {
+        const equalityConnection = generalConnection.connection;
+        const gadgetsDifferent = equalityConnection.from[0] !== equalityConnection.to[0];
+        return gadgetsDifferent && doesNotYetExist;
+      } else {
+        const equation = get().getEquationOfConnection(generalConnection);
+        if (equation.type !== "relation")
+          throw Error(`${JSON.stringify(generalConnection)} converted to wrong type of equation: ${JSON.stringify(equation)}`);
+        const [lhs, rhs] = equation.equation;
+        const relationsOk = shapesMatch(lhs, rhs);
+        const createsNoCycle = get().doesNotCreateACycle(connection);
+        return relationsOk && createsNoCycle && doesNotYetExist;
+      }
     },
 
     isValidProximityConnection: (connection: ConnectionWithHandles) => {
+      const generalConnection = toGeneralConnection(connection);
+      if (generalConnection === undefined || generalConnection.type === 'equality') {
+        // Don't do proximity connections for equality handles or invalid connections
+        return false;
+      }
+
       const proximityConnectEnabled = get().setup.settings.proximityConnectEnabled
       const isValidConnection = get().isValidConnection(connection)
       const sourceNode: GadgetNode = get().getNode(connection.source)
@@ -228,8 +255,8 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
       if (proximityConnection !== null) {
         const removalEvents = get().removeEdgesConnectedToHandle(proximityConnection.targetHandle)
         set({ edges: addEdge({ ...proximityConnection, type: 'customEdge' }, get().edges), });
-        const gadgetConnection = toGadgetConnection(proximityConnection)
-        const connectionEvent: GameEvent = { ConnectionAdded: gadgetConnection }
+        const generalConnection = toGeneralConnection(proximityConnection)!;
+        const connectionEvent: GameEvent = { ConnectionAdded: generalConnection }
         return [...removalEvents, connectionEvent]
       } else {
         return []

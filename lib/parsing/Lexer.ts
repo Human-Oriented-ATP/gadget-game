@@ -15,6 +15,8 @@ export const Variable = createToken({
   pattern: /[A-Z_]\w*/
 })
 
+export const Equals = createToken({ name: "Equals", pattern: /eq/ });
+
 export const Entails = createToken({ name: "Entails", pattern: /:-/ });
 
 export const Comma = createToken({ name: "Comma", pattern: /,/ })
@@ -51,6 +53,7 @@ export const allTokens = [
   RightParen,
   Comma,
   FullStop,
+  Equals,
   Atom,
   Number,
   Variable,

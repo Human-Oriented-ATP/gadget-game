@@ -4,6 +4,8 @@ import { Term, Relation, Assignment, VariableName, assignTermDeeply, occursIn, s
 
 export type TermEquation = [Term, Term]
 export type RelationEquation = [Relation, Relation]
+export type GeneralEquation = { type: "term", equation: TermEquation }
+                            | { type: "relation", equation: RelationEquation }
 
 export interface UnificationResult<T> {
   assignment: Assignment
@@ -79,34 +81,31 @@ function unifyEquation(currentAssignment: Assignment, equation: TermEquation): b
   return unifiedSuccessfully;
 }
 
-export function unifyTermEquations<T>(equations: ValueMap<T, TermEquation>): UnificationResult<T> {
-  const equationIsSatisfied = new ValueMap<T, boolean>()
-  const assignment: Assignment = new DisjointSetWithAssignment()
-  equations.forEach((equation, key) => {
-    const unifiedSuccessfully = unifyEquation(assignment, equation)
-    equationIsSatisfied.set(key, unifiedSuccessfully)
-  })
-  return { assignment, equationIsSatisfied }
-}
+export function unifyEquations<T>(equations: ValueMap<T, GeneralEquation>): UnificationResult<T> {
+    const equationIsSatisfied = new ValueMap<T, boolean>()
+    const assignment: Assignment = new DisjointSetWithAssignment()
+    equations.forEach((generalEquation, key) => {
+        let unifiedSuccessfully = true;
 
-export function unifyRelationEquations<T>(equations: ValueMap<T, RelationEquation>): UnificationResult<T> {
-  const equationIsSatisfied = new ValueMap<T, boolean>()
-  const assignment: Assignment = new DisjointSetWithAssignment()
-  equations.forEach((equation, key) => {
-    let unifiedSuccessfully = true;
-    const [lhs, rhs] = equation;
+        let lhsArgs: readonly Term[], rhsArgs: readonly Term[];
+        if (generalEquation.type === "relation") {
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => 
+              "args" in v ? v.args : v.equals
+            );
+            if (!shapesMatch(...generalEquation.equation)) {
+              equationIsSatisfied.set(key, false);
+              return;
+            }
+        } else {
+            [lhsArgs, rhsArgs] = generalEquation.equation.map(v => [v]);
+        };
 
-    if (!shapesMatch(lhs, rhs)) {
-      equationIsSatisfied.set(key, false);
-      return;
-    }
-
-    for (let i = 0; i < lhs.args.length; i++) {
-      const lhsArg = lhs.args[i]
-      const rhsArg = rhs.args[i]
-      if (!unifyEquation(assignment, [lhsArg, rhsArg]))
-        unifiedSuccessfully = false;
-    }
+        for (let i = 0; i < lhsArgs.length; i++) {
+            const lhsArg = lhsArgs[i]
+            const rhsArg = rhsArgs[i]
+            if (!unifyEquation(assignment, [lhsArg, rhsArg]))
+                unifiedSuccessfully = false;
+        }
 
     equationIsSatisfied.set(key, unifiedSuccessfully)
   })

@@ -1,9 +1,8 @@
 import { CreateStateWithInitialValue } from '../Types';
 import { Connection, Edge } from '@xyflow/react';
-import { getNodePositionFromHandle } from 'lib/game/Handles';
-import { GadgetConnection } from "lib/game/History";
+import { toGeneralConnection } from "lib/game/Connection";
 import { GameEvent } from "lib/game/History";
-import { OUTPUT_POSITION } from 'lib/game/CellPosition';
+import { isGadgetHandle } from 'lib/game/Handles';
 
 export interface EdgeStateInitializedFromData {
   edges: Edge[],
@@ -23,26 +22,6 @@ export interface EdgeActions {
 
 export type EdgeSlice = EdgeStateInitializedFromData & EdgeActions
 
-export function isValidConnection(connection: Connection): connection is { source: string, target: string, sourceHandle: string; targetHandle: string } {
-  return connection.sourceHandle !== null && connection.targetHandle !== null;
-}
-
-export function toGadgetConnection(connection: Connection): GadgetConnection {
-  if (!isValidConnection(connection)) throw Error(`Connection is not valid ${JSON.stringify(connection)}`)
-  const sourcePosition = getNodePositionFromHandle(connection.sourceHandle)
-  const targetPosition = getNodePositionFromHandle(connection.targetHandle)
-  if (sourcePosition === OUTPUT_POSITION) {
-    return {
-      from: connection.source,
-      to: [connection.target, targetPosition]
-    }
-  } else {
-    return {
-      from: connection.target,
-      to: [connection.source, sourcePosition]
-    }
-  }
-}
 
 export const edgeSlice: CreateStateWithInitialValue<EdgeStateInitializedFromData, EdgeSlice> = (initialState, set, get) => {
   return {
@@ -62,7 +41,7 @@ export const edgeSlice: CreateStateWithInitialValue<EdgeStateInitializedFromData
     },
     removeEdge: (edgeId: string) => {
       const edgesToBeRemoved = get().edges.filter((edge) => edge.id == edgeId);
-      const removedGadgetConnections = edgesToBeRemoved.map((edge) => toGadgetConnection(edge as Connection))
+      const removedGadgetConnections = edgesToBeRemoved.map((edge) => toGeneralConnection(edge as Connection)!)
       const events: GameEvent[] = removedGadgetConnections.map((connection) => ({ ConnectionRemoved: connection }))
       set({
         edges: get().edges.filter((edge) => edge.id !== edgeId),
@@ -71,7 +50,7 @@ export const edgeSlice: CreateStateWithInitialValue<EdgeStateInitializedFromData
     },
     removeEdgesConnectedToNode: (nodeId: string) => {
       const edgesToBeRemoved = get().edges.filter((edge) => edge.source === nodeId || edge.target === nodeId);
-      const removedGadgetConnections = edgesToBeRemoved.map((edge) => toGadgetConnection(edge as Connection))
+      const removedGadgetConnections = edgesToBeRemoved.map((edge) => toGeneralConnection(edge as Connection)!)
       const events: GameEvent[] = removedGadgetConnections.map((connection) => ({ ConnectionRemoved: connection }))
       set({
         edges: get().edges.filter((edge) => edge.source !== nodeId && edge.target !== nodeId),
@@ -80,7 +59,7 @@ export const edgeSlice: CreateStateWithInitialValue<EdgeStateInitializedFromData
     },
     removeEdgesConnectedToHandle: (handleId: string) => {
       const edgesToBeRemoved = get().edges.filter((edge) => edge.sourceHandle === handleId || edge.targetHandle === handleId);
-      const removedGadgetConnections = edgesToBeRemoved.map((edge) => toGadgetConnection(edge as Connection))
+      const removedGadgetConnections = edgesToBeRemoved.map((edge) => toGeneralConnection(edge as Connection)!)
       const events: GameEvent[] = removedGadgetConnections.map((connection) => ({ ConnectionRemoved: connection }))
       set({
         edges: get().edges.filter((edge) => edge.sourceHandle !== handleId && edge.targetHandle !== handleId),
@@ -91,9 +70,10 @@ export const edgeSlice: CreateStateWithInitialValue<EdgeStateInitializedFromData
       return get().edges.some((edge) => edge.sourceHandle === connection.sourceHandle && edge.targetHandle === connection.targetHandle);
     },
     doesNotCreateACycle: (connection: Connection) => {
+      if (!isGadgetHandle(connection.sourceHandle!)) return true;
       const { source, target } = connection
       if (source === target) return false
-      const edges = get().edges
+      const edges = get().edges.filter(edge => isGadgetHandle(edge.sourceHandle!));
       let currentNodes = new Set<string>([source])
       while (true) {
         const incomingEdges = edges.filter((edge) => currentNodes.has(edge.target))

@@ -7,6 +7,13 @@
     align-content: center;
 }
 
+.equality-handle {
+    display: flex;
+    width: 24px !important;
+    height: 25px !important;
+    justify-content: center;
+}
+
 .react-flow__handle-left {
     left: -12px;
 }
@@ -14,6 +21,26 @@
 .react-flow__handle-right {
     right: -26px;
 }
+
+.react-flow__handle-top {
+    left: -12px;
+    top: 0px;
+}
+
+.react-flow__handle-top {
+    left: unset;
+    right: 12px;
+    top: calc(50% - 48px); 
+    align-items: flex-end;
+}
+
+.react-flow__handle-bottom {
+    left: unset;
+    right: 12px;
+    top: calc(50% + 23px);
+    align-items: flex-start;
+}
+
 
 .react-flow__panel.center {
     top: auto;

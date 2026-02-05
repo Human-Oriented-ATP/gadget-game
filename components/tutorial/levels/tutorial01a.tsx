@@ -1,5 +1,5 @@
 import { DragIndicatorProps } from "../DragIndicator";
-import { GadgetPosition, InteractiveLevel } from "../InteractiveLevel";
+import { fromGadgetSelector, GadgetPosition, InteractiveLevel } from "../InteractiveLevel";
 import { RESTRICTIVE_SETTINGS } from "../InteractiveLevel";
 
 const redGadgetDragIndicator: DragIndicatorProps<GadgetPosition> = {
@@ -39,7 +39,7 @@ export const tutorial01a: InteractiveLevel = {
             jsx: <>Draw connections between the connectors to complete the gadget machine.</>,
             dragIndicator: connectionDragIndicator
         },
-        trigger: { ConnectionAdded: { from: { axiom: "r(1)" } } }
+        trigger: { ConnectionAdded: fromGadgetSelector({ from: { axiom: "r(1)" } }) }
     }, {
         content: {
             jsx: <>Now draw the final connection.</>

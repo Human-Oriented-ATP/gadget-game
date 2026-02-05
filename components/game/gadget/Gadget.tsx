@@ -9,7 +9,7 @@ import { twJoin } from 'tailwind-merge'
 import { calculateHolePosition } from '../../../lib/game/calculateHolePosition'
 import { GadgetId, GOAL_GADGET_ID } from 'lib/game/Primitives'
 import { Relation } from 'lib/game/Term'
-import { HandleDoubleClickProps } from './CustomHandle'
+import { HandleDoubleClickProps } from './handles/ConnectorTypes'
 
 export type GadgetProps = {
     id: GadgetId;
@@ -48,11 +48,11 @@ function GadgetInputNodes(props: GadgetProps & HandleDoubleClickProps) {
 function GadgetOutputNode(props: GadgetProps & HandleDoubleClickProps) {
     const relation = props.relations.get(OUTPUT_POSITION)
     if (relation === undefined) return <></>
-    return <Cell 
-        relation={relation} 
+    return <Cell
+        relation={relation}
         position={OUTPUT_POSITION}
-        gadgetId={props.id} 
-        isOnShelf={props.isOnShelf} 
+        gadgetId={props.id}
+        isOnShelf={props.isOnShelf}
         isGoalNode={false}
         onHandleDoubleClick={props.onHandleDoubleClick} />
 }

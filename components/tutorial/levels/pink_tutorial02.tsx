@@ -1,10 +1,11 @@
 import { DragIndicatorProps } from "../DragIndicator";
-import { GadgetPosition, InteractiveLevel, TUTORIAL_SETTINGS } from "../InteractiveLevel";
+import { fromGadgetSelector, GadgetPosition, InteractiveLevel, TUTORIAL_SETTINGS } from "../InteractiveLevel";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { InitialDiagram } from "lib/game/Initialization";
 import { parseRelation } from "lib/parsing/Semantics";
 import { Gadget } from "components/game/gadget/Gadget";
 import { BrokenTargetConnector, PinkHole } from "../TutorialSetup";
+import { gadgetToGeneralConnection } from "lib/game/Connection";
 
 const firstAxiomDragPoint: GadgetPosition = {
     elementId: "axiom_0",
@@ -22,10 +23,10 @@ const initialDiagram: InitialDiagram = {
         [GOAL_GADGET_ID, { statement: ":-b(A)", position: { x: 0, y: 0 } }],
         ["initial_gadget_1", { statement: "b(A) :- r(A, 1), r(A, 2)", position: { x: -150, y: 40 } }],
     ]),
-    connections: [{
+    connections: [gadgetToGeneralConnection({
         from: "initial_gadget_1",
         to: [GOAL_GADGET_ID, 0]
-    }]
+    })]
 };
 
 const connectGadgets1: DragIndicatorProps<GadgetPosition> = {
@@ -85,12 +86,12 @@ export const pink_tutorial02: InteractiveLevel = {
         content: {
             jsx: <> Start by connecting the gadget with <PinkHole value="?" />to <RedCell1 />.</>,
         },
-        trigger: { ConnectionAdded: { from: { axiom: "r(f(X), X)" }, to: [{ gadgetId: "initial_gadget_1" }, 0] } }
+        trigger: { ConnectionAdded: fromGadgetSelector({ from: { axiom: "r(f(X), X)" }, to: [{ gadgetId: "initial_gadget_1" }, 0] }) }
     }, {
         content: {
             jsx: <>Now try connecting another copy to <RedCell2 /> .</>,
         },
-        trigger: { ConnectionAdded: { from: { axiom: "r(f(X), X)" }, to: [{ gadgetId: "initial_gadget_1" }, 1] } }
+        trigger: { ConnectionAdded: fromGadgetSelector({ from: { axiom: "r(f(X), X)" }, to: [{ gadgetId: "initial_gadget_1" }, 1] }) }
     }, {
         content: {
             jsx: <>Oops! The letters only become the same if the values below them are the same. <br /><br />To continue, remove the connection by double-clicking on <BrokenTargetConnector />.</>,

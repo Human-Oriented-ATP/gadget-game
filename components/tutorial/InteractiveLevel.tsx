@@ -2,7 +2,7 @@ import { AdjustablePosition, DragIndicatorProps } from "./DragIndicator";
 import { InitialDiagram } from "lib/game/Initialization";
 import { InitialViewportSetting } from "lib/game/ViewportInitialisation";
 import { CellPosition } from "lib/game/CellPosition";
-import { GadgetId } from "lib/game/Primitives";
+import { GadgetId, EqualityPosition } from "lib/game/Primitives";
 
 export type LevelConfiguration = {
     zoomEnabled: boolean
@@ -17,11 +17,30 @@ export type LevelConfiguration = {
 
 export type GadgetSelector = { gadgetId: GadgetId } | { axiom: string } | "ANY_GADGET";
 
+export type GadgetConnectionSelector = {
+    from?: GadgetSelector,
+    to?: [GadgetSelector, CellPosition]
+}
+
+export type EqualityConnectionSelector = {
+    from?: [GadgetSelector, EqualityPosition],
+    to?: [GadgetSelector, EqualityPosition]
+}
+
+export type ConnectionSelector =
+    | { type: "gadget", connection: GadgetConnectionSelector }
+    | { type: "equality", connection: EqualityConnectionSelector }
+    | { type?: undefined }
+
+export function fromGadgetSelector(selector: GadgetConnectionSelector): ConnectionSelector {
+    return {type: "gadget", connection: selector};
+}
+
 export type Trigger = { GameCompleted: null }
     | { GadgetAdded: GadgetSelector }
-    | { ConnectionAdded: { from?: GadgetSelector, to?: [GadgetSelector, CellPosition] } }
+    | { ConnectionAdded: ConnectionSelector }
     | { GadgetRemoved: GadgetSelector }
-    | { ConnectionRemoved: { from?: GadgetSelector, to?: [GadgetSelector, CellPosition] } };
+    | { ConnectionRemoved: ConnectionSelector };
 
 export type GadgetPosition =
     { gadget: GadgetSelector } & AdjustablePosition

@@ -3,14 +3,14 @@ import { GameProps } from "components/game/Game";
 import { GameStateInitializedFromData } from "./Store";
 import { ReadonlyGameSetup } from './slices/Setup';
 import { InitialDiagram, InitialDiagramGadget } from "lib/game/Initialization";
-import { makeHandleId } from 'lib/game/Handles';
+import { makeEqualityHandleId, makeHandleId } from 'lib/game/Handles';
 import { GadgetId } from "lib/game/Primitives";
 import { GadgetProps } from "components/game/gadget/Gadget";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { getGadgetRelations } from "lib/game/GameLogic";
 import { Edge, ReactFlowInstance } from "@xyflow/react";
 import { DEFAULT_SETTINGS } from "components/tutorial/InteractiveLevel";
-import { GadgetConnection } from "lib/game/History";
+import { GeneralConnection } from "lib/game/Connection";
 import { OUTPUT_POSITION } from 'lib/game/CellPosition';
 
 function getGadgetProps(id: GadgetId, gadget: InitialDiagramGadget): GadgetProps {
@@ -43,15 +43,29 @@ function getInitialNodes(props: GameProps): GadgetNode[] {
     return initialNodes
 }
 
-function getInitialEdge(connection: GadgetConnection, label: string): Edge {
-    return {
-        id: label,
-        source: connection.from,
-        sourceHandle: makeHandleId(OUTPUT_POSITION, connection.from),
-        target: connection.to[0],
-        targetHandle: makeHandleId(connection.to[1], connection.to[0]),
-        type: 'customEdge',
+function getInitialEdge(generalConnection: GeneralConnection, label: string): Edge {
+    if (generalConnection.type === "equality") {
+        const connection = generalConnection.connection;
+        return {
+            id: label,
+            source: connection.from[0],
+            sourceHandle: makeEqualityHandleId(...connection.from),
+            target: connection.to[0],
+            targetHandle: makeEqualityHandleId(...connection.to),
+            type: 'customEdge',
+        }
+    } else {
+        const connection = generalConnection.connection;
+        return {
+            id: label,
+            source: connection.from,
+            sourceHandle: makeHandleId(OUTPUT_POSITION, connection.from),
+            target: connection.to[0],
+            targetHandle: makeHandleId(connection.to[1], connection.to[0]),
+            type: 'customEdge',
+        }
     }
+
 }
 
 function getInitialEdges(initialDiagram: InitialDiagram): Edge[] {

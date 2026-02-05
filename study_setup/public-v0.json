@@ -6,6 +6,7 @@
     "categories": [
         {
             "name": "Tutorial Lite",
+            "name": "Tutorial Lite",
             "problems": [
                 "tutorial01",
                 "tutorial01a",
@@ -16,8 +17,10 @@
                 "tutorial06"
             ],
             "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000
         },
         {
+            "name": "Lite World 1",
             "name": "Lite World 1",
             "problems": [
                 "t17",
@@ -28,6 +31,7 @@
                 "ja_e05",
                 "ja55a",
                 "ja57",
+                "ja57",
                 "t23",
                 "t24"
             ],
@@ -36,20 +40,24 @@
         },
         {
             "name": "Lite World 2",
+            "name": "Lite World 2",
             "problems": [
-                "ja05",
+                "ja05a",
                 "ja23",
                 "ja55b",
                 "ja56",
                 "ja58",
                 "t16a",
                 "t25a",
-                "t_e02"
+                "t29a",
+                "t_e02",
+                "ja05a"
             ],
             "numberOfUnlockedProblems": 1000,
             "categoryUnlockThreshold": 1
         },
         {
+            "name": "Lite World 3",
             "name": "Lite World 3",
             "problems": [
                 "ja24",
@@ -58,6 +66,7 @@
                 "ja07",
                 "ja08",
                 "t25",
+                "t27a",
                 "ja09",
                 "ja10",
                 "ja43",
@@ -80,6 +89,7 @@
         },
         {
             "name": "Pro World 1",
+            "name": "Pro World 1",
             "problems": [
                 "t08",
                 "t11",
@@ -94,13 +104,21 @@
                 "t74",
                 "t76",
                 "t_e08"
+                "t76",
+                "t_e08"
             ],
             "numberOfUnlockedProblems": 1000,
             "categoryUnlockThreshold": 1
         },
         {
             "name": "Pro World 2",
+            "name": "Pro World 2",
             "problems": [
+                "ja30",
+                "ja46",
+                "ja49",
+                "t04",
+                "t10",
                 "ja30",
                 "ja46",
                 "ja49",
@@ -116,8 +134,7 @@
                 "t_e05",
                 "t_e09"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Pro World 3",
@@ -129,6 +146,7 @@
                 "ja31",
                 "ja32",
                 "ja34",
+                "t41",
                 "t42",
                 "ja45",
                 "ja51",
@@ -142,8 +160,10 @@
         },
         {
             "name": "Pro World 4",
+            "name": "Pro World 4",
             "problems": [
                 "ja01",
+                "ja02a",
                 "ja15",
                 "ja27",
                 "t01",
@@ -157,6 +177,7 @@
                 "t39",
                 "t40",
                 "t41",
+                "t42",
                 "t44a",
                 "t_e06"
             ],

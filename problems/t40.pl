@@ -3,7 +3,6 @@ g(A,A,1).
 g(A,1,A).
 g(xg(A,B),A,B).
 r(xr(A),A).
-b(xb(A),A).
 r(A,B) :- r(B,A).
 g(1,A,B) :- r(A,B).
 r(A,B) :- g(1,A,B).

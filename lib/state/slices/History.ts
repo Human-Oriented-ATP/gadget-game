@@ -25,6 +25,7 @@ export type HistoryActions = {
   makeHistoryObject: () => GameHistory | undefined;
   uploadHistory: () => void;
   uploadHistoryAsynchronously: () => void;
+  uploadHistoryWithBeacon: () => void;
   getGadgetBeingAddedEvent: () => GameEvent[]
   getEvents(): GameEvent[]
   getStatementOfGadget: (gadgetId: GadgetId) => string
@@ -90,6 +91,17 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
           get().uploadHistory()
         }, HISTORY_UPLOAD_DELAY)
         set({ timeoutId })
+      }
+    },
+
+    uploadHistoryWithBeacon: () => {
+      clearTimeout(get().timeoutId)
+      set({ timeoutId: undefined })
+      const history = get().makeHistoryObject()
+      if (history !== undefined && typeof navigator !== 'undefined' && 'sendBeacon' in navigator) {
+        console.log("uploading with beacon")
+        const blob = new Blob([JSON.stringify(history)], { type: 'application/json' })
+        navigator.sendBeacon('/api/history', blob)
       }
     },
 

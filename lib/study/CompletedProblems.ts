@@ -26,7 +26,7 @@ export async function resetProgress() {
 
 function getPreviousCategory(category: ProblemCategory, config: StudyConfiguration): ProblemCategory | undefined {
     try {
-        const previousCategoryIndex = config.categories.indexOf(category) - 1;
+        const previousCategoryIndex = config.categories.findIndex(c => c.name === category.name) - 1;
         const previousCategory = config.categories[previousCategoryIndex];
         return previousCategory;
     } catch (e) {

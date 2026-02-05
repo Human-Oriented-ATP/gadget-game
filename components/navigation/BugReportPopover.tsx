@@ -3,22 +3,51 @@ import Button from '../primitive/buttons/Default';
 import { useGameStateContext } from 'lib/state/StateContextProvider';
 import { GameSlice } from 'lib/state/Store';
 import { useShallow } from 'zustand/react/shallow';
+import { collectUserEnvironment } from 'lib/util/userAgent';
+import { submitBugReport } from 'lib/study/submitBugReport';
 
 const selector = (state: GameSlice) => ({
   isOpen: state.bugReportPopupIsOpen,
-  close: state.closeBugReportPopup
+  close: state.closeBugReportPopup,
+  makeHistoryObject: state.makeHistoryObject,
 })
 
 export function BugReportPopover() {
   const [bugReport, setBugReport] = useState('');
-  const { isOpen, close } = useGameStateContext(useShallow(selector))
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { isOpen, close, makeHistoryObject } = useGameStateContext(useShallow(selector))
 
-  const handleSubmit = useCallback(() => {
-    // TODO: Implement bug report submission
-    console.log('Bug report:', bugReport);
-    setBugReport('');
-    close();
-  }, [bugReport, close]);
+  const handleSubmit = useCallback(async () => {
+    if (isSubmitting) return;
+    
+    setIsSubmitting(true);
+    try {
+      const userEnv = collectUserEnvironment();
+      const history = makeHistoryObject();
+      
+      const result = await submitBugReport({
+        userMessage: bugReport,
+        environment: userEnv,
+        configId: history?.configId,
+        problemId: history?.problemId,
+        history: history,
+      });
+      
+      if (result.success) {
+        console.log('Bug report submitted successfully');
+        setBugReport('');
+        close();
+      } else {
+        console.error('Failed to submit bug report:', result.error);
+        alert('Failed to submit bug report. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error submitting bug report:', error);
+      alert('Failed to submit bug report. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  }, [bugReport, isSubmitting, makeHistoryObject, close]);
 
   const handleClose = useCallback(() => {
     setBugReport('');
@@ -37,10 +66,12 @@ export function BugReportPopover() {
             onChange={(e) => setBugReport(e.target.value)}
           />
           <div className="flex justify-end gap-2">
-            <Button onClick={handleClose}>
+            <Button onClick={handleClose} disabled={isSubmitting}>
               Cancel
             </Button>
-            <Button onClick={handleSubmit} disabled={!bugReport.trim()}>Submit</Button>
+            <Button onClick={handleSubmit} disabled={!bugReport.trim() || isSubmitting}>
+              {isSubmitting ? 'Submitting...' : 'Submit'}
+            </Button>
           </div>
         </div>
       </div>

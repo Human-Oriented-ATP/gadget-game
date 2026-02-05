@@ -1,26 +1,53 @@
 "use client"
 
 import { StartButton } from "components/primitive/buttons/StartFirstUnsolvedLevel"
-import Link from "next/link"
-import { useState } from "react"
-
-function CheckItem(props: { setIsChecked: (checked: boolean) => void, children: React.ReactNode }) {
-  return <div>
-    <label>
-      <input type="checkbox" className="mr-2" onChange={(event) => props.setIsChecked(event.target.checked)} />
-      {props.children}
-    </label>
-  </div>
-}
+import { useRouter } from "next/navigation"
+import { initializePlayerId, hasPlayerId } from "lib/study/playerId"
+import { useTouchDevice } from "lib/util/useTouchDevice"
+import { useEffect, useState } from "react"
 
 export function LandingPage() {
-  const [check1, setCheck1] = useState(false)
-  const [check2, setCheck2] = useState(false)
-  const [check3, setCheck3] = useState(false)
-  const [check4, setCheck4] = useState(false)
+  const router = useRouter();
+  const isTouchDevice = useTouchDevice()
+  const [isChecking, setIsChecking] = useState(true)
+
+  useEffect(() => {
+    const checkAndRedirect = async () => {
+      const playerIdExists = await hasPlayerId()
+      if (playerIdExists) {
+        router.push('public-v0')
+      } else {
+        setIsChecking(false)
+      }
+    }
+    checkAndRedirect()
+  }, [router])
+
+  const handleStart = async () => {
+    await initializePlayerId();
+    router.push('public-v0/game/tutorial01');
+  }
+
+  if (isChecking) {
+    return null // or a loading spinner
+  }
 
   return (
     <div className="w-full flex flex-col items-center text-center pt-10">
+      {isTouchDevice && (
+        <div className="max-w-(--breakpoint-lg) p-4 mb-4">
+          <div className="bg-yellow-100 border-2 border-yellow-500 rounded-lg p-8">
+            <h2 className="text-2xl font-bold mb-4">⚠️ Sorry, we don&apos;t yet support touch devices!</h2>
+            <p className="text-lg mb-4">
+              We&apos;ve detected that you&apos;re using a touch device (phone or tablet).
+            </p>
+            <p className="text-base">
+              The game is not currently compatible with touch devices and will not function properly. We&apos;re hoping to add support in the future, but for now, we recommend using a desktop or laptop computer to access the game.
+            </p>
+          </div>
+        </div>
+      )}
+      
       <h1 className="text-2xl p-4">Welcome to our study!</h1>
       <div className='text-justify max-w-(--breakpoint-lg) p-4'>
         <p className="p-2">By completing this study, you are participating in a study being performed by researchers from the University of Cambridge. The purpose of this research is to study human reasoning about new problems, and the results will inform mathematics, cognitive science, and AI research.</p>
@@ -32,21 +59,11 @@ export function LandingPage() {
         <p className="p-2">Your participation in this research is voluntary. You may discontinue participation at any time during the research activity. You may print a copy of this consent form for your records.</p>
 
         <p className="p-2 font-bold">Note that this study has been optimised for laptops and desktop computers and that participation is not possible from touch devices like phones or tablets.</p>
-
-        <p className="p-2">To continue, check the checkboxes below and click {"Start"}.</p>
-      </div>
-      <div className="text-left p-2">
-        <CheckItem setIsChecked={setCheck1}>I am age 18 or older.</CheckItem>
-        <CheckItem setIsChecked={setCheck2}>I have read and understand the information above.</CheckItem>
-        <CheckItem setIsChecked={setCheck3}>I am not using a touch device.</CheckItem>
-        <CheckItem setIsChecked={setCheck4}>I want to participate in this research and continue with the experiment.</CheckItem>
       </div>
       <div className="p-6">
-        {check1 && check2 && check3 && check4 ?
-          <Link href={`pilot-fwd-v2/game/tutorial01`}>
-            <StartButton />
-          </Link>
-          : <StartButton className="border-2 border-black rounded-lg p-5 px-10 hover:bg-black hover:text-white text-2xl cursor-not-allowed bg-palette-gray opacity-40 " />}
+        <div onClick={handleStart}>
+          <StartButton />
+        </div>
       </div>
       <div className="absolute top-0 right-0 p-2 text-sm">Contact: kmc61@cam.ac.uk </div>
     </div>

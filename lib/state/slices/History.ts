@@ -18,7 +18,6 @@ export type HistoryState = GadgetDndFromShelfState & {
   log: [GameEvent, Date][]
   timeoutId: NodeJS.Timeout | undefined
   startTime: Date
-  finalHistoryUploaded: boolean
 }
 
 export type HistoryActions = {
@@ -26,8 +25,8 @@ export type HistoryActions = {
   logEvents: (events: GameEvent[]) => void;
   makeHistoryObject: () => GameHistory | undefined;
   uploadHistory: () => void;
-  uploadFinalHistory: () => void;
   uploadHistoryAsynchronously: () => void;
+  uploadHistoryWithBeacon: () => void;
   getGadgetBeingAddedEvent: () => GameEvent[]
   getEvents(): GameEvent[]
   getStatementOfGadget: (gadgetId: GadgetId) => string
@@ -46,7 +45,6 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
     log: [],
     timeoutId: undefined,
     startTime: new Date(),
-    finalHistoryUploaded: false,
 
     reset: () => {
       gadgetDndFromShelfSlice(set, get).reset()
@@ -54,8 +52,7 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
         ...initialState,
         log: [],
         timeoutId: undefined,
-        startTime: new Date(),
-        finalHistoryUploaded: false
+        startTime: new Date()
       })
     },
 
@@ -83,15 +80,10 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       clearTimeout(get().timeoutId)
       set({ timeoutId: undefined })
       const history = get().makeHistoryObject()
-      if (history !== undefined && history.log.length !== 0 && !get().finalHistoryUploaded) {
+      if (history !== undefined) {
         console.log("uploading")
-        synchronizeHistory(JSON.stringify(history))
+        synchronizeHistory(history)
       }
-    },
-
-    uploadFinalHistory: async () => {
-      get().uploadHistory()
-      set({ finalHistoryUploaded: true })
     },
 
     uploadHistoryAsynchronously: async () => {
@@ -100,6 +92,17 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
           get().uploadHistory()
         }, HISTORY_UPLOAD_DELAY)
         set({ timeoutId })
+      }
+    },
+
+    uploadHistoryWithBeacon: () => {
+      clearTimeout(get().timeoutId)
+      set({ timeoutId: undefined })
+      const history = get().makeHistoryObject()
+      if (history !== undefined && typeof navigator !== 'undefined' && 'sendBeacon' in navigator) {
+        console.log("uploading with beacon")
+        const blob = new Blob([JSON.stringify(history)], { type: 'application/json' })
+        navigator.sendBeacon('/api/history', blob)
       }
     },
 

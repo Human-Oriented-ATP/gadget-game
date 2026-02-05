@@ -1,5 +1,5 @@
 {
-    "name": "public-proto",
+    "name": "public-v0",
     "displayNamesAs": "number",
     "displayUnlistedProblems": false,
     "displayEndParticipationButton": false,
@@ -15,7 +15,7 @@
                 "tutorial05",
                 "tutorial06"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1
         },
         {
             "name": "Lite World 1",
@@ -25,16 +25,14 @@
                 "t19",
                 "t_e10",
                 "t_e03",
-                "t_e10",
                 "ja_e05",
                 "ja55a",
                 "ja57",
                 "t23",
-                "t24",
-                "t33a",
-                "ja48a"
+                "t24"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 7
         },
         {
             "name": "Lite World 2",
@@ -47,10 +45,10 @@
                 "t16a",
                 "t25a",
                 "t29a",
-                "t_e02",
-                "ja05a"
+                "t_e02"
             ],
-            "numberOfUnlockedProblems": 3
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Lite World 3",
@@ -67,7 +65,8 @@
                 "ja43",
                 "t72"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Mystery Gadget Tutorial",
@@ -78,7 +77,8 @@
                 "pink_tutorial04",
                 "pink_tutorial05"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Pro World 1",
@@ -88,7 +88,6 @@
                 "t33",
                 "t43",
                 "t_e04",
-                "ja_e05",
                 "t65",
                 "t66",
                 "t67",
@@ -98,7 +97,8 @@
                 "t76",
                 "t_e08"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Pro World 2",
@@ -118,7 +118,8 @@
                 "t_e05",
                 "t_e09"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Pro World 3",
@@ -139,7 +140,8 @@
                 "t70",
                 "t77"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Pro World 4",
@@ -158,12 +160,11 @@
                 "t38",
                 "t39",
                 "t40",
-                "t41",
-                "t42",
                 "t44a",
                 "t_e06"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Expert World",
@@ -171,14 +172,14 @@
                 "t06",
                 "ja03",
                 "ja04",
-                "ja6a",
                 "t21",
                 "t09",
                 "t31",
                 "ja16",
                 "ja17"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         },
         {
             "name": "Legend World",
@@ -187,7 +188,8 @@
                 "t30",
                 "t35"
             ],
-            "numberOfUnlockedProblems": 1000
+            "numberOfUnlockedProblems": 1000,
+            "categoryUnlockThreshold": 1
         }
     ]
 }

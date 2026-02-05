@@ -82,7 +82,7 @@ export const historySlice: CreateStateWithInitialValue<HistoryStateInitializedFr
       clearTimeout(get().timeoutId)
       set({ timeoutId: undefined })
       const history = get().makeHistoryObject()
-      if (history !== undefined && history.log.length !== 0 && !get().finalHistoryUploaded) {
+      if (history !== undefined && !get().finalHistoryUploaded) {
         console.log("uploading")
         synchronizeHistory(JSON.stringify(history))
       }

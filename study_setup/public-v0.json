@@ -13,8 +13,7 @@
                 "tutorial03",
                 "tutorial04",
                 "tutorial05",
-                "tutorial06",
-                "t_e10"
+                "tutorial06"
             ],
             "numberOfUnlockedProblems": 1
         },
@@ -22,11 +21,12 @@
             "name": "Lite World 1",
             "problems": [
                 "t17",
-                "t16a",
                 "t18",
                 "t19",
+                "t_e10",
                 "t_e03",
-                "ja59",
+                "ja_e05",
+                "ja55a",
                 "ja57",
                 "t23",
                 "t24"
@@ -39,13 +39,12 @@
             "problems": [
                 "ja05a",
                 "ja23",
-                "ja55a",
+                "ja55b",
                 "ja56",
-                "ja60",
                 "ja58",
+                "t16a",
                 "t25a",
                 "t29a",
-                "ja55b",
                 "t_e02"
             ],
             "numberOfUnlockedProblems": 1000,
@@ -84,7 +83,6 @@
         {
             "name": "Pro World 1",
             "problems": [
-                "ja_e05",
                 "t08",
                 "t11",
                 "t33",

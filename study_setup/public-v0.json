@@ -13,7 +13,8 @@
                 "tutorial03",
                 "tutorial04",
                 "tutorial05",
-                "tutorial06"
+                "tutorial06",
+                "t_e10"
             ],
             "numberOfUnlockedProblems": 1
         },
@@ -22,8 +23,8 @@
             "problems": [
                 "t17",
                 "t18",
-                "t19",
-                "t_e10",
+                "t16a",
+                "t19",                
                 "t_e03",
                 "ja_e05",
                 "ja59",
@@ -43,7 +44,6 @@
                 "ja56",
                 "ja60",
                 "ja58",
-                "t16a",
                 "t25a",
                 "t29a",
                 "ja55b",

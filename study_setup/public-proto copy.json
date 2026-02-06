@@ -1,5 +1,5 @@
 {
-    "name": "public-v0",
+    "name": "public-proto",
     "displayNamesAs": "number",
     "displayUnlistedProblems": false,
     "displayEndParticipationButton": false,
@@ -13,46 +13,53 @@
                 "tutorial03",
                 "tutorial04",
                 "tutorial05",
-                "tutorial06",
-                "t_e10"
+                "tutorial06"
             ],
-            "numberOfUnlockedProblems": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Lite World 1",
             "problems": [
                 "t17",
-                "t16a",
                 "t18",
                 "t19",
+                "t_e10",
                 "t_e03",
-                "ja59",
+                "t_e10",
+                "ja_e05",
+                "ja55a",
                 "ja57",
                 "t23",
-                "t24"
+                "t24",
+                "t33a",
+                "ja48a"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 7
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Lite World 2",
             "problems": [
                 "ja05a",
                 "ja23",
-                "ja55a",
-                "ja56",
-                "ja60",
-                "ja58",
-                "t25a",
-                "t29a",
                 "ja55b",
-                "t_e02"
+                "ja56",
+                "ja58"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Lite World 3",
+            "problems": [
+                "t16a",
+                "t25a",
+                "t29a",
+                "t_e02",
+                "ja05a"
+            ],
+            "numberOfUnlockedProblems": 3
+        },
+        {
+            "name": "Lite World 4",
             "problems": [
                 "ja24",
                 "ja33",
@@ -60,14 +67,19 @@
                 "ja07",
                 "ja08",
                 "t25",
-                "t27a",
+                "t27a"
+            ],
+            "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Lite World 5",
+            "problems": [
                 "ja09",
                 "ja10",
                 "ja43",
                 "t72"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
             "name": "Mystery Gadget Tutorial",
@@ -78,18 +90,17 @@
                 "pink_tutorial04",
                 "pink_tutorial05"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Pro World 1",
+            "name": "Beginner Pro",
             "problems": [
-                "ja_e05",
                 "t08",
                 "t11",
                 "t33",
                 "t43",
                 "t_e04",
+                "ja_e05",
                 "t65",
                 "t66",
                 "t67",
@@ -99,11 +110,10 @@
                 "t76",
                 "t_e08"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Pro World 2",
+            "name": "Intermediate Pro",
             "problems": [
                 "ja30",
                 "ja46",
@@ -120,11 +130,10 @@
                 "t_e05",
                 "t_e09"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Pro World 3",
+            "name": "Intermediate-Advanced Pro",
             "problems": [
                 "ja12a",
                 "ja14",
@@ -142,11 +151,10 @@
                 "t70",
                 "t77"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Pro World 4",
+            "name": "Advanced Pro",
             "problems": [
                 "ja01",
                 "ja02a",
@@ -162,36 +170,36 @@
                 "t38",
                 "t39",
                 "t40",
+                "t41",
+                "t42",
                 "t44a",
                 "t_e06"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Expert World",
+            "name": "Expert",
             "problems": [
                 "t06",
                 "ja03",
                 "ja04",
+                "ja6a",
                 "t21",
                 "t09",
                 "t31",
                 "ja16",
                 "ja17"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         },
         {
-            "name": "Legend World",
+            "name": "Legend",
             "problems": [
                 "f01a",
                 "t30",
                 "t35"
             ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            "numberOfUnlockedProblems": 1000
         }
     ]
 }

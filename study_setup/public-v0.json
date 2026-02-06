@@ -26,7 +26,7 @@
                 "t_e10",
                 "t_e03",
                 "ja_e05",
-                "ja55a",
+                "ja59",
                 "ja57",
                 "t23",
                 "t24"
@@ -39,12 +39,14 @@
             "problems": [
                 "ja05a",
                 "ja23",
-                "ja55b",
+                "ja55a",
                 "ja56",
+                "ja60",
                 "ja58",
                 "t16a",
                 "t25a",
                 "t29a",
+                "ja55b",
                 "t_e02"
             ],
             "numberOfUnlockedProblems": 1000,

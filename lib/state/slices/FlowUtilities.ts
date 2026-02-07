@@ -237,9 +237,9 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
     },
 
     getProximityConnection(nodeThatIsBeingDragged: string) {
-      const handlesOfNodeBeingDragged = get().getHandlesOfNode(nodeThatIsBeingDragged)
+      const handlesOfNodeBeingDragged = get().getHandlesOfGadget(nodeThatIsBeingDragged)
       const otherNodes = get().nodes.filter(node => node.id !== nodeThatIsBeingDragged)
-      const handlesOfOtherNodes = otherNodes.flatMap(node => Array.from(get().getHandlesOfNode(node.id).values()))
+      const handlesOfOtherNodes = otherNodes.flatMap(node => Array.from(get().getHandlesOfGadget(node.id).values()))
       const proximityConnection = calculateProximityConnection(
         get().calculatePositionOfHandles(handlesOfNodeBeingDragged),
         get().calculatePositionOfHandles(handlesOfOtherNodes))
@@ -274,7 +274,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
 
       const getTargetHandlesInLayer = (layer: GadgetId[]) => {
         const gadgetNodes = getGadgetNodesInLayer(layer);
-        return gadgetNodes.map(node => get().getTargetHandlesOfNode(node.id)).flat();
+        return gadgetNodes.map(node => get().getTargetHandlesOfGadget(node.id)).flat();
       };
 
       const processHandle = (handle: string, nextLayer: GadgetId[]) => {

@@ -23,6 +23,6 @@ y(A,B) :- b(A,C), b(B,D), y(C,D).
 b(B,D) :- b(A,C), y(A,B), y(C,D).
 
 
-g(xg(A,B,C),A,B,C) :- r(A,B).
+g(xg(A,B),A,B,C) :- r(A,B).
 
 :- w(4,5).

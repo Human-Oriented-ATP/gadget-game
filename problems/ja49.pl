@@ -8,7 +8,7 @@ w(A,A).
 
 y(A,B,xy(A,B)) :- g(A,B).
 y(A,C) :- y(A,B,C).
- 
+
 g(A,6,C,4) :- g(A,6,C,5), y(2,D), b(C,D).
 
 r(B,A) :- g(C,B), y(C,A).
@@ -23,6 +23,6 @@ y(A,B) :- b(A,C), b(B,D), y(C,D).
 b(B,D) :- b(A,C), y(A,B), y(C,D).
 
 
-g(xg(A,B),A,B,C) :- r(A,B).
+g(xg(A,B,C),A,B,C) :- r(A,B).
 
 :- w(4,5).

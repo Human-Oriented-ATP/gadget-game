@@ -26,7 +26,7 @@ export const handleQueriesSlice: CreateStateWithInitialValue<HandleQueriesStateI
     },
 
     getHandlesOfGadget: (gadgetId: GadgetId): string[] => {
-      const gadgetProps = get().lookupPropsWithDragged(gadgetId);
+      const gadgetProps = get().lookupProps(gadgetId);
       if (gadgetProps === undefined) {
         throw Error(`Gadget ${gadgetId} not found in state`);
       }

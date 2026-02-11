@@ -23,7 +23,7 @@ export interface LogicalStateActions {
   updateLogicalStateWithEvents: (events: GameEvent[]) => void;
   updateGadget: (gadgetId: GadgetId, gadgetProps: GadgetProps, gadgetStatement: string) => void;
   lookupProps: (gadgetId: GadgetId) => GadgetProps | undefined;
-  lookupPropsWithDragged: (gadgetId: GadgetId) => GadgetProps | undefined;
+  lookupPropsIgnoringDragged: (gadgetId: GadgetId) => GadgetProps | undefined;
   removeGadgetFromState: (gadgetId: GadgetId) => void;
   addGadgetToState: (gadgetId: GadgetId, statement: string) => void;
   addConnectionToState: (connection: GeneralConnection) => void;
@@ -91,11 +91,11 @@ export const logicalStateSlice: CreateStateWithInitialValue<SetupReadonlyState, 
       set({ gadgetsProps, statements });
     },
 
-    lookupProps: (gadgetId: GadgetId) => {
+    lookupPropsIgnoringDragged: (gadgetId: GadgetId) => {
       return get().gadgetsProps.get(gadgetId);
     },
 
-    lookupPropsWithDragged: (gadgetId: GadgetId) => {
+    lookupProps: (gadgetId: GadgetId) => {
       const gadgetBeingDragged = get().gadgetBeingDraggedFromShelf;
       if (gadgetBeingDragged !== undefined && gadgetBeingDragged.id === gadgetId) 
         return axiomToGadget(gadgetBeingDragged.axiom, gadgetId);
@@ -111,7 +111,7 @@ export const logicalStateSlice: CreateStateWithInitialValue<SetupReadonlyState, 
     },
 
     addGadgetToState: (gadgetId: GadgetId, statement: string) => {
-      if (get().lookupProps(gadgetId) !== undefined) {
+      if (get().lookupPropsIgnoringDragged(gadgetId) !== undefined) {
         throw Error(`Gadget ${gadgetId} already exists in `);
       }
       const gadgetProps = axiomToGadget(statement, gadgetId);
@@ -159,7 +159,7 @@ export const logicalStateSlice: CreateStateWithInitialValue<SetupReadonlyState, 
         return getGadgetRelations(gadgetBeingDragged.axiom, gadgetId);
       }
 
-      const gadgetProps = get().lookupProps(gadgetId);
+      const gadgetProps = get().lookupPropsIgnoringDragged(gadgetId);
       if (gadgetProps === undefined) {
         throw Error(`Gadget ${gadgetId} not found in `);
       }

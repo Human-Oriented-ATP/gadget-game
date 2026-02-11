@@ -2,6 +2,8 @@ import { Connection } from '@xyflow/react';
 import { CellPosition, OUTPUT_POSITION } from "./CellPosition";
 import { EqualityPosition, GadgetId } from "./Primitives";
 import { getNodePositionFromHandle, getPositionOfEqualityHandle, isEqualityHandle, isTargetHandle } from './Handles';
+import { Relation, Term } from './Term';
+import { GeneralEquation } from './Unification';
 
 export type GadgetConnection = { from: GadgetId, to: [GadgetId, CellPosition] }
 export type EqualityConnection =
@@ -94,4 +96,48 @@ export function toGeneralConnection(connection: Connection): GeneralConnection |
 
 export function gadgetToGeneralConnection(connection: GadgetConnection): GeneralConnection {
     return {type: "gadget", connection};
+}
+
+export function getConnectionEndpoints(connection: GeneralConnection): [GadgetId, GadgetId] {
+    if (connection.type === "equality")
+        return [connection.connection.from[0], connection.connection.to[0]]
+    if (connection.type === "gadget") 
+        return [connection.connection.from, connection.connection.to[0]];
+    throw Error(`Connection of unknown type: ${JSON.stringify(connection)}`);
+}
+
+export function connectionToEquation(
+    connection: GeneralConnection,
+    lhsRelations: Map<CellPosition, Relation>,
+    rhsRelations: Map<CellPosition, Relation>
+): GeneralEquation {
+    const getPosition = (relations: Map<CellPosition, Relation>, pos: CellPosition) => {
+        const rel = relations.get(pos);
+        if (!rel) throw Error(`Missing relation at position ${pos} in `);
+        return rel;
+    };
+
+    const getEqualityPosition = (relation: {equals: readonly [Term, Term]}, pos: EqualityPosition) => (
+        relation.equals[pos === "top" ? 0 : 1]
+    );
+
+    if (connection.type === "equality") {
+        const { from, to } = connection.connection;
+        const lhs = getPosition(lhsRelations, OUTPUT_POSITION);
+        const rhs = getPosition(rhsRelations, OUTPUT_POSITION);
+
+        if (!("equals" in lhs && "equals" in rhs))
+            throw Error("Equality connection not between equality relations");
+
+        return {
+            type: "term",
+            equation: [getEqualityPosition(lhs, from[1]), getEqualityPosition(rhs, to[1])]
+        };
+    } else {
+        const to = connection.connection.to;
+        return {
+            type: "relation",
+            equation: [getPosition(lhsRelations, OUTPUT_POSITION), getPosition(rhsRelations, to[1])]
+        };
+    }
 }

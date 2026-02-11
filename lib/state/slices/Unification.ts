@@ -8,6 +8,7 @@ import { GeneralConnection, toGeneralConnection } from "lib/game/Connection";
 import { TutorialSlice, tutorialSlice, TutorialStateInitializedFromData } from "./Tutorial";
 import { DisjointSetWithAssignment } from "lib/util/DisjointSetWithAssignment";
 import { calculateHoleAssignment } from "lib/game/HoleUnification";
+import { handleQueriesSlice, HandleQueriesSlice } from "./HandleQueries";
 
 export type UnificationStateInitializedFromData = TutorialStateInitializedFromData
 

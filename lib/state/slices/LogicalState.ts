@@ -12,24 +12,24 @@ import { SetupReadonlyState } from './Setup';
 import { GadgetProps } from 'components/game/gadget/Gadget';
 import { InitialDiagram } from 'lib/game/Initialization';
 
-export type LogicalStateCache = {
-  gadgetPropsCache: Map<GadgetId, GadgetProps>
-  statementsCache: Map<GadgetId, string>
-  connectionsCache: GeneralConnection[]
+export type LogicalState = {
+  gadgetsProps: Map<GadgetId, GadgetProps>
+  statements: Map<GadgetId, string>
+  connections: GeneralConnection[]
 }
 
-export interface LogicalStateCacheActions {
+export interface LogicalStateActions {
   reset: () => void;
   updateLogicalStateWithEvents: (events: GameEvent[]) => void;
   updateGadget: (gadgetId: GadgetId, gadgetProps: GadgetProps, gadgetStatement: string) => void;
-  lookupCachedProps: (gadgetId: GadgetId) => GadgetProps | undefined;
-  lookupCachedPropsWithDragged: (gadgetId: GadgetId) => GadgetProps | undefined;
-  removeGadgetFromCache: (gadgetId: GadgetId) => void;
-  addGadgetToCache: (gadgetId: GadgetId, statement: string) => void;
-  addConnection: (connection: GeneralConnection) => void;
-  removeConnection: (connection: GeneralConnection) => void;
-  generalConnectionInCache: (connection: GeneralConnection) => boolean;
-  getCachedConnections: () => GeneralConnection[];
+  lookupProps: (gadgetId: GadgetId) => GadgetProps | undefined;
+  lookupPropsWithDragged: (gadgetId: GadgetId) => GadgetProps | undefined;
+  removeGadgetFromState: (gadgetId: GadgetId) => void;
+  addGadgetToState: (gadgetId: GadgetId, statement: string) => void;
+  addConnectionToState: (connection: GeneralConnection) => void;
+  removeConnectionFromState: (connection: GeneralConnection) => void;
+  generalConnectionExists: (connection: GeneralConnection) => boolean;
+  getConnections: () => GeneralConnection[];
   getCurrentGadgetIds: () => GadgetId[];
   getRelationsOfGadget: (gadgetId: GadgetId) => Map<CellPosition, Relation>;
   getCurrentHoleTerms: () => any[];
@@ -39,25 +39,25 @@ export interface LogicalStateCacheActions {
   getSomeGadgetWithAxiom: (axiom: string) => GadgetId;
 }
 
-export type LogicalStateCacheSlice = SetupReadonlyState & GadgetDndFromShelfSlice & LogicalStateCache & LogicalStateCacheActions;
+export type LogicalStateSlice = SetupReadonlyState & GadgetDndFromShelfSlice & LogicalState & LogicalStateActions;
 
-function getInitialCache(initialDiagram: InitialDiagram): LogicalStateCache {
-  const gadgetPropsCache = new Map<GadgetId, GadgetProps>();
-  const statementsCache = new Map<GadgetId, string>();
+function getInitial(initialDiagram: InitialDiagram): LogicalState {
+  const gadgetsProps = new Map<GadgetId, GadgetProps>();
+  const statements = new Map<GadgetId, string>();
 
   for (const [gadgetId, gadget] of initialDiagram.gadgets) {
     const gadgetProps = axiomToGadget(gadget.statement, gadgetId);
-    gadgetPropsCache.set(gadgetId, gadgetProps);
-    statementsCache.set(gadgetId, gadget.statement);
+    gadgetsProps.set(gadgetId, gadgetProps);
+    statements.set(gadgetId, gadget.statement);
   }
 
-  const connectionsCache = [...initialDiagram.connections];
+  const connections = [...initialDiagram.connections];
 
-  return {gadgetPropsCache, statementsCache, connectionsCache};
+  return {gadgetsProps, statements, connections};
 }
 
-export const logicalStateCacheSlice: CreateStateWithInitialValue<SetupReadonlyState, LogicalStateCacheSlice> = (initialState, set, get): LogicalStateCacheSlice => {
-  const initialLogicalState = getInitialCache(initialState.setup.initialDiagram);
+export const logicalStateSlice: CreateStateWithInitialValue<SetupReadonlyState, LogicalStateSlice> = (initialState, set, get): LogicalStateSlice => {
+  const initialLogicalState = getInitial(initialState.setup.initialDiagram);
 
   return {
     ...initialState,
@@ -72,85 +72,85 @@ export const logicalStateCacheSlice: CreateStateWithInitialValue<SetupReadonlySt
     updateLogicalStateWithEvents: (events: GameEvent[]) => {
       for (const event of events) {
         if ("GadgetAdded" in event) {
-          get().addGadgetToCache(event.GadgetAdded.gadgetId, event.GadgetAdded.axiom)
+          get().addGadgetToState(event.GadgetAdded.gadgetId, event.GadgetAdded.axiom)
         } else if ("GadgetRemoved" in event) {
-          get().removeGadgetFromCache(event.GadgetRemoved.gadgetId)
+          get().removeGadgetFromState(event.GadgetRemoved.gadgetId)
         } else if ("ConnectionAdded" in event) {
-          get().addConnection(event.ConnectionAdded)
+          get().addConnectionToState(event.ConnectionAdded)
         } else if ("ConnectionRemoved" in event) {
-          get().removeConnection(event.ConnectionRemoved)
+          get().removeConnectionFromState(event.ConnectionRemoved)
         }
       }
     },
 
     updateGadget: (gadgetId: GadgetId, gadgetProps: GadgetProps, gadgetStatement: string) => {
-      const gadgetPropsCache = new Map(get().gadgetPropsCache);
-      const statementsCache = new Map(get().statementsCache);
-      gadgetPropsCache.set(gadgetId, gadgetProps);
-      statementsCache.set(gadgetId, gadgetStatement);
-      set({ gadgetPropsCache, statementsCache });
+      const gadgetsProps = new Map(get().gadgetsProps);
+      const statements = new Map(get().statements);
+      gadgetsProps.set(gadgetId, gadgetProps);
+      statements.set(gadgetId, gadgetStatement);
+      set({ gadgetsProps, statements });
     },
 
-    lookupCachedProps: (gadgetId: GadgetId) => {
-      return get().gadgetPropsCache.get(gadgetId);
+    lookupProps: (gadgetId: GadgetId) => {
+      return get().gadgetsProps.get(gadgetId);
     },
 
-    lookupCachedPropsWithDragged: (gadgetId: GadgetId) => {
+    lookupPropsWithDragged: (gadgetId: GadgetId) => {
       const gadgetBeingDragged = get().gadgetBeingDraggedFromShelf;
       if (gadgetBeingDragged !== undefined && gadgetBeingDragged.id === gadgetId) 
         return axiomToGadget(gadgetBeingDragged.axiom, gadgetId);
-      return get().gadgetPropsCache.get(gadgetId);
+      return get().gadgetsProps.get(gadgetId);
     },
 
-    removeGadgetFromCache: (gadgetId: GadgetId) => {
-      const gadgetPropsCache = new Map(get().gadgetPropsCache);
-      const statementsCache = new Map(get().statementsCache);
-      gadgetPropsCache.delete(gadgetId);
-      statementsCache.delete(gadgetId);
-      set({ gadgetPropsCache, statementsCache });
+    removeGadgetFromState: (gadgetId: GadgetId) => {
+      const gadgetsProps = new Map(get().gadgetsProps);
+      const statements = new Map(get().statements);
+      gadgetsProps.delete(gadgetId);
+      statements.delete(gadgetId);
+      set({ gadgetsProps, statements });
     },
 
-    addGadgetToCache: (gadgetId: GadgetId, statement: string) => {
-      if (get().lookupCachedProps(gadgetId) !== undefined) {
-        throw Error(`Gadget ${gadgetId} already exists in cache`);
+    addGadgetToState: (gadgetId: GadgetId, statement: string) => {
+      if (get().lookupProps(gadgetId) !== undefined) {
+        throw Error(`Gadget ${gadgetId} already exists in `);
       }
       const gadgetProps = axiomToGadget(statement, gadgetId);
-      const gadgetPropsCache = new Map(get().gadgetPropsCache);
-      const statementsCache = new Map(get().statementsCache);
-      gadgetPropsCache.set(gadgetId, gadgetProps);
-      statementsCache.set(gadgetId, statement);
-      set({ gadgetPropsCache, statementsCache });
+      const gadgetsProps = new Map(get().gadgetsProps);
+      const statements = new Map(get().statements);
+      gadgetsProps.set(gadgetId, gadgetProps);
+      statements.set(gadgetId, statement);
+      set({ gadgetsProps, statements });
     },
 
-    addConnection: (connection: GeneralConnection) => {
-      const connectionsCache = [...get().connectionsCache, connection];
-      set({ connectionsCache });
+    addConnectionToState: (connection: GeneralConnection) => {
+      const connections = [...get().connections, connection];
+      set({ connections });
     },
 
-    removeConnection: (connection: GeneralConnection) => {
-      const connectionsCache = get().connectionsCache.filter(
+    removeConnectionFromState: (connection: GeneralConnection) => {
+      const connections = get().connections.filter(
         conn => JSON.stringify(conn) !== JSON.stringify(connection)
       );
-      set({ connectionsCache });
+      set({ connections });
     },
 
-    generalConnectionInCache: (connection: GeneralConnection) => {
+    generalConnectionExists: (connection: GeneralConnection) => {
       const connectionJson = JSON.stringify(connection);
-      return get().connectionsCache.some(conn => JSON.stringify(conn) === connectionJson);
+      return get().connections.some(conn => JSON.stringify(conn) === connectionJson);
     },
 
-    getCachedConnections: () => {
-      return get().connectionsCache;
+    getConnections: () => {
+      return get().connections;
     },
 
     getCurrentGadgetIds: () => {
-      const cacheGadgetIds = Array.from(get().gadgetPropsCache.keys());
+      const GadgetIds = Array.from(get().gadgetsProps.keys());
 
       const gadgetBeingDragged = get().gadgetBeingDraggedFromShelf;
       if (gadgetBeingDragged !== undefined) 
-        cacheGadgetIds.push(gadgetBeingDragged.id);
+        GadgetIds.push(gadgetBeingDragged.id);
 
-      return cacheGadgetIds;
+      return GadgetIds;
     },
 
     getRelationsOfGadget: (gadgetId: GadgetId) => {
@@ -159,9 +159,9 @@ export const logicalStateCacheSlice: CreateStateWithInitialValue<SetupReadonlySt
         return getGadgetRelations(gadgetBeingDragged.axiom, gadgetId);
       }
 
-      const gadgetProps = get().lookupCachedProps(gadgetId);
+      const gadgetProps = get().lookupProps(gadgetId);
       if (gadgetProps === undefined) {
-        throw Error(`Gadget ${gadgetId} not found in cache`);
+        throw Error(`Gadget ${gadgetId} not found in `);
       }
 
       return gadgetProps.relations;
@@ -170,8 +170,8 @@ export const logicalStateCacheSlice: CreateStateWithInitialValue<SetupReadonlySt
     getCurrentHoleTerms: () => {
       const gadgetIds = get().getCurrentGadgetIds();
       const relations = gadgetIds.flatMap(gadgetId => {
-        const cachedRelations = get().getRelationsOfGadget(gadgetId);
-        return Array.from(cachedRelations.values());
+        const Relations = get().getRelationsOfGadget(gadgetId);
+        return Array.from(Relations.values());
       });
       return relations.flatMap(relation => getRelationArgs(relation));
     },
@@ -185,7 +185,7 @@ export const logicalStateCacheSlice: CreateStateWithInitialValue<SetupReadonlySt
     },
 
     getCurrentEquations: () => {
-      const connections = get().getCachedConnections();
+      const connections = get().getConnections();
       const connectionsWithEquations: Array<[GeneralConnection, GeneralEquation]> = connections.map((connection) =>
         [connection, get().getEquationOfConnection(connection)]);
       return new ValueMap(connectionsWithEquations);
@@ -197,11 +197,11 @@ export const logicalStateCacheSlice: CreateStateWithInitialValue<SetupReadonlySt
         return gadgetBeingDragged.axiom;
       }
 
-      const cachedStatement = get().statementsCache.get(gadgetId);
-      if (cachedStatement === undefined)
+      const Statement = get().statements.get(gadgetId);
+      if (Statement === undefined)
         throw Error(`Gadget ${gadgetId} statement not found`);
 
-      return cachedStatement;
+      return Statement;
     },
 
     getSomeGadgetWithAxiom: (axiom: string) => {

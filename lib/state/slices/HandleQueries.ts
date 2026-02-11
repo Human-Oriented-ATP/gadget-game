@@ -3,7 +3,7 @@ import { isGadgetHandle, isTargetHandle, makeEqualityHandleId, makeHandleId } fr
 import { EqualityPosition, GadgetId } from 'lib/game/Primitives';
 import { OUTPUT_POSITION, CellPosition } from 'lib/game/CellPosition';
 import { TutorialStateInitializedFromData } from './Tutorial';
-import { logicalStateCacheSlice, LogicalStateCacheSlice } from './LogicalStateCache';
+import { logicalStateSlice, LogicalStateSlice } from './LogicalState';
 
 export type HandleQueriesStateInitializedFromData = TutorialStateInitializedFromData
 
@@ -15,20 +15,20 @@ export interface HandleQueriesActions {
   getAllHandles(): string[];
 }
 
-export type HandleQueriesSlice = LogicalStateCacheSlice & HandleQueriesActions;
+export type HandleQueriesSlice = LogicalStateSlice & HandleQueriesActions;
 
 export const handleQueriesSlice: CreateStateWithInitialValue<HandleQueriesStateInitializedFromData, HandleQueriesSlice> = (initialState, set, get): HandleQueriesSlice => {
   return {
-    ...logicalStateCacheSlice(initialState, set, get),
+    ...logicalStateSlice(initialState, set, get),
 
     reset: () => {
-      logicalStateCacheSlice(initialState, set, get).reset();
+      logicalStateSlice(initialState, set, get).reset();
     },
 
     getHandlesOfGadget: (gadgetId: GadgetId): string[] => {
-      const gadgetProps = get().lookupCachedPropsWithDragged(gadgetId);
+      const gadgetProps = get().lookupPropsWithDragged(gadgetId);
       if (gadgetProps === undefined) {
-        throw Error(`Gadget ${gadgetId} not found in cache`);
+        throw Error(`Gadget ${gadgetId} not found in state`);
       }
 
       const relations = gadgetProps.relations;
@@ -38,7 +38,7 @@ export const handleQueriesSlice: CreateStateWithInitialValue<HandleQueriesStateI
         const relation = relations.get(pos)!;
         const cellHandles = "equals" in relation ? [] : [makeHandleId(pos, gadgetId)];
         if ("equals" in relation && pos === OUTPUT_POSITION)
-          cellHandles.push(...["bottom", "top"].map(
+          cellHandles.push(...["left", "right"].map(
             (eqPos: EqualityPosition) => makeEqualityHandleId(gadgetId, eqPos))
           );
         return cellHandles;

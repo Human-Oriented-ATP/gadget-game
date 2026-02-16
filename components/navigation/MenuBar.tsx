@@ -1,6 +1,5 @@
 import { MenuButtons } from './MenuButtons';
 import { ExclamationTriangleIcon, StarIcon } from '@radix-ui/react-icons';
-import { Connector } from 'components/game/gadget/Connector';
 import { useGameStateContext } from 'lib/state/StateContextProvider';
 import { GameSlice } from 'lib/state/Store';
 

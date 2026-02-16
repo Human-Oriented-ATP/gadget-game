@@ -2,11 +2,7 @@ import { applyNodeChanges, NodeChange, OnNodesChange } from '@xyflow/react';
 import { GadgetNode } from '../../../components/game/flow/GadgetFlowNode';
 import { CreateStateWithInitialValue } from '../Types';
 import { gadgetDndFromShelfSlice, GadgetDndFromShelfSlice } from './DragGadgetFromShelf';
-import { Relation } from 'lib/game/Term';
-import { getRelationOfHandle, isTargetHandle, makeEqualityHandleId, makeHandleId } from 'lib/game/Handles';
 import { ConnectorStatus } from 'components/game/gadget/handles/ConnectorTypes';
-import { EqualityPosition } from 'lib/game/Primitives';
-import { OUTPUT_POSITION } from 'lib/game/CellPosition';
 
 export type NodeStateInitializedFromData = {
   nodes: GadgetNode[],
@@ -20,22 +16,11 @@ export type NodeState = {
 export interface NodeActions {
   reset: () => void;
   onNodesChange: OnNodesChange<GadgetNode>;
-  getGadgetNodeOfHandle: (handleId: string) => GadgetNode;
-  getRelationOfHandle: (handleId: string) => Relation;
   abortAddingGadget: () => void;
-  getHandlesOfNode: (nodeId: string) => string[];
-  getTargetHandlesOfNode: (nodeId: string) => string[];
   getNode(nodeId: string): GadgetNode;
-  getAllHandles(): string[];
 };
 
 export type NodeSlice = GadgetDndFromShelfSlice & NodeStateInitializedFromData & NodeState & NodeActions
-
-function hasHandle(node: GadgetNode, handleId: string): boolean {
-  const handles = node.handles;
-  if (handles === undefined) return false;
-  return handles.some((handle) => handle.id === handleId);
-}
 
 function newGadgetNodeHasBeenInitialized(nodeChanges: NodeChange[]) {
   return nodeChanges.length === 1 && nodeChanges[0].type === "dimensions"
@@ -66,18 +51,6 @@ export const nodeSlice: CreateStateWithInitialValue<NodeStateInitializedFromData
       });
     },
 
-    getGadgetNodeOfHandle(handleId: string): GadgetNode {
-      const node = get().nodes.find((node) => hasHandle(node, handleId));
-      if (node === undefined) throw Error(`Trying to look for handle that does not exist: ${handleId}`);
-      return node
-    },
-
-    getRelationOfHandle(handleId: string): Relation {
-      const node = get().getGadgetNodeOfHandle(handleId)
-      const relations = node.data.relations
-      return getRelationOfHandle(handleId, relations)
-    },
-
     abortAddingGadget: () => {
       const { gadgetBeingDraggedFromShelf } = get();
       if (gadgetBeingDraggedFromShelf !== undefined) {
@@ -93,38 +66,5 @@ export const nodeSlice: CreateStateWithInitialValue<NodeStateInitializedFromData
         throw Error(`Trying to look for node that does not exist: ${nodeId}`);
       return node
     },
-
-    getHandlesOfNode: (nodeId: string): string[] => {
-      const node = get().getNode(nodeId)
-      const cellPositions = Array.from(node.data.relations.keys());
-      const getCellHandles = pos => {
-        const relation = node.data.relations.get(pos)!;
-        const gadgetId = node.data.id;
-        const cellHandles = [makeHandleId(pos, gadgetId)];
-        if ("equals" in relation && pos === OUTPUT_POSITION)
-          cellHandles.push(...["bottom", "top"].map(
-            (eqPos: EqualityPosition) => makeEqualityHandleId(gadgetId, eqPos))
-          );
-        return cellHandles;
-      }
-
-      const handles = cellPositions.flatMap(getCellHandles);
-      return handles
-    },
-
-    getTargetHandlesOfNode: (nodeId: string): string[] => {
-      const handles = get().getHandlesOfNode(nodeId)
-      const targetHandles = handles.filter((handle) => isTargetHandle(handle))
-      return targetHandles
-    },
-
-    getAllHandles(): string[] {
-      const handles = new Array<string>()
-      for (const node of get().nodes) {
-        handles.push(...Array.from(get().getHandlesOfNode(node.id).values()))
-      }
-      return handles
-    },
-
   }
 }

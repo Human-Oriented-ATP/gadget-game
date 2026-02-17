@@ -1,7 +1,7 @@
 import { CreateStateWithInitialValue } from '../Types';
 import { addEdge, Connection, ReactFlowInstance, XYPosition } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
-import { EdgeSlice, edgeSlice, EdgeStateInitializedFromData } from './Edges';
+import { DEFAULT_EDGE_PROPS, EdgeSlice, edgeSlice, EdgeStateInitializedFromData } from './Edges';
 import { toGeneralConnection } from 'lib/game/Connection';
 import { NodeSlice, nodeSlice, NodeState, NodeStateInitializedFromData } from './Nodes';
 import { GameEvent } from "lib/game/History";
@@ -254,7 +254,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
       const proximityConnection = get().getProximityConnection(nodeId)
       if (proximityConnection !== null) {
         const removalEvents = get().removeEdgesConnectedToHandle(proximityConnection.targetHandle)
-        set({ edges: addEdge({ ...proximityConnection, type: 'customEdge' }, get().edges), });
+        set({ edges: addEdge({ ...proximityConnection, ...DEFAULT_EDGE_PROPS }, get().edges), });
         const generalConnection = toGeneralConnection(proximityConnection)!;
         const connectionEvent: GameEvent = { ConnectionAdded: generalConnection }
         return [...removalEvents, connectionEvent]

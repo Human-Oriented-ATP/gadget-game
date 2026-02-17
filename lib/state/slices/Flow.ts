@@ -1,5 +1,5 @@
 import { CreateStateWithInitialValue } from '../Types';
-import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag } from '@xyflow/react';
+import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, getConnectedEdges, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag, OnSelectionChangeFunc } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
 import { isValidConnection, toGeneralConnection } from 'lib/game/Connection';
 import { initViewport } from 'lib/game/ViewportInitialisation';
@@ -7,6 +7,7 @@ import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtiliti
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
 import { DoubleClickHandler } from 'components/game/gadget/handles/ConnectorTypes';
 import { isEqualityHandle } from 'lib/game/Handles';
+import { DEFAULT_EDGE_PROPS, ELEVATED_EDGE_PROPS } from './Edges';
 
 export type FlowStateInitializedFromData = FlowUtilitiesStateInitializedFromData
 
@@ -17,6 +18,7 @@ type OnEdgeClick = React.MouseEvent<Element, MouseEvent>;
 export interface FlowActions {
   reset: () => void;
   onInit: () => void;
+  onSelectionChange: OnSelectionChangeFunc;
   onEdgesChange: OnEdgesChange;
   onBeforeDelete: OnBeforeDelete<GadgetNode, Edge>;
   onConnectStart: (event: MouseEvent | TouchEvent, params: OnConnectStartParams) => void;
@@ -44,6 +46,17 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
       const initialViewPortSetting = get().setup.settings.initialViewportSetting
       initViewport(get().rf, initialViewPortSetting)
       get().updateLogicalState([])
+    },
+
+    onSelectionChange: ({ nodes: selectedNodes }) => {
+      const connectedEdges = getConnectedEdges(selectedNodes, get().edges);
+      const connectedEdgeIds = new Set(connectedEdges.map((e) => e.id));
+
+      set({
+        edges: get().edges.map(edge => 
+          connectedEdgeIds.has(edge.id) ? {...edge, ELEVATED_EDGE_PROPS} : {...edge, DEFAULT_EDGE_PROPS}
+        )
+      })
     },
 
     onEdgesChange: (changes: EdgeChange<Edge>[]) => {
@@ -76,7 +89,7 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
       const edgeRemovalEvents = isEqualityConnection ? [] :
         get().removeEdgesConnectedToHandle(connection.targetHandle);
       set({
-        edges: addEdge({ ...connection, type: 'customEdge' }, get().edges),
+        edges: addEdge({ ...connection, ...DEFAULT_EDGE_PROPS }, get().edges),
       });
       const generalConnection = toGeneralConnection(connection)!;
       get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: generalConnection }])

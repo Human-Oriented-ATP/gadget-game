@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { NodeTypes, EdgeTypes, ReactFlow, Background, BackgroundVariant, NodeProps, ConnectionMode } from '@xyflow/react';
+import { EdgeTypes, ReactFlow, Background, BackgroundVariant, NodeProps, ConnectionMode } from '@xyflow/react';
 import { useGameStateContext } from 'lib/state/StateContextProvider';
 import { GameSlice } from 'lib/state/Store';
 import { useShallow } from 'zustand/react/shallow';
@@ -29,6 +29,7 @@ const selector = (state: GameSlice) => ({
     edges: state.edges,
     onInit: state.onInit,
     onNodesChange: state.onNodesChange,
+    onSelectionChange: state.onSelectionChange,
     onEdgesChange: state.onEdgesChange,
     onConnect: state.onConnect,
     onConnectStart: state.onConnectStart,
@@ -45,8 +46,8 @@ const selector = (state: GameSlice) => ({
 });
 
 export function Flow() {
-    const { nodes, edges, onInit, onNodesChange, onEdgesChange, onConnect, onConnectStart, onConnectEnd, onEdgeClick,
-        onHandleDoubleClick, isValidConnection, onBeforeDelete, onNodeDrag, onNodeDragStop,
+    const { nodes, edges, onInit, onNodesChange, onSelectionChange, onEdgesChange, onConnect, onConnectStart, onConnectEnd, 
+        onEdgeClick, onHandleDoubleClick, isValidConnection, onBeforeDelete, onNodeDrag, onNodeDragStop,
         hideAnimatedTutorialContent, showAnimatedTutorialContent, settings } = useGameStateContext(useShallow(selector));
 
     // Double clicking is handled within the CustomHandle component
@@ -59,6 +60,7 @@ export function Flow() {
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}
+            onSelectionChange={onSelectionChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
             onBeforeDelete={onBeforeDelete}

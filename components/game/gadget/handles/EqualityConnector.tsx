@@ -7,7 +7,7 @@ interface EqualityConnectorProps extends ConnectorDetails {
 }
 
 function EqualityConnectorPolygon() {
-    return <polygon points="10,0 10,10 15,15 10,20 5,15 10,10" />
+    return <polygon points="20,10 11,10 6,15 1,10 6,5 11,10" />
 }
 
 export function EqualityConnector({ equalityPosition, status = "DEFAULT", isConnecting = false, isInline = false }: EqualityConnectorProps) {
@@ -20,7 +20,7 @@ export function EqualityConnector({ equalityPosition, status = "DEFAULT", isConn
 
     const transformProps = equalityPosition === "left" ? "rotate(0)" : "rotate(180)";
 
-    return <svg width="20" height="21" xmlns="http://www.w3.org/2000/svg" className={circleClassName} transform={transformProps}>
+    return <svg width="21" height="20" xmlns="http://www.w3.org/2000/svg" className={circleClassName} transform={transformProps}>
         <EqualityConnectorPolygon />
     </svg>
 }

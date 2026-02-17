@@ -77,10 +77,10 @@ export class PrologParser extends CstParser {
 
 export const parser: PrologParser = new PrologParser()
 
-function handleErrors(errors: IRecognitionException[]) {
+export function handleErrors(errors: IRecognitionException[]) {
     if (errors.length > 0) {
         const getPos = (error: IRecognitionException) => {
-            const makeMsg = error.token.startLine !== null 
+            const makeMsg = error.token.startLine !== null
                 && error.token.startColumn !== null;
             if (!makeMsg) return "";
             return `. Occurs on ${error.token.startLine}:${error.token.startColumn}`

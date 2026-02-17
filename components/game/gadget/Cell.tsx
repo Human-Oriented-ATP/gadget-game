@@ -43,11 +43,11 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
             {relationArgs.map((arg, idx) => <Hole key={idx} term={arg}></Hole>)}
         </div>
 
-        <CustomCellHandle
+        {!("equals" in props.relation) && <CustomCellHandle
             type={handleType}
             handleId={handleId}
             onHandleDoubleClick={props.onHandleDoubleClick}
-        />
+        />}
 
         {needsEqualityHandles && (["bottom", "top"] as const).map(pos => (
             <CustomEqualityHandle

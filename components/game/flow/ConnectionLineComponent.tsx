@@ -30,13 +30,13 @@ function regularConnectionSVGData(props: ConnectionLineComponentProps): CurvePro
 
 function equalityConnectionSVGData(props: ConnectionLineComponentProps): CurveProps {
     const adjustBasedOnPosition = (value: number, pos: Position) => {
-        const isTop = pos == Position.Top;
-        const offsetDir = isTop ? -1 : 1;
+        const isLeft = pos == Position.Left;
+        const offsetDir = isLeft ? -1 : 1;
         return value + EQUALITY_CONNECTOR_OFFSET * offsetDir;
     };
 
     const positionToEquality = (pos: Position): EqualityPosition =>
-        pos == Position.Top ? "top" : "bottom";
+        pos == Position.Left ? "left" : "right";
 
     const startPointY = adjustBasedOnPosition(props.fromY, props.fromPosition);
 

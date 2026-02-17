@@ -18,7 +18,7 @@ export function EqualityConnector({ equalityPosition, status = "DEFAULT", isConn
         isConnecting && "fill-green",
         isInline && "inline align-text-bottom");
 
-    const transformProps = equalityPosition === "top" ? "scale(1,-1)" : undefined;
+    const transformProps = equalityPosition === "left" ? "rotate(0)" : "rotate(180)";
 
     return <svg width="20" height="21" xmlns="http://www.w3.org/2000/svg" className={circleClassName} transform={transformProps}>
         <EqualityConnectorPolygon />

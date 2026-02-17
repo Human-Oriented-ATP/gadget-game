@@ -49,7 +49,7 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
             onHandleDoubleClick={props.onHandleDoubleClick}
         />}
 
-        {needsEqualityHandles && (["bottom", "top"] as const).map(pos => (
+        {needsEqualityHandles && (["left", "right"] as const).map(pos => (
             <CustomEqualityHandle
                 key={pos}
                 equalityPosition={pos}

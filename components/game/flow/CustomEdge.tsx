@@ -38,7 +38,7 @@ function equalityConnectionSVGData(props: EdgeProps): CurveProps {
     };
 
     const positionToEquality = (pos: Position): EqualityPosition =>
-        pos == Position.Top ? "top" : "bottom";
+        pos == Position.Left ? "left" : "right";
 
     const startPointY = adjustBasedOnPosition(props.sourceY, props.sourcePosition);
     const endPointY = adjustBasedOnPosition(props.targetY, props.targetPosition);

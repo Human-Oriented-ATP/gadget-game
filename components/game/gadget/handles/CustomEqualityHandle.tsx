@@ -4,6 +4,7 @@ import { EqualityPosition } from "lib/game/Primitives"
 import { StaticEqualityHandle } from "./StaticEqualityHandle"
 import { EqualityConnector } from "./EqualityConnector"
 import { HandleDoubleClickProps } from "./ConnectorTypes"
+import { twMerge } from "tailwind-merge"
 
 export interface CustomEqualityHandleProps extends HandleDoubleClickProps {
     equalityPosition: EqualityPosition
@@ -17,7 +18,7 @@ export function CustomEqualityHandle(props: CustomEqualityHandleProps) {
     if (props.handleId === undefined) {
         return <StaticEqualityHandle equalityPosition={props.equalityPosition} />
     } else {
-        const position = props.equalityPosition === "top" ? Position.Top : Position.Bottom;
+        const position = props.equalityPosition === "left" ? Position.Left : Position.Right;
         const status = handleStatus.get(props.handleId)
         const isConnecting = connectingHandles.includes(props.handleId)
 
@@ -27,8 +28,12 @@ export function CustomEqualityHandle(props: CustomEqualityHandleProps) {
             }
         };
 
+        const className = props.equalityPosition === "left" ? "equality-handle-left" : "equality-handle-right";
+
         return <ReactFlowHandle type="source" position={position} id={props.handleId}
-            onDoubleClick={onDoubleClick} className="equality-handle">
+            onDoubleClick={onDoubleClick}
+            className={twMerge("equality-handle", className)}
+        >
             <EqualityConnector equalityPosition={props.equalityPosition} status={status} isConnecting={isConnecting} />
         </ReactFlowHandle>
     }

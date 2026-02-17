@@ -8,8 +8,8 @@ interface StaticEqualityHandleProps extends ConnectorDetails {
 }
 
 export function StaticEqualityHandle(props: StaticEqualityHandleProps) {
-    const handlePositionClass = props.equalityPosition == "top" ? "react-flow__handle-top" : "react-flow__handle-bottom";
-    return <div className={twMerge("react-flow__handle equality-handle", handlePositionClass)}>
+    const className = props.equalityPosition === "left" ? "equality-handle-left" : "equality-handle-right";
+    return <div className={twMerge("react-flow__handle equality-handle", className)}>
         <EqualityConnector {...props} />
     </div>
 }

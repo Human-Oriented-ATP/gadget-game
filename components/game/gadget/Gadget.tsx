@@ -69,7 +69,12 @@ export function Gadget(props: GadgetProps & HandleDoubleClickProps) {
             const [toNode] = internalConnection.to
             const fromInput = fromNode !== "output"
             const toOutput = toNode === "output"
-            return { start, end, fromInput, toOutput }
+
+            const toPos = toNode === "output" ? OUTPUT_POSITION : toNode
+            const relation = props.relations.get(toPos)
+            const toEquality = relation !== undefined && "equals" in relation
+
+            return { start, end, fromInput, toOutput, toEquality }
         }
 
         const connections = makeConnections(props.relations);

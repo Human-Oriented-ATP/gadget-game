@@ -24,7 +24,7 @@ function regularConnectionSVGData(props: ConnectionLineComponentProps): CurvePro
     return {
         startPos: {x: startPointX, y: props.fromY},
         endPos: {x: endPointX, y: props.toY},
-        tensionDir: { type: "horizontal" }
+        tensionDir: { type: "cell" }
     }
 }
 
@@ -38,23 +38,23 @@ function equalityConnectionSVGData(props: ConnectionLineComponentProps): CurvePr
     const positionToEquality = (pos: Position): EqualityPosition =>
         pos == Position.Left ? "left" : "right";
 
-    const startPointY = adjustBasedOnPosition(props.fromY, props.fromPosition);
+    const startPointX = adjustBasedOnPosition(props.fromX, props.fromPosition);
 
-    let endPointY;
+    let endPointX;
     let targetPosition: EqualityPosition | undefined;
     if (props.toHandle && props.connectionStatus === "valid") {
-        endPointY = adjustBasedOnPosition(props.toY, props.toPosition);
+        endPointX = adjustBasedOnPosition(props.toX, props.toPosition);
         targetPosition = positionToEquality(props.toPosition);
     } else {
-        endPointY = props.toY;
+        endPointX = props.toX;
         targetPosition = undefined;
     }
 
     return {
-        startPos: {x: props.fromX, y: startPointY},
-        endPos: {x: props.toX, y: endPointY},
+        startPos: { x: startPointX, y: props.fromY },
+        endPos: { x: endPointX, y: props.toY },
         tensionDir: {
-            type: "vertical",
+            type: "equality",
             sourcePosition: positionToEquality(props.fromPosition),
             targetPosition: targetPosition
         }

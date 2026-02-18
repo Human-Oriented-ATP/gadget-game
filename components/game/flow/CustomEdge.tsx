@@ -10,7 +10,7 @@ import { EqualityPosition } from 'lib/game/Primitives';
 // since xyflow computes handle positions differently for these two components.
 const SOURCE_CONNECTOR_NOTCH_OFFSET = -21;
 const TARGET_CONNECTOR_NOTCH_OFFSET = 10;
-const EQUALITY_CONNECTOR_OFFSET = -5;
+const EQUALITY_CONNECTOR_OFFSET = -6;
 
 function getGeneralConnection(props: EdgeProps): GeneralConnection {
     if (!props.sourceHandleId || !props.targetHandleId)
@@ -26,28 +26,28 @@ function regularConnectionSVGData(props: EdgeProps): CurveProps {
     return {
         startPos: {x: startPointX, y: props.sourceY},
         endPos: {x: endPointX, y: props.targetY},
-        tensionDir: { type: "horizontal" }
+        tensionDir: { type: "cell" }
     };
 }
 
 function equalityConnectionSVGData(props: EdgeProps): CurveProps {
     const adjustBasedOnPosition = (value: number, pos: Position) => {
-        const isTop = pos == Position.Top;
-        const offsetDir = isTop ? -1 : 1;
+        const isLeft = pos == Position.Left;
+        const offsetDir = isLeft ? -1 : 1;
         return value + EQUALITY_CONNECTOR_OFFSET * offsetDir;
     };
 
     const positionToEquality = (pos: Position): EqualityPosition =>
         pos == Position.Left ? "left" : "right";
 
-    const startPointY = adjustBasedOnPosition(props.sourceY, props.sourcePosition);
-    const endPointY = adjustBasedOnPosition(props.targetY, props.targetPosition);
+    const startPointX = adjustBasedOnPosition(props.sourceX, props.sourcePosition);
+    const endPointX = adjustBasedOnPosition(props.targetX, props.targetPosition);
 
     return {
-        startPos: {x: props.sourceX, y: startPointY},
-        endPos: {x: props.targetX, y: endPointY},
+        startPos: { x: startPointX, y: props.sourceY },
+        endPos: { x: endPointX, y: props.targetY },
         tensionDir: {
-            type: "vertical",
+            type: "equality",
             sourcePosition: positionToEquality(props.sourcePosition),
             targetPosition: positionToEquality(props.targetPosition)
         }

@@ -54,7 +54,7 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
 
       set({
         edges: get().edges.map(edge => 
-          connectedEdgeIds.has(edge.id) ? {...edge, ELEVATED_EDGE_PROPS} : {...edge, DEFAULT_EDGE_PROPS}
+          connectedEdgeIds.has(edge.id) ? {...edge, ...ELEVATED_EDGE_PROPS} : {...edge, ...DEFAULT_EDGE_PROPS}
         )
       })
     },

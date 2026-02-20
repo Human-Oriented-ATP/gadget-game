@@ -86,7 +86,7 @@ function hasPinkCircleAxiom(axioms: string[]) {
 
 export function HelpContent() {
     const { settings: { gadgetDeletionEnabled, proximityConnectEnabled, panEnabled }, axioms } = useGameStateContext(useShallow((state) => state.setup))
-    const showMysteryGadgetExplanation = hasPinkCircleAxiom(axioms)
+    const showDependentGadgetExplanation = hasPinkCircleAxiom(axioms)
     return <>
         <h2 className="text-xl font-bold">Game Help</h2>
         <ul className="text-left leading-10 p-5">
@@ -117,12 +117,12 @@ export function HelpContent() {
                     <HelpItem>Click on the canvas to deselect all gadgets</HelpItem>
                 </HelpSection>}
 
-            {showMysteryGadgetExplanation &&
-                <HelpSection title="Mystery Gadgets">
+            {showDependentGadgetExplanation &&
+                <HelpSection title="Dependent Gadgets">
                     <HelpItem>Pink Circles <PinkHole /> generate letters</HelpItem>
                     <HelpItem>If all the numbers below <PinkHole /> are the same then the letter in <PinkHole /> will be the same</HelpItem>
                     <HelpItem>If you delete all gadgets with <PinkHole value="A" /> then the letter A frees up. The letter <br />
-                        A is generated again once you add the next mystery gadget</HelpItem>
+                        A is generated again once you add the next dependent gadget</HelpItem>
                 </HelpSection>}
         </ul>
     </>

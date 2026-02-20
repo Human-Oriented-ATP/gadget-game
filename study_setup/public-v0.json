@@ -70,7 +70,7 @@
             "categoryUnlockThreshold": 1
         },
         {
-            "name": "Mystery Gadget Tutorial",
+            "name": "Dependent Gadget Tutorial",
             "problems": [
                 "pink_tutorial01",
                 "pink_tutorial02",

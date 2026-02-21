@@ -4,6 +4,9 @@ import { toGeneralConnection } from "lib/game/Connection";
 import { GameEvent } from "lib/game/History";
 import { isGadgetHandle } from 'lib/game/Handles';
 
+export const DEFAULT_EDGE_PROPS = {type: 'customEdge', zIndex: 35};
+export const ELEVATED_EDGE_PROPS = {type: 'customEdge', zIndex: 1010};
+
 export interface EdgeStateInitializedFromData {
   edges: Edge[],
 }

@@ -12,6 +12,7 @@ import { Edge, ReactFlowInstance } from "@xyflow/react";
 import { DEFAULT_SETTINGS } from "components/tutorial/InteractiveLevel";
 import { GeneralConnection } from "lib/game/Connection";
 import { OUTPUT_POSITION } from 'lib/game/CellPosition';
+import { DEFAULT_EDGE_PROPS } from "./slices/Edges";
 
 function getGadgetProps(id: GadgetId, gadget: InitialDiagramGadget): GadgetProps {
     const gadgetRelations = getGadgetRelations(gadget.statement, id)
@@ -52,7 +53,7 @@ function getInitialEdge(generalConnection: GeneralConnection, label: string): Ed
             sourceHandle: makeEqualityHandleId(...connection.from),
             target: connection.to[0],
             targetHandle: makeEqualityHandleId(...connection.to),
-            type: 'customEdge',
+            ...DEFAULT_EDGE_PROPS,
         }
     } else {
         const connection = generalConnection.connection;
@@ -62,7 +63,7 @@ function getInitialEdge(generalConnection: GeneralConnection, label: string): Ed
             sourceHandle: makeHandleId(OUTPUT_POSITION, connection.from),
             target: connection.to[0],
             targetHandle: makeHandleId(connection.to[1], connection.to[0]),
-            type: 'customEdge',
+            ...DEFAULT_EDGE_PROPS,
         }
     }
 

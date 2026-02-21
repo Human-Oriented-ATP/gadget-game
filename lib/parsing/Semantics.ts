@@ -1,4 +1,5 @@
-import { parseTermCst, parseStatementCst, parseProblemCst, parser, parseRelationCst } from "./Parser"
+import { parseTermCst, parseStatementCst, parseProblemCst, parser, parseRelationCst, handleErrors } from "./Parser"
+import { IRecognitionException } from "chevrotain"
 import { Term, Relation } from "../game/Term"
 import { Statement, makeProblemFileDataFromStatements, ProblemFileData, isAxiom } from "../game/Initialization"
 import { FunctionNode, ProblemNode, RelationNode, StatementNode, TermNode, NormalRelationNode, EqualityRelationNode } from "./Nodes"
@@ -62,6 +63,7 @@ class PrologAstBuilderVisitor extends BaseVisitor {
         if (node.conclusion) {
             const conclusion = this.visit(node.conclusion)
             if (node.hypotheses) {
+                this.validateEqualityInHypotheses(node.hypotheses)
                 const hypotheses = node.hypotheses.map((hyp) => this.visit(hyp))
                 return { axiom: { conclusion, hypotheses } }
             } else {
@@ -69,6 +71,7 @@ class PrologAstBuilderVisitor extends BaseVisitor {
             }
         } else {
             if (node.hypotheses) {
+                this.validateEqualityInHypotheses(node.hypotheses)
                 const hypotheses = node.hypotheses.map((hyp) => this.visit(hyp))
                 if (hypotheses.length !== 1) {
                     throw new Error("Expected exactly one term in the conclusion.")
@@ -85,6 +88,26 @@ class PrologAstBuilderVisitor extends BaseVisitor {
     problem(node: ProblemNode): ProblemFileData {
         const stmts = node.statements.map(stmt => this.visit(stmt))
         return makeProblemFileDataFromStatements(stmts);
+    }
+
+    validateEqualityInHypotheses(hypotheses: any[]) {
+        for (const hypNode of hypotheses) {
+            if (hypNode.children.equalityRelation) {
+                const eqNode = hypNode.children.equalityRelation[0];
+                const token = eqNode.children.Equals[0];
+                const error: IRecognitionException = {
+                    name: "EqualityInInputError",
+                    message: "Equality relations cannot appear in input positions",
+                    token: token,
+                    resyncedTokens: [],
+                    context: {
+                        ruleStack: [],
+                        ruleOccurrenceStack: []
+                    }
+                };
+                handleErrors([error]);
+            }
+        }
     }
 
 }

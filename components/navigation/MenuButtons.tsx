@@ -19,7 +19,7 @@ function formatTime(seconds: number): string {
 function HelpButton() {
   const openHelpPopup = useGameStateContext(useShallow((state) => state.openHelpPopup))
   return <div className='m-1'>
-    <Button onClick={openHelpPopup}>Help</Button>
+    <Button onClick={openHelpPopup}>Game Rules</Button>
   </div>
 }
 

@@ -88,7 +88,7 @@ export function HelpContent() {
     const { settings: { gadgetDeletionEnabled, proximityConnectEnabled, panEnabled }, axioms } = useGameStateContext(useShallow((state) => state.setup))
     const showDependentGadgetExplanation = hasPinkCircleAxiom(axioms)
     return <>
-        <h2 className="text-xl font-bold">Game Help</h2>
+        <h2 className="text-xl font-bold">Game Rules</h2>
         <ul className="text-left leading-10 p-5">
             <HelpSection title="Connections">
                 <HelpItem>Connect all open connectors<OpenTargetConnector />to complete the gadget machine</HelpItem>

@@ -6,10 +6,10 @@ import Link from "next/link"
 
 export function ProblemSelection(props: { config: StudyConfiguration, allProblems: string[] }) {
     return <>
-        <div className="p-4 pb-48">
+        <div className="p-4 pb-28">
             <ProblemCategoryGrid {...props} />
         </div>
-        <div className='fixed bottom-0 flex flex-col items-center w-full bg-middle-gray p-6'>
+        <div className='fixed bottom-4 right-4 z-10 rounded-xl border-2 border-black bg-white p-2 shadow-lg'>
             <StartButton config={props.config} />
         </div>
         {props.config.displayEndParticipationButton && <div className="relative md:fixed bottom-0 left-0 p-2">

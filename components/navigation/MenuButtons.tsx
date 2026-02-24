@@ -129,7 +129,7 @@ function ReportBugButton() {
   return (
     <div className='m-1'>
       <Button onClick={openBugReportPopup}>
-        Report a bug
+        Give Feedback
       </Button>
     </div>
   );

@@ -5,6 +5,7 @@ import { GameSlice } from 'lib/state/Store';
 import { useShallow } from 'zustand/react/shallow';
 import { collectUserEnvironment } from 'lib/util/userAgent';
 import { submitBugReport } from 'lib/study/submitBugReport';
+import { GameHistory } from 'lib/study/GameHistory';
 
 const selector = (state: GameSlice) => ({
   isOpen: state.bugReportPopupIsOpen,
@@ -12,19 +13,18 @@ const selector = (state: GameSlice) => ({
   makeHistoryObject: state.makeHistoryObject,
 })
 
-export function BugReportPopover() {
+export function BugReportDialog(props: { isOpen: boolean, onClose: () => void, makeHistoryObject?: () => GameHistory | undefined }) {
   const [bugReport, setBugReport] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { isOpen, close, makeHistoryObject } = useGameStateContext(useShallow(selector))
 
   const handleSubmit = useCallback(async () => {
     if (isSubmitting) return;
-    
+
     setIsSubmitting(true);
     try {
       const userEnv = collectUserEnvironment();
-      const history = makeHistoryObject();
-      
+      const history = props.makeHistoryObject?.();
+
       const result = await submitBugReport({
         userMessage: bugReport,
         environment: userEnv,
@@ -32,11 +32,11 @@ export function BugReportPopover() {
         problemId: history?.problemId,
         history: history,
       });
-      
+
       if (result.success) {
         console.log('Bug report submitted successfully');
         setBugReport('');
-        close();
+        props.onClose();
       } else {
         console.error('Failed to submit bug report:', result.error);
         alert('Failed to submit bug report. Please try again.');
@@ -47,18 +47,18 @@ export function BugReportPopover() {
     } finally {
       setIsSubmitting(false);
     }
-  }, [bugReport, isSubmitting, makeHistoryObject, close]);
+  }, [bugReport, isSubmitting, props]);
 
   const handleClose = useCallback(() => {
     setBugReport('');
-    close();
-  }, [close]);
+    props.onClose();
+  }, [props]);
 
-  if (isOpen) {
+  if (props.isOpen) {
     return (
       <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-white/30" onClick={handleClose}>
         <div className="bg-white p-6 rounded-lg shadow-lg w-xl max-w-[95vw]" onClick={e => e.stopPropagation()}>
-          <h3 className="text-lg font-semibold mb-3 text-center">Report a Bug</h3>
+          <h3 className="text-lg font-semibold mb-3 text-center">Give Feedback</h3>
           <textarea
             className="w-full h-32 p-2 border-2 border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
             placeholder="Describe the bug you encountered..."
@@ -79,4 +79,10 @@ export function BugReportPopover() {
   } else {
     return <></>;
   }
+}
+
+export function BugReportPopover() {
+  const { isOpen, close, makeHistoryObject } = useGameStateContext(useShallow(selector))
+
+  return <BugReportDialog isOpen={isOpen} onClose={close} makeHistoryObject={makeHistoryObject} />;
 }

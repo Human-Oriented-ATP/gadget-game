@@ -6,7 +6,7 @@ function getUnlistedProblems(config: StudyConfiguration, allProblems: string[]):
     if (config.displayUnlistedProblems === true) {
         const allProblemsInConfig = getProblemList(config)
         const unlistedProblems = allProblems.filter((problem) => !allProblemsInConfig.includes(problem))
-        return <ProblemCategoryDisplay config={config} category={{ name: "Unlisted Problems", problems: unlistedProblems, numberOfUnlockedProblems: Infinity }} />
+        return <ProblemCategoryDisplay config={config} category={{ name: "Unlisted Problems", problems: unlistedProblems }} />
     } else {
         return <></>
     }

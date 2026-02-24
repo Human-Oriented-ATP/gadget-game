@@ -20,7 +20,7 @@ export function MainMenuBar() {
                 Like solving logical puzzles?<br /> Check out <a href="https://mitpuzzles.com/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline font-medium">https://mitpuzzles.com/</a>!
             </div>
 
-            <Link href="/privacy-policy" className="mt-auto text-blue-600 hover:underline font-medium">
+            <Link href="/privacy-policy" className="mt-auto hover:underline font-medium">
                 Privacy Policy
             </Link>
         </aside>

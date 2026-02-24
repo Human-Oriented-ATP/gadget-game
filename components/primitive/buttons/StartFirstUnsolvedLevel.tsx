@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import { StudyConfiguration } from "lib/study/Types";
-import { findFirstUncompletedProblem } from "lib/study/LevelConfiguration";
+import { findFirstUncompletedProblem, getProblemList } from "lib/study/LevelConfiguration";
+import { getCompletedProblems } from "lib/study/CompletedProblems";
 import { useEffect, useState } from "react";
 
 type NextProblemInfo = {
@@ -33,12 +34,12 @@ function getNextProblemInfo(config: StudyConfiguration): NextProblemInfo | undef
     return undefined;
 }
 
-export function StartButton(props: { disabled?: boolean; worldLabel?: string }) {
+export function StartButton(props: { disabled?: boolean; worldLabel?: string; hasSolvedAnyLevel?: boolean }) {
     return <button
         className="border-2 border-black bg-green rounded-lg p-3 px-10 hover:bg-black hover:text-white text-2xl disabled:opacity-60"
         disabled={props.disabled}>
         <div className="leading-tight text-center">
-            <div>Continue Playing</div>
+            <div>{props.hasSolvedAnyLevel ? "Continue Playing" : "Start Playing"}</div>
             {props.worldLabel && <div className="text-sm">{props.worldLabel}</div>}
         </div>
     </button>;
@@ -47,8 +48,13 @@ export function StartButton(props: { disabled?: boolean; worldLabel?: string }) 
 export default function StartFirstUnsolvedLevelButton({ config }: { config: StudyConfiguration }) {
     const [href, setHref] = useState<string | undefined>(undefined);
     const [worldLabel, setWorldLabel] = useState<string | undefined>(undefined);
+    const [hasSolvedAnyLevel, setHasSolvedAnyLevel] = useState(false);
 
     useEffect(() => {
+        const puzzleProblems = new Set(getProblemList(config));
+        const hasSolvedPuzzleLevel = getCompletedProblems().some(problem => puzzleProblems.has(problem));
+        setHasSolvedAnyLevel(hasSolvedPuzzleLevel);
+
         const nextProblemInfo = getNextProblemInfo(config);
         if (!nextProblemInfo) {
             setHref(undefined);
@@ -60,8 +66,8 @@ export default function StartFirstUnsolvedLevelButton({ config }: { config: Stud
         setWorldLabel(`${nextProblemInfo.worldName} • Puzzle ${nextProblemInfo.indexInWorld}`);
     }, [config]);
 
-    if (href === undefined) return <StartButton disabled worldLabel={worldLabel} />;
+    if (href === undefined) return <StartButton disabled worldLabel={worldLabel} hasSolvedAnyLevel={hasSolvedAnyLevel} />;
     return <Link href={href}>
-        <StartButton worldLabel={worldLabel} />
+        <StartButton worldLabel={worldLabel} hasSolvedAnyLevel={hasSolvedAnyLevel} />
     </Link>
 }

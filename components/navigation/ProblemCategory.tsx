@@ -28,12 +28,14 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
 
     const useFlexibleNumberOfColumns = props.config.displayNamesAs !== "number"
     const problems = props.category.problems.filter(problem => problem !== "questionnaire1" && problem !== "questionnaire2");
+    const solvedProblems = completedProblems?.filter(problem => problems.includes(problem)).length ?? 0;
 
     const nextProblem = completedProblems && findFirstUncompletedProblem(props.config);
 
     return <div className="max-w-3xl">
-        <div>
-            {props.category.name}
+        <div className="flex items-baseline gap-2">
+            <span>{props.category.name}</span>
+            <span className="text-xs opacity-70">({solvedProblems}/{problems.length} levels solved)</span>
         </div>
         <div className={twJoin("grid", useFlexibleNumberOfColumns && "grid-cols-3 md:grid-cols-5", !useFlexibleNumberOfColumns && "grid-cols-5")}>
             {problems.map((problem, index) => {

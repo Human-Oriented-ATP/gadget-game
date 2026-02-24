@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Button from "../primitive/buttons/Default"
-import { ProblemSelection } from "./ProblemSelection"
+import ProblemCategoryGrid from "./ProblemGrid"
 import internal from "study_setup/internal.json"
 import { StudyConfiguration } from "lib/study/Types"
 import { ResetProgressButton } from "components/primitive/buttons/ResetProgress"
@@ -28,7 +28,7 @@ export default function MainScreen({ allProblems }: { allProblems: string[] }) {
 
         <h2 className="text-xl p-4">Choose the game you want to play:</h2>
         <div>
-            <ProblemSelection config={(internal as StudyConfiguration)} allProblems={allProblems} />
+            <ProblemCategoryGrid config={(internal as StudyConfiguration)} allProblems={allProblems} />
         </div>
     </div>
 }

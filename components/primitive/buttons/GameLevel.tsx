@@ -4,7 +4,7 @@ import { twJoin } from "tailwind-merge";
 import Button from "./Default";
 
 function AdjustableButton({ isSquare = false, isNextProblem = false, ...props }) {
-    let classNames = "w-28 text-sm md:w-36 md:text-base";
+    let classNames = "w-36 text-base";
     if (isSquare === true) {
         classNames = "w-16";
     }

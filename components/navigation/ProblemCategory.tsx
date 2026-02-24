@@ -6,7 +6,7 @@ import { getCompletedProblems } from "lib/study/CompletedProblems";
 import { findFirstUncompletedProblem } from "lib/study/LevelConfiguration";
 import { ProblemCategory, StudyConfiguration } from "lib/study/Types";
 import { useEffect, useState } from "react";
-import { twJoin } from "tailwind-merge";
+import { twJoin, twMerge } from "tailwind-merge";
 
 interface ProblemCategoryProps {
     config: StudyConfiguration
@@ -29,7 +29,7 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
         }
     }
 
-    const useFlexibleNumberOfColumns = props.config.displayNamesAs !== "number"
+    const fullNamesDisplayed = props.config.displayNamesAs !== "number"
     const problems = props.category.problems.filter(problem => problem !== "questionnaire1" && problem !== "questionnaire2");
     const solvedProblems = completedProblems?.filter(problem => problems.includes(problem)).length ?? 0;
     const allProblemsSolved = problems.length > 0 && solvedProblems === problems.length;
@@ -44,7 +44,7 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
 
     const nextProblem = completedProblems && findFirstUncompletedProblem(props.config);
 
-    return <div className="justify-self-center w-full max-w-4xl border-2 border-gray-300 rounded-lg p-3">
+    return <div className={twMerge("justify-self-center w-lg border-2 border-gray-300 rounded-lg p-3", fullNamesDisplayed && "w-4xl")}>
         <button className="w-full flex items-center justify-between text-left px-2 py-1"
             onClick={() => setIsOpen(current => !current)}>
             <div className="flex items-center gap-2">
@@ -54,7 +54,7 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
             </div>
             <span className="text-xs opacity-70 whitespace-nowrap">({solvedProblems}/{problems.length} levels solved)</span>
         </button>
-        {isOpen && <div className={twJoin("grid mt-2", useFlexibleNumberOfColumns && "grid-cols-3 sm:grid-cols-5", !useFlexibleNumberOfColumns && "grid-cols-3 sm:grid-cols-5")}>
+        {isOpen && <div className={twJoin("grid mt-2 justify-items-center grid-cols-5")}>
             {problems.map((problem, index) => {
                 return <div className="p-2" key={problem}>
                     <div className="relative">

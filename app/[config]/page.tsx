@@ -1,5 +1,5 @@
 import MainScreen from "components/navigation/MainScreen";
-import StudyScreen from "components/navigation/StudyScreen";
+import ProblemCategoryGrid from "components/navigation/ProblemGrid";
 import { loadAllProblemsInDirectory, loadStudyConfiguration } from "lib/game/LoadProblems";
 
 export function generateStaticParams() {
@@ -18,6 +18,6 @@ export default async function Page(props: { params: Params }) {
     if (params.config === "internal") {
         return <MainScreen allProblems={allProblems} />
     } else {
-        return <StudyScreen config={configuration} allProblems={allProblems} />
+        return <ProblemCategoryGrid config={configuration} allProblems={allProblems} />
     }
 }

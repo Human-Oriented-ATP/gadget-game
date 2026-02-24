@@ -1,4 +1,4 @@
-import MainScreen from "components/navigation/MainScreen";
+import InternalPage from "components/navigation/InternalPage";
 import ProblemCategoryGrid from "components/navigation/ProblemGrid";
 import { loadAllProblemsInDirectory, loadStudyConfiguration } from "lib/game/LoadProblems";
 
@@ -16,7 +16,7 @@ export default async function Page(props: { params: Params }) {
     const allProblems = await loadAllProblemsInDirectory()
 
     if (params.config === "internal") {
-        return <MainScreen allProblems={allProblems} />
+        return <InternalPage allProblems={allProblems} />
     } else {
         return <ProblemCategoryGrid config={configuration} allProblems={allProblems} />
     }

@@ -5,7 +5,7 @@ import internal from "study_setup/internal.json"
 import { StudyConfiguration } from "lib/study/Types"
 import { ResetProgressButton } from "components/primitive/buttons/ResetProgress"
 
-export default function MainScreen({ allProblems }: { allProblems: string[] }) {
+export default function InternalPage({ allProblems }: { allProblems: string[] }) {
     return <div className="w-full text-center pt-10">
         <h1 className="text-2xl p-4">Welcome to the Gadget Game!</h1>
 

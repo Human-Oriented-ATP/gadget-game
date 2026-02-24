@@ -15,8 +15,7 @@
                 "tutorial05",
                 "tutorial06",
                 "t_e10"
-            ],
-            "numberOfUnlockedProblems": 1
+            ]
         },
         {
             "name": "Lite World 1",
@@ -30,9 +29,7 @@
                 "ja57",
                 "t23",
                 "t24"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 7
+            ]
         },
         {
             "name": "Lite World 2",
@@ -47,9 +44,7 @@
                 "t29a",
                 "ja55b",
                 "t_e02"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Lite World 3",
@@ -65,9 +60,7 @@
                 "ja10",
                 "ja43",
                 "t72"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Dependent Gadget Tutorial",
@@ -77,9 +70,7 @@
                 "pink_tutorial03",
                 "pink_tutorial04",
                 "pink_tutorial05"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Pro World 1",
@@ -98,9 +89,7 @@
                 "t74",
                 "t76",
                 "t_e08"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Pro World 2",
@@ -119,9 +108,7 @@
                 "t78",
                 "t_e05",
                 "t_e09"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Pro World 3",
@@ -141,9 +128,7 @@
                 "t22a",
                 "t70",
                 "t77"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Pro World 4",
@@ -164,9 +149,7 @@
                 "t40",
                 "t44a",
                 "t_e06"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Expert World",
@@ -179,9 +162,7 @@
                 "t31",
                 "ja16",
                 "ja17"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         },
         {
             "name": "Legend World",
@@ -189,9 +170,7 @@
                 "f01a",
                 "t30",
                 "t35"
-            ],
-            "numberOfUnlockedProblems": 1000,
-            "categoryUnlockThreshold": 1
+            ]
         }
     ]
 }

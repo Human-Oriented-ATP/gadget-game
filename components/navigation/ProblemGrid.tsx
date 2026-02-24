@@ -13,7 +13,7 @@ function getUnlistedProblems(config: StudyConfiguration, allProblems: string[]):
 }
 
 export default function ProblemCategoryGrid(props: { config: StudyConfiguration, allProblems: string[] }) {
-    return <div className="grid grid-col-1 space-y-12 text-xl justify-center">
+    return <div className="grid grid-col-1 gap-y-8 text-xl justify-center">
         {props.config.categories.map((problemCategory) => {
             return <ProblemCategoryDisplay config={props.config} key={problemCategory.name} category={problemCategory} />
         })}

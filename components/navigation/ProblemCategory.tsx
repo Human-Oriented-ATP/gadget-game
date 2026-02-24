@@ -54,7 +54,7 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
             </div>
             <span className="text-xs opacity-70 whitespace-nowrap">({solvedProblems}/{problems.length} levels solved)</span>
         </button>
-        {isOpen && <div className={twJoin("grid mt-2", useFlexibleNumberOfColumns && "grid-cols-3 md:grid-cols-5", !useFlexibleNumberOfColumns && "grid-cols-5")}>
+        {isOpen && <div className={twJoin("grid mt-2", useFlexibleNumberOfColumns && "grid-cols-3 sm:grid-cols-5", !useFlexibleNumberOfColumns && "grid-cols-3 sm:grid-cols-5")}>
             {problems.map((problem, index) => {
                 return <div className="p-2" key={problem}>
                     <div className="relative">

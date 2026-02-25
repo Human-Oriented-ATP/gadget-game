@@ -1,5 +1,6 @@
 import Button from '../primitive/buttons/Default';
 import { HighlightedButton } from "../primitive/buttons/Highlighted";
+import { HomeIcon, ReloadIcon } from '@radix-ui/react-icons';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useGameStateContext } from 'lib/state/StateContextProvider';
@@ -32,7 +33,13 @@ function MainMenuButton() {
   }, [router, uploadHistory])
 
   return <div className='m-1'>
-    <Button onClick={mainButtonAction}>Main menu</Button>
+    <Button
+      onClick={mainButtonAction}
+      aria-label='Main menu'
+      title='Main menu'
+    >
+      <HomeIcon className='h-6 w-6' />
+    </Button>
   </div>
 }
 
@@ -47,7 +54,13 @@ function RestartLevelButton() {
   }, [reset, uploadHistory])
 
   return <div className='m-1'>
-    <Button onClick={restartLevel}>Restart level</Button>
+    <Button
+      onClick={restartLevel}
+      aria-label='Restart level'
+      title='Restart level'
+    >
+      <ReloadIcon className='h-6 w-6' />
+    </Button>
   </div>
 }
 

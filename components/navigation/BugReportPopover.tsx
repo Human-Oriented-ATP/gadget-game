@@ -103,7 +103,7 @@ export function BugReportDialog(props: { isOpen: boolean, onClose: () => void, m
       )}
       {isOpen && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-white/30" onClick={handleClose}>
-          <div className="bg-light-gray p-6 rounded-lg shadow-lg w-xl max-w-[95vw]" onClick={e => e.stopPropagation()}>
+          <div className="bg-white p-6 rounded-lg shadow-lg w-xl max-w-[95vw]" onClick={e => e.stopPropagation()}>
             <h3 className="text-lg font-semibold mb-3 text-center">Give Feedback</h3>
             <p className="pb-4">Please let us know your experience here.</p>
             <textarea

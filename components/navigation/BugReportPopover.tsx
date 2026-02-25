@@ -50,7 +50,7 @@ export function BugReportDialog(props: { isOpen: boolean, onClose: () => void, m
 
     const timeoutId = window.setTimeout(() => {
       setShowSuccessToast(false);
-    }, 3000);
+    }, 2000);
 
     return () => window.clearTimeout(timeoutId);
   }, [showSuccessToast]);

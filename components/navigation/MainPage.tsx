@@ -1,9 +1,11 @@
 "use client"
 
+import { useState } from "react"
 import { StudyConfiguration } from "lib/study/Types"
-import { MainMenuBar } from "./MainMenuBar"
+import { MainMenuBar, MainMenuBottom, MainMenuTop } from "./MainMenuBar"
 import ProblemCategoryGrid from "./ProblemGrid"
 import StartButton from "components/primitive/buttons/StartFirstUnsolvedLevel"
+import { BugReportDialog } from "./BugReportPopover"
 
 type MainPageProps = { config: StudyConfiguration, allProblems: string[] }
 
@@ -22,14 +24,32 @@ function StickyStartPanel(props: { config: StudyConfiguration }) {
 }
 
 export function MainPage({ config, allProblems }: MainPageProps) {
+    const [feedbackPopupIsOpen, setFeedbackPopupIsOpen] = useState(false)
+
     return <div className="h-dvh flex flex-col overflow-hidden">
+        <div className="md:hidden border-b border-gray-200 p-6">
+            <MainMenuTop onOpenFeedback={() => setFeedbackPopupIsOpen(true)} />
+        </div>
+
         <div className="flex flex-1 min-h-0 flex-col md:flex-row">
-          <MainMenuBar />
-          <main className="flex-1 min-h-0 overflow-y-auto">
+            <div className="hidden md:block">
+                <MainMenuBar />
+            </div>
+
+            <main className="flex-1 min-h-0 overflow-y-auto">
                 <IntroBanner />
                 <StickyStartPanel config={config} />
                 <ProblemCategoryGrid config={config} allProblems={allProblems} />
-          </main>
+
+                <div className="md:hidden border-t border-gray-200 p-6">
+                    <MainMenuBottom />
+                </div>
+            </main>
         </div>
+
+        <BugReportDialog
+            isOpen={feedbackPopupIsOpen}
+            onClose={() => setFeedbackPopupIsOpen(false)}
+        />
     </div>
 }

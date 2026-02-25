@@ -1,5 +1,5 @@
 import InternalPage from "components/navigation/InternalPage";
-import ProblemCategoryGrid from "components/navigation/ProblemGrid";
+import { MainPage } from "components/navigation/MainPage";
 import { loadAllProblemsInDirectory, loadStudyConfiguration } from "lib/game/LoadProblems";
 
 export function generateStaticParams() {
@@ -18,6 +18,6 @@ export default async function Page(props: { params: Params }) {
     if (params.config === "internal") {
         return <InternalPage allProblems={allProblems} />
     } else {
-        return <ProblemCategoryGrid config={configuration} allProblems={allProblems} />
+        return <MainPage config={configuration} allProblems={allProblems} />
     }
 }

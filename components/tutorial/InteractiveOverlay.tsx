@@ -69,8 +69,8 @@ export function InteractiveContent() {
     } else {
         return <div className="">
             {currentContent?.jsx &&
-                <div className="absolute text-xl top-24 left-44 md:w-full md:text-center md:left-0 md:px-44">
-                    <span className="backdrop-blur-sm">{currentContent.jsx}</span>
+                <div className="absolute text-xl top-24 left-48 bg-light-gray">
+                    <span>{currentContent.jsx}</span>
                 </div>
             }
             {currentContent?.dragIndicator && <DragIndicator dragIndicator={currentContent?.dragIndicator} />}

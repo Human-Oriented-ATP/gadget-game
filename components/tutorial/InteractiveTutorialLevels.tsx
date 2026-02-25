@@ -16,7 +16,7 @@ const firstLevelAfterTutorial: InteractiveLevel = {
     steps: [{
         content: {
             jsx: <div>
-                <p>You&apos;ve finished the tutorial! Click the Help button if you get stuck.</p>
+                <p>You&apos;ve finished the tutorial! Click the &quot;Game Rules&quot; button if you need a reminder about the rules.</p>
             </div>,
         }
     }]

@@ -45,7 +45,7 @@ export function StartButton(props: { disabled?: boolean; worldLabel?: string; ha
     </button>;
 }
 
-export default function StartFirstUnsolvedLevelButton({ config }: { config: StudyConfiguration }) {
+export default function StartFirstUnsolvedLevelButton({ config, disabled }: { config: StudyConfiguration, disabled?: boolean }) {
     const [href, setHref] = useState<string | undefined>(undefined);
     const [worldLabel, setWorldLabel] = useState<string | undefined>(undefined);
     const [hasSolvedAnyLevel, setHasSolvedAnyLevel] = useState(false);
@@ -66,6 +66,7 @@ export default function StartFirstUnsolvedLevelButton({ config }: { config: Stud
         setWorldLabel(`${nextProblemInfo.worldName} • Puzzle ${nextProblemInfo.indexInWorld}`);
     }, [config]);
 
+    if (disabled) return <StartButton disabled worldLabel={worldLabel} hasSolvedAnyLevel={hasSolvedAnyLevel} />;
     if (href === undefined) return <StartButton disabled worldLabel={worldLabel} hasSolvedAnyLevel={hasSolvedAnyLevel} />;
     return <Link href={href}>
         <StartButton worldLabel={worldLabel} hasSolvedAnyLevel={hasSolvedAnyLevel} />

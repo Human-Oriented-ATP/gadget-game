@@ -12,6 +12,11 @@ export default function InternalPage({ allProblems }: { allProblems: string[] })
         <h2 className="text-xl p-4">You might find the following interesting:</h2>
         <div>
             <div className="m-1.5 inline-block">
+                <Link href="https://gadget-game-evaluation-d5tesqxndknqtuf4pzwv9k.streamlit.app/">
+                    <Button>Data Analysis</Button>
+                </Link>
+            </div>
+            <div className="m-1.5 inline-block">
                 <Link href="new-tutorial">
                     <Button>Current Tutorial</Button>
                 </Link>

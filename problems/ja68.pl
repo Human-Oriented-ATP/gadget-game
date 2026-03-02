@@ -13,7 +13,7 @@ y(3,A).
 
 
 
-b(A,B) :- r(A,B), r(B,C).
+b(A,C) :- r(A,B), r(B,C).
 r(A,C) :- r(A,B), r(B,C).
 g(A,B,C) :- g(A,C,B).
 r(A,B) :- g(A,C,D), g(B,E,D), r(C,E).

@@ -18,7 +18,7 @@ r(A,C) :- r(A,B), r(B,C).
 g(A,B,C) :- g(A,C,B).
 r(A,B) :- g(A,C,D), g(B,E,D), r(C,E).
 
-y(A,B) :- g(A,C,D), g(B,E,F), y(C,E), y(C,F). 
+y(A,B) :- g(A,C,D), g(B,E,F), y(C,E), y(D,F). 
 w(A,B) :- y(11,A), y(11,B), b(A,B).
 
 :- w(A,B).

@@ -1,5 +1,5 @@
 import { CreateStateWithInitialValue } from '../Types';
-import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, getConnectedEdges, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag, OnSelectionChangeFunc } from '@xyflow/react';
+import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag, OnSelectionChangeFunc } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
 import { isValidConnection, toGeneralConnection } from 'lib/game/Connection';
 import { initViewport } from 'lib/game/ViewportInitialisation';
@@ -7,8 +7,7 @@ import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtiliti
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
 import { DoubleClickHandler } from 'components/game/gadget/handles/ConnectorTypes';
 import { isEqualityHandle } from 'lib/game/Handles';
-import { DEFAULT_EDGE_PROPS, ELEVATED_EDGE_PROPS } from './Edges';
-import { CONNECTED_NODE_Z_INDEX, DEFAULT_NODE_Z_INDEX } from './Nodes';
+import { DEFAULT_EDGE_PROPS } from './Edges';
 
 export type FlowStateInitializedFromData = FlowUtilitiesStateInitializedFromData
 
@@ -50,28 +49,12 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
     },
 
     onSelectionChange: ({ nodes: selectedNodes }) => {
-      const connectedEdges = getConnectedEdges(selectedNodes, get().edges);
-      const connectedEdgeIds = new Set(connectedEdges.map((e) => e.id));
-
-      const connectedNodeIds = new Set<string>();
-      connectedEdges.forEach(edge => {
-        connectedNodeIds.add(edge.source).add(edge.target);
-      });
-      selectedNodes.forEach(node => connectedNodeIds.delete(node.id));
-
-      set({
-        edges: get().edges.map(edge =>
-          connectedEdgeIds.has(edge.id) ? { ...edge, ...ELEVATED_EDGE_PROPS } : { ...edge, ...DEFAULT_EDGE_PROPS }
-        ),
-        nodes: get().nodes.map(node => ({
-          ...node,
-          zIndex: connectedNodeIds.has(node.id) ? CONNECTED_NODE_Z_INDEX : DEFAULT_NODE_Z_INDEX
-        }))
-      })
+      get().applySelectionStyles(selectedNodes);
     },
 
     onEdgesChange: (changes: EdgeChange<Edge>[]) => {
       set({ edges: applyEdgeChanges(changes, get().edges), });
+      get().applySelectionStyles();
     },
 
     onBeforeDelete: (payload) => {
@@ -103,17 +86,20 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
         edges: addEdge({ ...connection, ...DEFAULT_EDGE_PROPS }, get().edges),
       });
       const generalConnection = toGeneralConnection(connection)!;
-      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: generalConnection }])
+      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: generalConnection }]);
+      get().applySelectionStyles();
     },
 
     onEdgeClick: (event: OnEdgeClick, edge: Edge) => {
       const events = get().removeEdge(edge.id);
       get().updateLogicalState(events);
+      get().applySelectionStyles();
     },
 
     onHandleDoubleClick: (event: React.MouseEvent, handleId: string) => {
       const events = get().removeEdgesConnectedToHandle(handleId)
       get().updateLogicalState(events)
+      get().applySelectionStyles();
     },
 
     onNodeDrag(event: React.MouseEvent, node: GadgetNode) {

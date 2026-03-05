@@ -1,9 +1,9 @@
 import { CreateStateWithInitialValue } from '../Types';
-import { addEdge, Connection, ReactFlowInstance, XYPosition } from '@xyflow/react';
+import { addEdge, Connection, getConnectedEdges, Node, ReactFlowInstance, XYPosition } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
-import { DEFAULT_EDGE_PROPS, EdgeSlice, edgeSlice, EdgeStateInitializedFromData } from './Edges';
+import { DEFAULT_EDGE_PROPS, ELEVATED_EDGE_PROPS, EdgeSlice, edgeSlice, EdgeStateInitializedFromData } from './Edges';
 import { toGeneralConnection } from 'lib/game/Connection';
-import { NodeSlice, nodeSlice, NodeState, NodeStateInitializedFromData } from './Nodes';
+import { CONNECTED_NODE_Z_INDEX, DEFAULT_NODE_Z_INDEX, NodeSlice, nodeSlice, NodeState, NodeStateInitializedFromData } from './Nodes';
 import { GameEvent } from "lib/game/History";
 import { GadgetIdGeneratorSlice, gadgetIdGeneratorSlice } from './GadgetIdGenerator';
 import { axiomToGadget } from 'lib/game/GameLogic';
@@ -43,6 +43,7 @@ export interface FlowUtilitiesActions {
   getProximityConnection(nodeThatIsBeingDragged: string): ConnectionWithHandles | null;
   runProximityConnect(nodeId: string): GameEvent[];
   calculateCompletionStatusAndOpenHandles: () => { isCompleted: boolean, openHandles: string[] };
+  applySelectionStyles: (selectedNodes?: Node[]) => void;
 };
 
 export type DependencySlices = NodeSlice & EdgeSlice & UnificationSlice & GadgetIdGeneratorSlice
@@ -136,6 +137,7 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
           get().updateLogicalState(proximityConnectionEvents)
         }
       }
+      get().applySelectionStyles();
     },
 
     handleCompletedLevel() {
@@ -305,7 +307,28 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
 
       const isCompleted = openHandles.length === 0 && !hasInvalidEdge;
       return { isCompleted, openHandles };
-    }
+    },
+
+    applySelectionStyles: (selectedNodes: Node[] = get().nodes.filter(n => n.selected)) => {
+      const connectedEdges = getConnectedEdges(selectedNodes, get().edges);
+      const connectedEdgeIds = new Set(connectedEdges.map((e) => e.id));
+
+      const connectedNodeIds = new Set<string>();
+      connectedEdges.forEach(edge => {
+        connectedNodeIds.add(edge.source).add(edge.target);
+      });
+      selectedNodes.forEach(node => connectedNodeIds.delete(node.id));
+
+      set({
+        edges: get().edges.map(edge =>
+          connectedEdgeIds.has(edge.id) ? { ...edge, ...ELEVATED_EDGE_PROPS } : { ...edge, ...DEFAULT_EDGE_PROPS }
+        ),
+        nodes: get().nodes.map(node => ({
+          ...node,
+          zIndex: connectedNodeIds.has(node.id) ? CONNECTED_NODE_Z_INDEX : DEFAULT_NODE_Z_INDEX
+        }))
+      })
+    },
 
   }
 }

@@ -25,8 +25,8 @@ export function isEqualityHandle(handleId: string): boolean {
 
 export function getPositionOfEqualityHandle(handleId: string): EqualityPosition {
     const res = handleId.split("_")[1];
-    if (res !== "top" && res !== "bottom")
-        throw  Error(`Bad equality handle: ${handleId}`);
+    if (res !== "left" && res !== "right")
+        throw Error(`Bad equality handle: ${handleId}`);
     return res;
 }
 

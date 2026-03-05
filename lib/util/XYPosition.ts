@@ -18,6 +18,10 @@ export function addOffsetX(p: XYPosition, dx: number): XYPosition {
     return { x: p.x + dx, y: p.y };
 }
 
+export function addOffsetY(p: XYPosition, dy: number): XYPosition {
+    return { x: p.x, y: p.y + dy };
+}
+
 export function getCenterRelativeToParent(e: HTMLElement): XYPosition {
     const left = e.offsetLeft;
     const top = e.offsetTop;

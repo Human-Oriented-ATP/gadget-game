@@ -1,5 +1,5 @@
 import { CreateStateWithInitialValue } from '../Types';
-import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag } from '@xyflow/react';
+import { addEdge, applyEdgeChanges, Connection, Edge, EdgeChange, OnBeforeDelete, OnConnect, OnConnectStartParams, OnEdgesChange, OnNodeDrag, OnSelectionChangeFunc } from '@xyflow/react';
 import { GadgetNode } from 'components/game/flow/GadgetFlowNode';
 import { isValidConnection, toGeneralConnection } from 'lib/game/Connection';
 import { initViewport } from 'lib/game/ViewportInitialisation';
@@ -7,6 +7,7 @@ import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtiliti
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
 import { DoubleClickHandler } from 'components/game/gadget/handles/ConnectorTypes';
 import { isEqualityHandle } from 'lib/game/Handles';
+import { DEFAULT_EDGE_PROPS } from './Edges';
 
 export type FlowStateInitializedFromData = FlowUtilitiesStateInitializedFromData
 
@@ -17,6 +18,7 @@ type OnEdgeClick = React.MouseEvent<Element, MouseEvent>;
 export interface FlowActions {
   reset: () => void;
   onInit: () => void;
+  onSelectionChange: OnSelectionChangeFunc;
   onEdgesChange: OnEdgesChange;
   onBeforeDelete: OnBeforeDelete<GadgetNode, Edge>;
   onConnectStart: (event: MouseEvent | TouchEvent, params: OnConnectStartParams) => void;
@@ -46,8 +48,13 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
       get().updateLogicalState([])
     },
 
+    onSelectionChange: ({ nodes: selectedNodes }) => {
+      get().applySelectionStyles(selectedNodes);
+    },
+
     onEdgesChange: (changes: EdgeChange<Edge>[]) => {
       set({ edges: applyEdgeChanges(changes, get().edges), });
+      get().applySelectionStyles();
     },
 
     onBeforeDelete: (payload) => {
@@ -76,20 +83,23 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
       const edgeRemovalEvents = isEqualityConnection ? [] :
         get().removeEdgesConnectedToHandle(connection.targetHandle);
       set({
-        edges: addEdge({ ...connection, type: 'customEdge' }, get().edges),
+        edges: addEdge({ ...connection, ...DEFAULT_EDGE_PROPS }, get().edges),
       });
       const generalConnection = toGeneralConnection(connection)!;
-      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: generalConnection }])
+      get().updateLogicalState([...edgeRemovalEvents, { ConnectionAdded: generalConnection }]);
+      get().applySelectionStyles();
     },
 
     onEdgeClick: (event: OnEdgeClick, edge: Edge) => {
       const events = get().removeEdge(edge.id);
       get().updateLogicalState(events);
+      get().applySelectionStyles();
     },
 
     onHandleDoubleClick: (event: React.MouseEvent, handleId: string) => {
       const events = get().removeEdgesConnectedToHandle(handleId)
       get().updateLogicalState(events)
+      get().applySelectionStyles();
     },
 
     onNodeDrag(event: React.MouseEvent, node: GadgetNode) {

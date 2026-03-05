@@ -118,7 +118,7 @@ export function connectionToEquation(
     };
 
     const getEqualityPosition = (relation: {equals: readonly [Term, Term]}, pos: EqualityPosition) => (
-        relation.equals[pos === "top" ? 0 : 1]
+        relation.equals[pos === "left" ? 0 : 1]
     );
 
     if (connection.type === "equality") {

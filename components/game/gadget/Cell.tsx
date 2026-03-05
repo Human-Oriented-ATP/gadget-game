@@ -28,7 +28,7 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
     const relationArgs = getRelationArgs(props.relation);
 
     const needsEqualityHandles = "equals" in props.relation && isOutputPosition(props.position);
-    const equalityHandlePadding = needsEqualityHandles && "py-2";
+    const equalityHandlePadding = needsEqualityHandles && "py-0.5 px-2";
     const needsEqualityHandleIDs = needsEqualityHandles && !props.isOnShelf;
     const makeIdForPos = pos => needsEqualityHandleIDs ?
         makeEqualityHandleId(props.gadgetId, pos) : undefined;
@@ -38,18 +38,19 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
             "m-1 border-black border-2 rounded-lg p-0.5",
             backgroundClassName,
             equalityHandlePadding,
-            props.isGoalNode && "outline-2 outline-offset-2 outline-black"
+            props.isGoalNode && "outline-2 outline-offset-2 outline-black",
+            "equals" in props.relation ? "flex flex-row gap-1" : "flex flex-col gap-1"
         )}>
             {relationArgs.map((arg, idx) => <Hole key={idx} term={arg}></Hole>)}
         </div>
 
-        <CustomCellHandle
+        {!("equals" in props.relation) && <CustomCellHandle
             type={handleType}
             handleId={handleId}
             onHandleDoubleClick={props.onHandleDoubleClick}
-        />
+        />}
 
-        {needsEqualityHandles && (["bottom", "top"] as const).map(pos => (
+        {needsEqualityHandles && (["left", "right"] as const).map(pos => (
             <CustomEqualityHandle
                 key={pos}
                 equalityPosition={pos}

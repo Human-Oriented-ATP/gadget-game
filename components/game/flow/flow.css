@@ -8,10 +8,23 @@
 }
 
 .equality-handle {
+    width: 26px !important;
+    height: 24px !important;
     display: flex;
-    width: 24px !important;
-    height: 25px !important;
+    flex-direction: column;
     justify-content: center;
+}
+
+.equality-handle-left {
+    right: 75.7px !important;
+    left: unset !important;
+    align-items: end;
+}
+
+.equality-handle-right {
+    right: -6.5px !important;
+    left: unset !important;
+    align-items: start;
 }
 
 .react-flow__handle-left {

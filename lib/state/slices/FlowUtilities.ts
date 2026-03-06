@@ -12,6 +12,7 @@ import { unificationSlice, UnificationSlice, UnificationState, UnificationStateI
 import { ConnectorStatus } from 'components/game/gadget/handles/ConnectorTypes';
 import { calculateProximityConnection, ConnectionWithHandles, getPositionOfHandle, HandlesWithPositions } from 'lib/util/calculateProximityConnection';
 import { shapesMatch } from 'lib/game/Term';
+import { isEqualityHandle } from 'lib/game/Handles';
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { isAboveGadgetShelf } from 'lib/util/XYPosition';
 import { saveLevelCompletedAsCookie } from 'lib/study/CompletedProblems';
@@ -224,12 +225,6 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
     },
 
     isValidProximityConnection: (connection: ConnectionWithHandles) => {
-      const generalConnection = toGeneralConnection(connection);
-      if (generalConnection === undefined || generalConnection.type === 'equality') {
-        // Don't do proximity connections for equality handles or invalid connections
-        return false;
-      }
-
       const proximityConnectEnabled = get().setup.settings.proximityConnectEnabled
       const isValidConnection = get().isValidConnection(connection)
       const sourceNode: GadgetNode = get().getNode(connection.source)
@@ -255,7 +250,8 @@ export const flowUtilitiesSlice: CreateStateWithInitialValue<FlowUtilitiesStateI
     runProximityConnect(nodeId: string): GameEvent[] {
       const proximityConnection = get().getProximityConnection(nodeId)
       if (proximityConnection !== null) {
-        const removalEvents = get().removeEdgesConnectedToHandle(proximityConnection.targetHandle)
+        const isEqualityConnection = isEqualityHandle(proximityConnection.sourceHandle);
+        const removalEvents = isEqualityConnection ? [] : get().removeEdgesConnectedToHandle(proximityConnection.targetHandle)
         set({ edges: addEdge({ ...proximityConnection, ...DEFAULT_EDGE_PROPS }, get().edges), });
         const generalConnection = toGeneralConnection(proximityConnection)!;
         const connectionEvent: GameEvent = { ConnectionAdded: generalConnection }

@@ -16,13 +16,13 @@
 }
 
 .equality-handle-left {
-    right: 75.7px !important;
+    right: 76.5px !important;
     left: unset !important;
     align-items: end;
 }
 
 .equality-handle-right {
-    right: -6.5px !important;
+    right: -5.5px !important;
     left: unset !important;
     align-items: start;
 }

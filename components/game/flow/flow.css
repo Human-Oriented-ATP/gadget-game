@@ -13,17 +13,22 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
+    position: relative !important;
 }
 
 .equality-handle-left {
-    right: 76.5px !important;
-    left: unset !important;
+    order: -1;
+    margin-right: -20px;
+    right: auto !important;
+    left: auto !important;
     align-items: end;
 }
 
 .equality-handle-right {
-    right: -5.5px !important;
-    left: unset !important;
+    order: 1;
+    margin-left: -20px;
+    right: auto !important;
+    left: auto !important;
     align-items: start;
 }
 

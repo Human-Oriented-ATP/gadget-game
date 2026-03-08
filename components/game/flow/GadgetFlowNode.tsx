@@ -1,6 +1,7 @@
 import { Node } from "@xyflow/react";
 import { Gadget } from "../gadget/Gadget";
 import { GadgetProps } from "../gadget/Gadget";
+import { HandleDoubleClickProps } from "../gadget/handles/Connector";
 import { HandleDoubleClickProps } from "../gadget/handles/ConnectorTypes";
 
 export type GadgetNode = Node<GadgetProps, 'gadgetNode'>

@@ -2,12 +2,13 @@ import { GadgetId } from '../../../lib/game/Primitives';
 import { Hole } from './Hole';
 import { twJoin } from 'tailwind-merge';
 import { makeHandleId, makeEqualityHandleId } from 'lib/game/Handles';
-import { getRelationArgs, Relation } from 'lib/game/Term';
-import { CustomEqualityHandle } from './handles/CustomEqualityHandle';
+import { getRelationArgs, Relation, VariableName } from 'lib/game/Term';
 import { CustomCellHandle } from './handles/CustomCellHandle';
-import { HandleDoubleClickProps } from './handles/ConnectorTypes';
+import { HandleDoubleClickProps } from './handles/Connector';
 import { getCellClassNameFromLabel } from 'lib/util/CellColors';
 import { CellPosition, isOutputPosition } from '../../../lib/game/CellPosition';
+import { SwapperToggleProps, ToggleableSwapperButton, SwapperHandleCreator } from './handles/ToggleableSwapperHandle';
+import { CustomEqualityHandle } from './handles/CustomEqualityHandle';
 
 export interface CellProps {
     relation: Relation
@@ -15,6 +16,27 @@ export interface CellProps {
     position: CellPosition
     isOnShelf: boolean
     isGoalNode: boolean
+    isSwapper: boolean
+    toggledSwapperHoles?: VariableName | null
+}
+
+function EqualityHandles(props: {
+    gadgetId: GadgetId
+    isOnShelf: boolean
+    onHandleDoubleClick?: (event: React.MouseEvent, handleId: string) => void
+}) {
+    const needsEqualityHandleIDs = !props.isOnShelf;
+    const makeIdForPos = (pos: "left" | "right") =>
+        needsEqualityHandleIDs ? makeEqualityHandleId(props.gadgetId, pos) : undefined;
+
+    return (["left", "right"] as const).map(pos => (
+        <CustomEqualityHandle
+            key={pos}
+            equalityPosition={pos}
+            handleId={makeIdForPos(pos)}
+            onHandleDoubleClick={props.onHandleDoubleClick}
+        />
+    ));
 }
 
 export function Cell(props: CellProps & HandleDoubleClickProps & SwapperToggleProps) {
@@ -45,13 +67,19 @@ export function Cell(props: CellProps & HandleDoubleClickProps & SwapperTogglePr
         )}>
             {relationArgs.map((arg, idx) => {
                 let swapperButton: React.ReactNode = null;
-                if (props.isSwapper && props.onToggleSwapperHole && "variable" in arg) {
-                    const normalizedName = arg.variable.replace("SWAPOUT_", "SWAPIN_");
-                    swapperButton = <ToggleableSwapperButton
-                        gadgetId={props.gadgetId}
-                        variableName={normalizedName}
-                        isToggled={props.toggledSwapperHoles === normalizedName}
-                        onToggle={props.onToggleSwapperHole} />
+                if (props.isSwapper) {
+                    if (!("variable" in arg))
+                        throw new Error("Swapper holes should always be variables");
+
+                    if (props.onToggleSwapperHole) {
+                        const normalizedName = arg.variable.replace("SWAPOUT_", "SWAPIN_");
+                        const isToggled = props.toggledSwapperHoles === normalizedName;
+                        swapperButton = <ToggleableSwapperButton
+                            gadgetId={props.gadgetId}
+                            variableName={normalizedName}
+                            isToggled={isToggled}
+                            onToggle={props.onToggleSwapperHole} />
+                    }
                 }
                 return (
                     <div key={idx} className="relative flex items-center justify-center">
@@ -62,19 +90,26 @@ export function Cell(props: CellProps & HandleDoubleClickProps & SwapperTogglePr
             })}
         </div>
 
+        {props.isSwapper && (
+            <SwapperHandleCreator
+                gadgetId={props.gadgetId}
+                relation={props.relation}
+                isOutput={isOutputPosition(props.position)}
+                toggledVariableName={props.toggledSwapperHoles ?? null}
+                onHandleDoubleClick={props.onHandleDoubleClick}
+            />
+        )}
+
         {!("equals" in props.relation) && <CustomCellHandle
             type={handleType}
             handleId={handleId}
             onHandleDoubleClick={props.onHandleDoubleClick}
         />}
 
-        {needsEqualityHandles && (["left", "right"] as const).map(pos => (
-            <CustomEqualityHandle
-                key={pos}
-                equalityPosition={pos}
-                handleId={makeIdForPos(pos)}
-                onHandleDoubleClick={props.onHandleDoubleClick}
-            />
-        ))}
+        {needsEqualityHandles && <EqualityHandles
+            gadgetId={props.gadgetId}
+            isOnShelf={props.isOnShelf}
+            onHandleDoubleClick={props.onHandleDoubleClick}
+        />}
     </div>
 }

@@ -1,9 +1,7 @@
-import { Fragment, useLayoutEffect, useState } from 'react'
+import { useLayoutEffect } from 'react'
+import { GadgetId, SwapperPosition } from 'lib/game/Primitives'
 import { getRelationArgs, Relation, VariableName } from 'lib/game/Term'
-import { GadgetId } from 'lib/game/Primitives'
-import { CellPosition } from 'lib/game/CellPosition'
-import { calculateHolePosition } from 'lib/game/calculateHolePosition'
-import { useUpdateNodeInternals, XYPosition } from '@xyflow/react'
+import { useUpdateNodeInternals } from '@xyflow/react'
 import { makeSwapperHandleId } from 'lib/game/Handles'
 import { HandleDoubleClickProps } from './Connector'
 import { CustomSwapperHandle } from './CustomSwapperHandle'
@@ -44,48 +42,42 @@ export function ToggleableSwapperButton(props: ToggleableSwapperButtonProps) {
     );
 }
 
-
-interface ToggleableSwapperHandlesProps {
+export interface SwapperHandleCreatorProps {
     gadgetId: GadgetId
-    relations: Map<CellPosition, Relation>
-    toggledVariables: VariableName | null
+    relation: Relation
+    isOutput: boolean
+    toggledVariableName: VariableName | null
 }
 
-export function ToggleableSwapperHandles(props: ToggleableSwapperHandlesProps & HandleDoubleClickProps) {
+/**
+ * Creates and destroys the swapper handles depending on the swapper hole selected.
+ * ReactFlow requires the useUpdateNodeInternals hook to be called when handles are dynamically created.
+ */
+export function SwapperHandleCreator(props: SwapperHandleCreatorProps & HandleDoubleClickProps) {
     const updateNodeInternals = useUpdateNodeInternals();
 
     useLayoutEffect(() => {
         updateNodeInternals(props.gadgetId);
-    }, [updateNodeInternals, props.toggledVariables, props.gadgetId]);
+    }, [updateNodeInternals, props.toggledVariableName, props.gadgetId]);
 
-    const inputRelations = props.relations.get(0);
-    if (inputRelations === undefined)
-        throw Error(`Invalid relations for resolved swapper: ${props.gadgetId}`);
-    const inputTerms = getRelationArgs(inputRelations);
+    if (!props.toggledVariableName) return null;
 
-    return <> {inputTerms.map((term, idx) => {
-        if (!("variable" in term))
-            throw new Error("Swapper input holes should always be variables");
+    const relationArgs = getRelationArgs(props.relation);
+    const holeIndex = relationArgs.findIndex(arg => 
+        "variable" in arg && arg.variable.replace("SWAPOUT_", "SWAPIN_") === props.toggledVariableName
+    );
 
-        const variableName = term.variable;
+    if (holeIndex === -1) return null;
 
-        if (props.toggledVariables !== variableName) return;
+    const side: SwapperPosition = props.isOutput ? 'right' : 'left';
+    const handleId = makeSwapperHandleId(props.gadgetId, holeIndex, side);
 
-        // The two handles are at the top of the cell, positioned left and right
-        const leftHandleId = makeSwapperHandleId(props.gadgetId, idx, 'left');
-        const rightHandleId = makeSwapperHandleId(props.gadgetId, idx, 'right');
-
-        return <Fragment key={idx}>
-            {[leftHandleId, rightHandleId].map((handleId, handleIdx) => {
-                const side = handleIdx === 0 ? 'left' : 'right';
-
-                return <CustomSwapperHandle
-                    key={handleIdx}
-                    swapperPosition={side}
-                    handleId={handleId}
-                    onHandleDoubleClick={props.onHandleDoubleClick}
-                />
-            })}
-        </Fragment>;
-    })} </>;
+    return (
+        <CustomSwapperHandle
+            swapperPosition={side}
+            handleId={handleId}
+            onHandleDoubleClick={props.onHandleDoubleClick}
+        />
+    );
 }
+

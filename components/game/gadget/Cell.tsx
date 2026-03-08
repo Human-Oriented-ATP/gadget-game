@@ -17,7 +17,7 @@ export interface CellProps {
     isGoalNode: boolean
 }
 
-export function Cell(props: CellProps & HandleDoubleClickProps) {
+export function Cell(props: CellProps & HandleDoubleClickProps & SwapperToggleProps) {
     const handleType = isOutputPosition(props.position) ? "source" : "target"
     const handleId = !props.isOnShelf ? makeHandleId(props.position, props.gadgetId) : undefined
 
@@ -29,19 +29,37 @@ export function Cell(props: CellProps & HandleDoubleClickProps) {
 
     const needsEqualityHandles = "equals" in props.relation && isOutputPosition(props.position);
     const equalityHandlePadding = needsEqualityHandles && "py-0.5 px-2";
-    const needsEqualityHandleIDs = needsEqualityHandles && !props.isOnShelf;
-    const makeIdForPos = pos => needsEqualityHandleIDs ?
-        makeEqualityHandleId(props.gadgetId, pos) : undefined;
+
+    const swapperSpacing = props.isSwapper && "[&>*]:my-4 px-2";
+    const borderColor = "equals" in props.relation ? "border-cyan-400" : "border-black";
 
     return <div className="flex items-center">
         <div className={twJoin(
-            "m-1 border-black border-2 rounded-lg p-0.5",
+            "m-1 border-2 rounded-lg p-0.5",
+            borderColor,
             backgroundClassName,
             equalityHandlePadding,
             props.isGoalNode && "outline-2 outline-offset-2 outline-black",
-            "equals" in props.relation ? "flex flex-row gap-1" : "flex flex-col gap-1"
+            "equals" in props.relation ? "flex flex-row gap-1 items-center justify-center" : "flex flex-col gap-1 items-center justify-center",
+            swapperSpacing
         )}>
-            {relationArgs.map((arg, idx) => <Hole key={idx} term={arg}></Hole>)}
+            {relationArgs.map((arg, idx) => {
+                let swapperButton: React.ReactNode = null;
+                if (props.isSwapper && props.onToggleSwapperHole && "variable" in arg) {
+                    const normalizedName = arg.variable.replace("SWAPOUT_", "SWAPIN_");
+                    swapperButton = <ToggleableSwapperButton
+                        gadgetId={props.gadgetId}
+                        variableName={normalizedName}
+                        isToggled={props.toggledSwapperHoles === normalizedName}
+                        onToggle={props.onToggleSwapperHole} />
+                }
+                return (
+                    <div key={idx} className="relative flex items-center justify-center">
+                        <Hole term={arg} />
+                        {swapperButton}
+                    </div>
+                );
+            })}
         </div>
 
         {!("equals" in props.relation) && <CustomCellHandle

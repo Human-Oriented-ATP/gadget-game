@@ -6,9 +6,9 @@ test("Axiom parsing", () => {
     const statementAsString = "r(A) :- r(B), g(C, D) "
     const parsed = parseStatement(statementAsString)
     expect(isAxiom(parsed)).toBe(true)
-    if ("axiom" in parsed) {
-        expect(parsed.axiom.conclusion).toEqual({ label: "r", args: [{ variable: "A" }] })
-        expect(parsed.axiom.hypotheses).toEqual([
+    if ("fixedAxiom" in parsed) {
+        expect(parsed.fixedAxiom.conclusion).toEqual({ label: "r", args: [{ variable: "A" }] })
+        expect(parsed.fixedAxiom.hypotheses).toEqual([
             { label: "r", args: [{ variable: "B" }] },
             { label: "g", args: [{ variable: "C" }, { variable: "D" }] }
         ])

@@ -1,6 +1,6 @@
 import { Connection, ReactFlowInstance, XYPosition } from "@xyflow/react";
 import { getCenter } from './XYPosition';
-import { getGadgetIdFromHandle, isTargetHandle } from "lib/game/Handles";
+import { getGadgetIdFromHandle, isTargetHandle, isEqualityHandle, getPositionOfEqualityHandle } from "lib/game/Handles";
 
 const MIN_DISTANCE = 60
 
@@ -20,12 +20,16 @@ export function getPositionOfHandle(handleId: string, rf: ReactFlowInstance): XY
     }
 }
 
+function getEqualityHandles<T>(handles: Map<string, T>): Map<string, T> {
+    return new Map([...handles].filter(([handle, position]) => isEqualityHandle(handle)))
+}
+
 function getSourceHandles<T>(handles: Map<string, T>): Map<string, T> {
-    return new Map([...handles].filter(([handle, position]) => !isTargetHandle(handle)))
+    return new Map([...handles].filter(([handle, position]) => !isTargetHandle(handle) && !isEqualityHandle(handle)))
 }
 
 function getTargetHandles<T>(handles: Map<string, T>): Map<string, T> {
-    return new Map([...handles].filter(([handle, position]) => isTargetHandle(handle)))
+    return new Map([...handles].filter(([handle, position]) => isTargetHandle(handle) && !isEqualityHandle(handle)))
 }
 
 function findClosestHandle(position: XYPosition, otherHandles: HandlesWithPositions): { distance: number, id: string } {
@@ -39,18 +43,23 @@ function findClosestHandle(position: XYPosition, otherHandles: HandlesWithPositi
     return closestHandle
 }
 
+function findClosestEqualityHandle(position: XYPosition, otherHandles: HandlesWithPositions): { distance: number, id: string } {
+    return findClosestHandle(position, getEqualityHandles(otherHandles))
+}
+
 function findClosestTargetHandle(position: XYPosition, otherHandles: HandlesWithPositions): { distance: number, id: string } {
-    const targetHandles = getTargetHandles(otherHandles)
-    return findClosestHandle(position, targetHandles)
+    return findClosestHandle(position, getTargetHandles(otherHandles))
 }
 
 function findClosestSourceHandle(position: XYPosition, otherHandles: HandlesWithPositions): { distance: number, id: string } {
-    const sourceHandles = getSourceHandles(otherHandles)
-    return findClosestHandle(position, sourceHandles)
+    return findClosestHandle(position, getSourceHandles(otherHandles))
 }
 
 function findProximityConnectionForHandle(handle: string, position: XYPosition, otherHandles: HandlesWithPositions) {
-    if (isTargetHandle(handle)) {
+    if (isEqualityHandle(handle)) {
+        const { distance, id } = findClosestEqualityHandle(position, otherHandles)
+        return { distance, sourceHandle: handle, targetHandle: id }
+    } else if (isTargetHandle(handle)) {
         const { distance, id } = findClosestSourceHandle(position, otherHandles)
         return { distance, targetHandle: handle, sourceHandle: id }
     } else {
@@ -59,12 +68,43 @@ function findProximityConnectionForHandle(handle: string, position: XYPosition, 
     }
 }
 
+/** Break ties for parallel equality handles by favoring left handles if the 
+ * dragged gadget is to the left. */
+function breakTieForEqualityHandles(
+    distance: number,
+    shortestDistance: number,
+    handle: string,
+    position: XYPosition,
+    targetHandle: string,
+    otherHandles: HandlesWithPositions
+): boolean {
+    if (!isEqualityHandle(handle) || !isEqualityHandle(targetHandle)) return false;
+
+    const isTie = Math.abs(distance - shortestDistance) < 0.001;
+    if (!isTie) return false;
+
+    const targetPos = otherHandles.get(targetHandle);
+    if (!targetPos) return false;
+
+    const draggedIsLeft = position.x < targetPos.x;
+    const handleSide = getPositionOfEqualityHandle(handle);
+    return (draggedIsLeft && handleSide === "left") || (!draggedIsLeft && handleSide === "right");
+}
+
 function calculateProximityConnectionHandles(handlesOfNodeBeingDragged: HandlesWithPositions, otherHandles: HandlesWithPositions)
     : { sourceHandle: string, targetHandle: string } | null {
     let shortestConnection: { distance: number, sourceHandle: string, targetHandle: string } = { distance: Infinity, sourceHandle: "", targetHandle: "" }
     for (const [handle, position] of handlesOfNodeBeingDragged) {
         const connection = findProximityConnectionForHandle(handle, position, otherHandles)
-        if (connection.distance < shortestConnection.distance) {
+
+        let isBetter = connection.distance < shortestConnection.distance;
+
+        if (breakTieForEqualityHandles(
+                connection.distance, shortestConnection.distance,
+                handle, position, connection.targetHandle, otherHandles
+          )) isBetter = true;
+
+        if (isBetter) {
             shortestConnection = { ...connection }
         }
     }

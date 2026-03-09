@@ -68,6 +68,29 @@ function findProximityConnectionForHandle(handle: string, position: XYPosition, 
     }
 }
 
+/** Break ties for parallel equality handles by favoring left handles if the 
+ * dragged gadget is to the left. */
+function breakTieForEqualityHandles(
+    distance: number,
+    shortestDistance: number,
+    handle: string,
+    position: XYPosition,
+    targetHandle: string,
+    otherHandles: HandlesWithPositions
+): boolean {
+    if (!isEqualityHandle(handle) || !isEqualityHandle(targetHandle)) return false;
+
+    const isTie = Math.abs(distance - shortestDistance) < 0.001;
+    if (!isTie) return false;
+
+    const targetPos = otherHandles.get(targetHandle);
+    if (!targetPos) return false;
+
+    const draggedIsLeft = position.x < targetPos.x;
+    const handleSide = getPositionOfEqualityHandle(handle);
+    return (draggedIsLeft && handleSide === "left") || (!draggedIsLeft && handleSide === "right");
+}
+
 function calculateProximityConnectionHandles(handlesOfNodeBeingDragged: HandlesWithPositions, otherHandles: HandlesWithPositions)
     : { sourceHandle: string, targetHandle: string } | null {
     let shortestConnection: { distance: number, sourceHandle: string, targetHandle: string } = { distance: Infinity, sourceHandle: "", targetHandle: "" }
@@ -76,18 +99,10 @@ function calculateProximityConnectionHandles(handlesOfNodeBeingDragged: HandlesW
 
         let isBetter = connection.distance < shortestConnection.distance;
 
-        // Break ties for parallel equality handles by favoring left handles if the dragged gadget is to the left
-        const isTie = Math.abs(connection.distance - shortestConnection.distance) < 0.001;
-        if (isTie && isEqualityHandle(handle) && isEqualityHandle(connection.targetHandle)) {
-            const targetPos = otherHandles.get(connection.targetHandle);
-            if (targetPos) {
-                const draggedIsLeft = position.x < targetPos.x;
-                const handleSide = getPositionOfEqualityHandle(handle);
-                if ((draggedIsLeft && handleSide === "left") || (!draggedIsLeft && handleSide === "right")) {
-                    isBetter = true;
-                }
-            }
-        }
+        if (breakTieForEqualityHandles(
+                connection.distance, shortestConnection.distance,
+                handle, position, connection.targetHandle, otherHandles
+          )) isBetter = true;
 
         if (isBetter) {
             shortestConnection = { ...connection }

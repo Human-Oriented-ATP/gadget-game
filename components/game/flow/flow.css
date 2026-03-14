@@ -32,6 +32,22 @@
     align-items: start;
 }
 
+.swapper-handle {
+    width: 26px;
+    height: 26px;
+    top: -8.5px !important;
+}
+
+.swapper-handle-left {
+    left: 17px !important;
+    right: unset !important;
+}
+
+.swapper-handle-right {
+    left: unset !important;
+    right: 17px !important;
+}
+
 .react-flow__handle-left {
     left: -12px;
 }
@@ -43,20 +59,6 @@
 .react-flow__handle-top {
     left: -12px;
     top: 0px;
-}
-
-.react-flow__handle-top {
-    left: unset;
-    right: 12px;
-    top: calc(50% - 48px); 
-    align-items: flex-end;
-}
-
-.react-flow__handle-bottom {
-    left: unset;
-    right: 12px;
-    top: calc(50% + 23px);
-    align-items: flex-start;
 }
 
 

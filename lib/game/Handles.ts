@@ -1,6 +1,6 @@
 import { CellPosition, OUTPUT_POSITION } from 'lib/game/CellPosition';
-import { Relation } from './Term';
-import { EqualityPosition } from './Primitives';
+import { EqualityPosition, SwapperPosition } from './Primitives';
+import { HolePosition } from './GadgetInternalConnections';
 
 export function makeHandleId(position: CellPosition, gadgetId: string): string {
     return `handle_${JSON.stringify(position)}_of_${gadgetId}`;
@@ -8,6 +8,10 @@ export function makeHandleId(position: CellPosition, gadgetId: string): string {
 
 export function makeEqualityHandleId(gadgetId: string, equalityPosition: EqualityPosition): string {
     return `equalityhandle_${equalityPosition}_of_${gadgetId}`;
+}
+
+export function makeSwapperHandleId(gadgetId: string, holeIndex: number, bindingHole: SwapperPosition): string {
+    return `swapperhandle_${holeIndex}_${bindingHole}_of_${gadgetId}`;
 }
 
 export function isTargetHandle(handleId: string): boolean {
@@ -23,6 +27,18 @@ export function isEqualityHandle(handleId: string): boolean {
     return handleId.slice(0, 14) === `equalityhandle`;
 }
 
+export function isSwapperHandle(handleId: string): boolean {
+    return handleId.slice(0, 13) === `swapperhandle`;
+}
+
+export function getHandleType(handleId: string): "gadget" | "equality" | "swapper" {
+    if (isGadgetHandle(handleId)) return "gadget";
+    if (isEqualityHandle(handleId)) return "equality";
+    if (isSwapperHandle(handleId)) return "swapper";
+    throw Error(`Couldn't determine type of handle ${handleId}`);
+}
+
+
 export function getPositionOfEqualityHandle(handleId: string): EqualityPosition {
     const res = handleId.split("_")[1];
     if (res !== "left" && res !== "right")
@@ -30,14 +46,11 @@ export function getPositionOfEqualityHandle(handleId: string): EqualityPosition 
     return res;
 }
 
-export function getRelationOfHandle(handleId: string, relations: Map<CellPosition, Relation>) {
-    const position = handleId.split("_")[1];
-    for (const [relationPosition, relation] of relations) {
-        if (JSON.stringify(relationPosition) === position) {
-            return relation;
-        }
-    }
-    throw Error("Relation not found for handle " + handleId);
+export function getPositionOfSwapperHandle(handleId: string): HolePosition {
+    const holeIndex = Number(handleId.split("_")[1]);
+    const nodePosition = handleId.split("_")[2] === "left" ?
+        0 : "output";
+    return [nodePosition, holeIndex];
 }
 
 export function getGadgetIdFromHandle(handleId: string): string {

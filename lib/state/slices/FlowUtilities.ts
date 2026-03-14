@@ -9,7 +9,7 @@ import { GadgetIdGeneratorSlice, gadgetIdGeneratorSlice } from './GadgetIdGenera
 import { axiomToGadget } from 'lib/game/GameLogic';
 import { GadgetId } from 'lib/game/Primitives';
 import { unificationSlice, UnificationSlice, UnificationState, UnificationStateInitializedFromData } from './Unification';
-import { ConnectorStatus } from 'components/game/gadget/handles/ConnectorTypes';
+import { ConnectorStatus } from 'components/game/gadget/handles/Connector';
 import { calculateProximityConnection, ConnectionWithHandles, getPositionOfHandle, HandlesWithPositions } from 'lib/util/calculateProximityConnection';
 import { shapesMatch } from 'lib/game/Term';
 import { isEqualityHandle } from 'lib/game/Handles';

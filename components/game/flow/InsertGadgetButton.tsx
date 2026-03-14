@@ -1,4 +1,3 @@
-import { Axiom } from "lib/game/Primitives";
 import { useGameStateContext } from "lib/state/StateContextProvider";
 import { useRef } from "react";
 import { useShallow } from "zustand/react/shallow";

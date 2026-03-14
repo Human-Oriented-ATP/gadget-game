@@ -1,4 +1,4 @@
-import { CreateStateWithInitialValue } from '../Types';
+﻿import { CreateStateWithInitialValue } from '../Types';
 import { isGadgetHandle, isTargetHandle, makeEqualityHandleId, makeHandleId } from 'lib/game/Handles';
 import { EqualityPosition, GadgetId } from 'lib/game/Primitives';
 import { OUTPUT_POSITION, CellPosition } from 'lib/game/CellPosition';
@@ -32,6 +32,7 @@ export const handleQueriesSlice: CreateStateWithInitialValue<HandleQueriesStateI
       }
 
       const relations = gadgetProps.relations;
+      if (relations === "formless") throw Error("Formless logic not implemented yet");
       const cellPositions = Array.from(relations.keys());
 
       const getCellHandles = (pos: CellPosition) => {

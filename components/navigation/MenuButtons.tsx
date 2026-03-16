@@ -94,7 +94,7 @@ function NextLevelButton({ nextLevelHref }: { nextLevelHref: string }) {
     <Link href={nextLevelHref}>
       <HighlightedButton disabled={!levelIsCompleted}
         title={levelIsCompleted ? "" : "Connect all gadgets and remove broken connections to continue."}>
-        Next level
+        Continue
       </HighlightedButton>
     </Link>
   </div>
@@ -164,6 +164,7 @@ export function MenuButtons() {
   return <>
     <ReportBugButton />
     <HelpButton />
+    <MainMenuButton />
     {!isTutorialLevel && <RestartLevelButton />}
     {showSkipButton && <SkipButton nextLevelHref={nextLevelHref} skipTime={skipTime} />}
     {nextLevelHref !== undefined && <NextLevelButton nextLevelHref={nextLevelHref} />}

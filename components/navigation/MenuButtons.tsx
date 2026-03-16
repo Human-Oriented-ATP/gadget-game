@@ -159,13 +159,11 @@ export function MenuButtons() {
   const { nextProblem } = useGameStateContext((state) => state.setup)
   const nextLevelHref = nextProblem ? `../game/${nextProblem}` : undefined
 
-  const showMainMenuButton = skipTime === undefined && !isTutorialLevel
   const showSkipButton = skipTime !== undefined && nextLevelHref !== undefined
 
   return <>
     <ReportBugButton />
     <HelpButton />
-    {showMainMenuButton && <MainMenuButton />}
     {!isTutorialLevel && <RestartLevelButton />}
     {showSkipButton && <SkipButton nextLevelHref={nextLevelHref} skipTime={skipTime} />}
     {nextLevelHref !== undefined && <NextLevelButton nextLevelHref={nextLevelHref} />}

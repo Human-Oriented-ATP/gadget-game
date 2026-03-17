@@ -60,11 +60,20 @@
       "problems": [
         "t_e11",
         "ja_e03",
-        "t_e08",
         "ja_e05",
         "t_e04",
+        "t_e08",
         "t24",
-        "pink_tutorial05"
+        "ja63",
+        "joai01",
+        "pink_tutorial05",
+        "joai02"
+      ]
+    },
+    {
+      "name": "The Artisan World (TBD)",
+      "problems": [
+        "joai03"
       ]
     }
   ],
@@ -75,7 +84,6 @@
         "ja60",
         "ja67",
         "ja05a",
-        "ja63",
         "ja23",
         "ja69",
         "ja55a",

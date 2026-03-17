@@ -48,7 +48,7 @@ export const tutorial01: InteractiveLevel = {
         trigger: { ConnectionAdded: {} }
     }, {
         content: {
-            jsx: <>You have completed the gadget machine. Click next level to continue!</>
+            jsx: <>You have completed the gadget machine. Click the continue button to proceed to the next level!</>
         }
     }]
 };

@@ -62,7 +62,7 @@ export function InteractiveContent() {
         if (currentContent?.popup !== undefined) {
             setPopupState(true)
         }
-    }, [tutorialStep])
+    }, [tutorialStep, currentContent?.popup])
 
     if (popupIsOpen) {
         return <PopupContent closePopup={() => setPopupState(false)}>{currentContent.popup}</PopupContent>

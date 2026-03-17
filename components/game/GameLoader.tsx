@@ -1,7 +1,8 @@
 import { makeInitializationDataFromProblemFileData } from "lib/game/Initialization"
 import { loadProblemData, loadStudyConfiguration } from "lib/game/LoadProblems"
 import { parseProblemFile } from "lib/parsing/Semantics"
-import { getNextProblem } from "lib/study/LevelConfiguration"
+import { getDestinationIfSolved } from "lib/study/LevelConfiguration"
+import { cookies } from "next/headers"
 import { Suspense } from "react"
 import { Game } from "./Game"
 import { DEFAULT_SETTINGS } from "components/tutorial/InteractiveLevel"
@@ -24,7 +25,8 @@ export async function GameLoader({ configId, problemId }: { configId: string, pr
     const configuration = await loadStudyConfiguration(configId)
     const problemData = await loadProblemData(problemId);
 
-    const nextProblem = getNextProblem(configuration, problemId)
+    const completedProblems = (await cookies()).get("completed")?.value?.split(",") ?? []
+    const destinationIfSolvedHref = getDestinationIfSolved(configuration, problemId, completedProblems)
     const { initialDiagramFromTutorialSpecification, settings, tutorialSteps } = getTutorialProps(problemId)
 
     try {
@@ -35,7 +37,7 @@ export async function GameLoader({ configId, problemId }: { configId: string, pr
                 initialDiagram={initialDiagramFromTutorialSpecification ?? initialDiagramFromProblemFile}
                 axioms={axioms}
                 problemId={problemId}
-                nextProblem={nextProblem}
+                destinationIfSolvedHref={destinationIfSolvedHref}
                 configuration={configuration}
                 settings={settings ?? DEFAULT_SETTINGS}
                 tutorialSteps={tutorialSteps}

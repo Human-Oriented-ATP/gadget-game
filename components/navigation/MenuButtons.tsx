@@ -6,16 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useGameStateContext } from 'lib/state/StateContextProvider';
 import { useShallow } from 'zustand/react/shallow';
 import { GameSlice } from 'lib/state/Store';
-import { useCallback, useEffect, useState } from 'react';
-import { clientSideCookies } from 'lib/util/ClientSideCookies';
-import { STUDY_DURATION_IN_S } from 'lib/constants';
-
-function formatTime(seconds: number): string {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  const paddedSeconds = remainingSeconds.toString().padStart(2, "0");
-  return `${minutes}:${paddedSeconds}`;
-}
+import { useCallback } from 'react';
 
 function HelpButton() {
   const openHelpPopup = useGameStateContext(useShallow((state) => state.openHelpPopup))
@@ -64,77 +55,16 @@ function RestartLevelButton() {
   </div>
 }
 
-function SkipButton({ nextLevelHref, skipTime }: { nextLevelHref: string, skipTime: number | undefined }) {
-  const [timeUntilSkip, setTimeUntilSkip] = useState(skipTime || 0)
-  const uploadHistory = useGameStateContext(useShallow((state) => state.uploadHistory))
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (timeUntilSkip <= 0) {
-        clearInterval(interval)
-        return
-      }
-      setTimeUntilSkip((prev) => prev - 1)
-    }, 1000)
-  }, [skipTime])
-
-  return <div className='m-1'>
-    <Link href={nextLevelHref} onClick={uploadHistory}>
-      <Button disabled={timeUntilSkip > 0}
-        title={timeUntilSkip <= 0 ? "" : `You can skip this level in ${formatTime(timeUntilSkip)}.`}>
-        Skip level
-      </Button>
-    </Link>
-  </div>
-}
-
-function NextLevelButton({ nextLevelHref }: { nextLevelHref: string }) {
+function ContinueButton({ nextDestinationHref }: { nextDestinationHref: string }) {
   const levelIsCompleted = useGameStateContext(useShallow((state) => state.levelIsCompleted))
   return <div className='m-1'>
-    <Link href={nextLevelHref}>
-      <HighlightedButton disabled={!levelIsCompleted}
+    <Link href={nextDestinationHref}>
+      <HighlightedButton disabled={false}
         title={levelIsCompleted ? "" : "Connect all gadgets and remove broken connections to continue."}>
         Continue
       </HighlightedButton>
     </Link>
   </div>
-}
-
-function ShowCompletionCodeButton() {
-  const [showButton, setShowButton] = useState(false);
-
-  const openStudyCompletionPopup = useGameStateContext(useShallow((state) => state.openStudyCompletionPopup))
-
-  useEffect(() => {
-    let startTime = clientSideCookies.get("study_start_time");
-
-    if (!startTime) {
-      startTime = Date.now().toString();
-      clientSideCookies.set("study_start_time", startTime);
-      console.log("Start time was not set!")
-    }
-
-    const interval = setInterval(() => {
-      const elapsed = (Date.now() - parseInt(startTime, 10)) / 1000;
-      if (elapsed >= STUDY_DURATION_IN_S) {
-        setShowButton(true);
-        openStudyCompletionPopup()
-        clearInterval(interval);
-      }
-      console.log(startTime, elapsed)
-    }, 1000);
-
-    return () => clearInterval(interval);
-  }, [openStudyCompletionPopup]);
-
-
-  if (!showButton) {
-    return <></>
-  } else {
-    return <div className='m-1'>
-      <Button onClick={openStudyCompletionPopup}>Show Completion Code</Button>
-    </div>
-  }
 }
 
 function ReportBugButton() {
@@ -148,25 +78,17 @@ function ReportBugButton() {
   );
 }
 
-const selector = (state: GameSlice) => ({
-  isTutorialLevel: state.setup.settings.isTutorialLevel,
-  skipTime: state.setup.settings.skipTime,
-})
-
 export function MenuButtons() {
-  const { isTutorialLevel, skipTime } = useGameStateContext(useShallow(selector))
-
-  const { nextProblem } = useGameStateContext((state) => state.setup)
-  const nextLevelHref = nextProblem ? `../game/${nextProblem}` : undefined
-
-  const showSkipButton = skipTime !== undefined && nextLevelHref !== undefined
-
+  const { isTutorialLevel, destinationIfSolvedHref } = useGameStateContext(useShallow((state: GameSlice) => ({
+    isTutorialLevel: state.setup.settings.isTutorialLevel,
+    destinationIfSolvedHref: state.setup.destinationIfSolvedHref,
+  })))
+  
   return <>
     <ReportBugButton />
     <HelpButton />
     <MainMenuButton />
     {!isTutorialLevel && <RestartLevelButton />}
-    {showSkipButton && <SkipButton nextLevelHref={nextLevelHref} skipTime={skipTime} />}
-    {nextLevelHref !== undefined && <NextLevelButton nextLevelHref={nextLevelHref} />}
+    <ContinueButton nextDestinationHref={destinationIfSolvedHref} />
   </>;
 }

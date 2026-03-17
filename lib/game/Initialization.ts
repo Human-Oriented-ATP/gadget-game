@@ -1,7 +1,6 @@
 import { GeneralConnection } from "./Connection";
 import { Axiom, GadgetId, GOAL_GADGET_ID } from "./Primitives";
 import { Relation } from "./Term";
-import { parseStatement } from "../parsing/Semantics";
 import { axiomToString, goalToString } from "./GameLogic";
 
 export type Statement = { axiom: Axiom } | { goal: Relation }

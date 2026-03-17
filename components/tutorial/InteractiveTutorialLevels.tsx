@@ -7,7 +7,6 @@ import { tutorial04 } from "./levels/tutorial04";
 import { tutorial05 } from "./levels/tutorial05";
 import { tutorial06 } from "./levels/tutorial06";
 import { pink_tutorial04 } from "./levels/pink_tutorial04";
-import { pink_tutorial05 } from "./levels/pink_tutorial05";
 import { pink_tutorial01 } from "./levels/pink_tutorial01";
 import { pink_tutorial02 } from "./levels/pink_tutorial02";
 import { pink_tutorial03 } from "./levels/pink_tutorial03";

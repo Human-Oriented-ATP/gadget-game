@@ -1,4 +1,4 @@
-import { GetState, SetState } from '../Types';
+import { SetState } from '../Types';
 
 export interface StudyCompletionPopupState {
   studyCompletionPopupIsOpen: boolean

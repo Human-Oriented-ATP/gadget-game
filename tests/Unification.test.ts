@@ -186,7 +186,7 @@ test("Mix of general equations correctly handled", () => {
         ["eq2", {type: "term", equation: parseTermEquation("B=3")}],
     ]);
 
-    const { equationIsSatisfied, assignment } = unifyEquations(equations);
+    const { assignment } = unifyEquations(equations);
 
     expect(assignment.findRepresentative("A")).toEqual(assignment.findRepresentative("B"));
     expect(assignment.getAssignedValue("A")).toEqual(parseTerm("3"));

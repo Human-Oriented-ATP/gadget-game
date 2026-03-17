@@ -1,5 +1,4 @@
-import { DragIndicatorProps } from "../DragIndicator";
-import { fromGadgetSelector, GadgetPosition, InteractiveLevel, TUTORIAL_SETTINGS } from "../InteractiveLevel";
+import { fromGadgetSelector, InteractiveLevel, TUTORIAL_SETTINGS } from "../InteractiveLevel";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { InitialDiagram } from "lib/game/Initialization";
 import { parseRelation } from "lib/parsing/Semantics";

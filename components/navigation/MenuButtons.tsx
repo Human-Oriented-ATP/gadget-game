@@ -59,7 +59,7 @@ function ContinueButton({ nextDestinationHref }: { nextDestinationHref: string }
   const levelIsCompleted = useGameStateContext(useShallow((state) => state.levelIsCompleted))
   return <div className='m-1'>
     <Link href={nextDestinationHref}>
-      <HighlightedButton disabled={false}
+      <HighlightedButton disabled={!levelIsCompleted}
         title={levelIsCompleted ? "" : "Connect all gadgets and remove broken connections to continue."}>
         Continue
       </HighlightedButton>

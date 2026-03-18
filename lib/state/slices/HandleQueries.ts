@@ -1,4 +1,4 @@
-﻿import { CreateStateWithInitialValue } from '../Types';
+import { CreateStateWithInitialValue } from '../Types';
 import { isGadgetHandle, isTargetHandle, makeEqualityHandleId, makeHandleId } from 'lib/game/Handles';
 import { EqualityPosition, GadgetId } from 'lib/game/Primitives';
 import { OUTPUT_POSITION, CellPosition } from 'lib/game/CellPosition';

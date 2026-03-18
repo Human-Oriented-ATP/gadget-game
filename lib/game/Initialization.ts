@@ -1,4 +1,4 @@
-﻿import { GeneralConnection } from "./Connection";
+import { GeneralConnection } from "./Connection";
 import { FixedAxiom, GadgetId, GOAL_GADGET_ID } from "./Primitives";
 import { Relation } from "./Term";
 import { axiomToString, goalToString } from "./GameLogic";

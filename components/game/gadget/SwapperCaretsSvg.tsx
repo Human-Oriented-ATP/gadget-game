@@ -1,7 +1,6 @@
 import { JSX } from "react";
-import { ConnectorStatus, useConnectorDetails } from "./handles/Connector";
+import { ConnectorStatus } from "./handles/Connector";
 import { twMerge } from "tailwind-merge";
-import { makeEqualityHandleId } from "lib/game/Handles";
 import { useGameStateContext } from "lib/state/StateContextProvider";
 
 export interface SwapperCaretsProps {

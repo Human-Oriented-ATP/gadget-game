@@ -6,8 +6,8 @@ export type ReadonlyGameSetup = {
   axioms: string[];
   settings: LevelConfiguration;
   tutorialSteps: InteractiveStep[];
+  destinationIfSolvedHref: string;
   problemId?: string;
-  nextProblem?: string;
   configurationIdentifier?: string;
 };
 

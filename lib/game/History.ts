@@ -12,7 +12,7 @@ export type Log = [GameEvent, Date][]
 
 
 export function getEvents(log: Log): GameEvent[] {
-    return log.map(([event, date]) => event)
+    return log.map(([event]) => event)
 }
 
 function getAddedGadgets(events: GameEvent[]) {

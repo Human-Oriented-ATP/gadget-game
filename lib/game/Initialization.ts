@@ -28,6 +28,7 @@ export function makeProblemFileDataFromStatements(statements: Statement[]): Prob
         axioms: statements.filter(isAxiom).map(statement => axiomToString(statement.fixedAxiom))
     }
 }
+
 export type InitialDiagramGadget = {
     statement: string
     position: { x: number; y: number }

@@ -2,7 +2,7 @@ import { useGameStateContext } from "lib/state/StateContextProvider";
 import { useRef } from "react";
 import { useShallow } from "zustand/react/shallow";
 
-interface InsertGadgetButtonProps extends React.PropsWithChildren<{}> {
+interface InsertGadgetButtonProps extends React.PropsWithChildren {
     axiom: string;
 }
 
@@ -17,7 +17,7 @@ export function InsertGadgetButton({ axiom, children }: InsertGadgetButtonProps)
         return { x: domRect.left + domRect.width / 2, y: domRect.top + domRect.height / 2 };
     }
 
-    function onMouseDown(e: React.MouseEvent) {
+    function onMouseDown() {
         addGadgetNode(axiom, getPosition());
     }
 

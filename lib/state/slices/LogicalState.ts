@@ -3,7 +3,7 @@ import { connectionToEquation, GeneralConnection, getConnectionEndpoints } from 
 import { axiomToGadget, getGadgetRelations } from 'lib/game/GameLogic';
 import { GameEvent } from 'lib/game/History';
 import { GadgetId } from 'lib/game/Primitives';
-import { getRelationArgs, Relation, VariableName } from 'lib/game/Term';
+import { getRelationArgs, Relation } from 'lib/game/Term';
 import { GeneralEquation } from 'lib/game/Unification';
 import { ValueMap } from 'lib/util/ValueMap';
 import { CreateStateWithInitialValue } from '../Types';

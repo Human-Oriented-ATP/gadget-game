@@ -3,7 +3,6 @@ import { CreateStateWithInitialValue } from "../Types"
 import { HistorySlice, historySlice, HistoryState, HistoryStateInitializedFromData } from "./History";
 import { GeneralConnection } from "lib/game/Connection";
 import { GameEvent } from "lib/game/History";
-import { CellPosition } from "lib/game/CellPosition";
 
 export type TutorialStateInitializedFromData = HistoryStateInitializedFromData
 

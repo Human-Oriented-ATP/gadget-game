@@ -15,17 +15,12 @@ const flatNextConfig = compat.config({
 
 export default tseslint.config(
   // The below object has only an "ignores"
-  // key so is global. 
+  // key so is global.
   // https://eslint.org/docs/latest/use/configure/ignore
   {
-    ignores: [
-      ".next/",
-      "node_modules/",
-      "build/",
-      "dist/",
-    ],
+    ignores: [".next/", "next-env.d.ts", "node_modules/", "build/", "dist/"],
   },
-  ...flatNextConfig, 
+  ...flatNextConfig,
   { ...polyfillCompat.configs["flat/recommended"] },
   {
     files: ["**/*.js", "**/*.mjs", "**/*.cjs"],
@@ -36,7 +31,7 @@ export default tseslint.config(
       },
     },
   },
-  ...tseslint.configs.recommendedTypeChecked.map(config => ({
+  ...tseslint.configs.recommendedTypeChecked.map((config) => ({
     ...config,
     files: ["**/*.ts", "**/*.tsx"],
   })),
@@ -52,11 +47,7 @@ export default tseslint.config(
   },
   // Later rules take precedence.
   {
-    "rules": {
-      "@typescript-eslint/no-array-constructor": "off",
-      "@typescript-eslint/no-base-to-string": "off",
-      "@typescript-eslint/no-duplicate-type-constituents": "off",
-      "@typescript-eslint/no-empty-object-type": "off",
+    rules: {
       "@typescript-eslint/no-explicit-any": "off",
       "@typescript-eslint/no-extra-non-null-assertion": "off",
       "@typescript-eslint/no-floating-promises": "off",
@@ -68,11 +59,10 @@ export default tseslint.config(
       "@typescript-eslint/no-unsafe-call": "off",
       "@typescript-eslint/no-unsafe-member-access": "off",
       "@typescript-eslint/no-unsafe-return": "off",
-      "@typescript-eslint/no-unused-vars": "off",
       "@typescript-eslint/restrict-plus-operands": "off",
       "@typescript-eslint/restrict-template-expressions": "off",
       "@typescript-eslint/require-await": "off",
-      "prefer-const": "off"
-    }
-  }
+      "prefer-const": "off",
+    },
+  },
 );

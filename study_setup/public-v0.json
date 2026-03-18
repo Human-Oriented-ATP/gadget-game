@@ -1,185 +1,231 @@
 {
-    "name": "public-v0",
-    "displayNamesAs": "number",
-    "displayUnlistedProblems": false,
-    "displayEndParticipationButton": false,
-    "categories": [
-        {
-            "name": "Tutorial Lite",
-            "problems": [
-                "tutorial01",
-                "tutorial01a",
-                "tutorial02",
-                "tutorial03",
-                "tutorial04",
-                "tutorial05",
-                "tutorial06",
-                "t_e10"
-            ]
-        },
-        {
-            "name": "Lite World 1",
-            "problems": [
-                "t17",
-                "t18",
-                "t16a",
-                "ja61",
-                "ja66",
-                "t19",                
-                "t_e03",
-                "ja60",
-                "ja62",
-                "ja67",
-                "ja57",
-                "t23",
-                "t24",
-                "t_e02"
-            ]
-        },
-        {
-            "name": "Lite World 2",
-            "problems": [
-                "ja05a",
-                "ja63",
-                "ja23",
-                "ja69",
-                "ja55a",
-                "ja56",
-                "ja59",
-                "ja64",
-                "ja70",
-                "ja58",
-                "t25a",
-                "t29a",
-                "ja55b"
-            ]
-        },
-        {
-            "name": "Lite World 3",
-            "problems": [
-                "ja24",
-                "ja68",
-                "ja33",
-                "t05a",
-                "ja07",
-                "ja08",
-                "t25",
-                "t27a",
-                "ja09",
-                "ja10",
-                "ja43",
-                "t72"
-            ]
-        },
-        {
-            "name": "Dependent Gadget Tutorial",
-            "problems": [
-                "pink_tutorial01",
-                "pink_tutorial02",
-                "pink_tutorial03",
-                "pink_tutorial04",
-                "pink_tutorial05"
-            ]
-        },
-        {
-            "name": "Pro World 1",
-            "problems": [
-                "t08",
-                "t11",
-                "t33",
-                "t43",
-                "t_e04",
-                "t65",
-                "ja_e05",                
-                "t66",
-                "t67",
-                "t71",
-                "t73",
-                "t74",
-                "t76",
-                "t_e08"
-            ]
-        },
-        {
-            "name": "Pro World 2",
-            "problems": [
-                "ja30",
-                "ja46",
-                "ja49",
-                "t04",
-                "t10",
-                "t12",
-                "t16",
-                "t20",
-                "t36",
-                "t44",
-                "t68",
-                "t78",
-                "t_e05",
-                "t_e09"
-            ]
-        },
-        {
-            "name": "Pro World 3",
-            "problems": [
-                "ja12a",
-                "ja14",
-                "ja26",
-                "ja28a",
-                "ja31",
-                "ja32",
-                "ja34",
-                "t41",
-                "t42",
-                "ja45",
-                "ja51",
-                "t14",
-                "t22a",
-                "t70",
-                "t77"
-            ]
-        },
-        {
-            "name": "Pro World 4",
-            "problems": [
-                "ja01",
-                "ja02a",
-                "ja15",
-                "ja27",
-                "t01",
-                "t02",
-                "t07",
-                "t22b",
-                "t28",
-                "t32",
-                "t37",
-                "t38",
-                "t39",
-                "t40",
-                "t44a",
-                "t_e06"
-            ]
-        },
-        {
-            "name": "Expert World",
-            "problems": [
-                "t06",
-                "ja03",
-                "ja04",
-                "t21",
-                "t09",
-                "t31",
-                "ja16",
-                "ja17"
-            ]
-        },
-        {
-            "name": "Legend World",
-            "problems": [
-                "f01a",
-                "t30",
-                "t35"
-            ]
-        }
-    ]
+  "name": "public-v0",
+  "displayNamesAs": "number",
+  "displayUnlistedProblems": false,
+  "displayEndParticipationButton": false,
+  "categories": [
+    {
+      "name": "The Tutorial",
+      "problems": [
+        "tutorial01",
+        "tutorial01a",
+        "tutorial02",
+        "tutorial03",
+        "tutorial04",
+        "tutorial05",
+        "tutorial06"
+      ]
+    },
+    {
+      "name": "The Novice World",
+      "problems": [
+        "t_e13",
+        "jofwd01",
+        "t_e10",
+        "jofwd02",
+        "t_e01",
+        "t_e07",
+        "t_e03",
+        "ja_e02",
+        "jofwd03",
+        "t_e02"
+      ]
+    },
+    {
+      "name": "The Apprentice World",
+      "problems": [
+        "t23",
+        "t18",
+        "t17",
+        "jo02",
+        "ja66",
+        "t16a",
+        "t19",
+        "ja61",
+        "ja57",
+        "ja62"
+      ]
+    },
+    {
+      "name": "The Dependent Gadget Tutorial",
+      "problems": [
+        "pink_tutorial01",
+        "pink_tutorial02",
+        "pink_tutorial03",
+        "pink_tutorial04"
+      ]
+    },
+    {
+      "name": "The Craftsman World",
+      "problems": [
+        "t_e11",
+        "ja_e03",
+        "ja_e05",
+        "joai04",
+        "t_e04",
+        "t_e08",
+        "t24",
+        "joai01",
+        "pink_tutorial05",
+        "joai02"
+      ]
+    },
+    {
+      "name": "The Artisan World",
+      "problems": [
+        "joai03",
+        "ja63",
+        "t08",
+        "ja60",
+        "t11",
+        "ja67",
+        "ja05a",
+        "t33",
+        "ja23",
+        "t43"
+      ]
+    },
+    {
+      "name": "The Master World",
+      "problems": [
+        "ja69",
+        "t65",
+        "t66",
+        "ja55a",
+        "t67",
+        "ja56",
+        "t71",
+        "ja59",
+        "t73",
+        "ja64"
+      ]
+    }
+  ],
+  "previous_worlds": [
+    {
+      "name": "Lite World 2",
+      "problems": [
+        "t29a",
+        "ja55b"
+      ]
+    },
+    {
+      "name": "Lite World 3",
+      "problems": [
+        "ja24",
+        "ja68",
+        "ja33",
+        "t05a",
+        "ja07",
+        "ja08",
+        "t25",
+        "t27a",
+        "ja09",
+        "ja10",
+        "ja43",
+        "t72"
+      ]
+    },
+    {
+      "name": "Pro World 1",
+      "problems": [
+        "t08",
+        "t11",
+        "t33",
+        "t43",
+        "t65",
+        "t66",
+        "t67",
+        "t71",
+        "t73",
+        "t76",
+        "t74",
+        "t76",
+        "ja70",
+        "ja58",
+        "t25a"
+      ]
+    },
+    {
+      "name": "Pro World 2",
+      "problems": [
+        "ja30",
+        "ja46",
+        "ja49",
+        "t04",
+        "t10",
+        "t12",
+        "t16",
+        "t20",
+        "t36",
+        "t44",
+        "t68",
+        "t78",
+        "t_e05",
+        "t_e09"
+      ]
+    },
+    {
+      "name": "Pro World 3",
+      "problems": [
+        "ja12a",
+        "ja14",
+        "ja26",
+        "ja28a",
+        "ja31",
+        "ja32",
+        "ja34",
+        "t41",
+        "t42",
+        "ja45",
+        "ja51",
+        "t14",
+        "t22a",
+        "t70",
+        "t77"
+      ]
+    },
+    {
+      "name": "Pro World 4",
+      "problems": [
+        "ja01",
+        "ja02a",
+        "ja15",
+        "ja27",
+        "t01",
+        "t02",
+        "t07",
+        "t22b",
+        "t28",
+        "t32",
+        "t37",
+        "t38",
+        "t39",
+        "t40",
+        "t44a",
+        "t_e06"
+      ]
+    },
+    {
+      "name": "Expert World",
+      "problems": [
+        "t06",
+        "ja03",
+        "ja04",
+        "t21",
+        "t09",
+        "t31",
+        "ja16",
+        "ja17"
+      ]
+    },
+    {
+      "name": "Legend World",
+      "problems": [
+        "f01a",
+        "t30",
+        "t35"
+      ]
+    }
+  ]
 }

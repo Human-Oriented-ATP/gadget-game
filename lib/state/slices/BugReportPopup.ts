@@ -1,4 +1,4 @@
-import { GetState, SetState } from '../Types';
+import { SetState } from '../Types';
 
 export interface BugReportPopupState {
   bugReportPopupIsOpen: boolean

@@ -10,7 +10,7 @@ export interface GameProps {
   initialDiagram: InitialDiagram
   axioms: string[]
   problemId?: string
-  nextProblem?: string
+  destinationIfSolvedHref: string
   configuration?: StudyConfiguration
   settings?: LevelConfiguration
   tutorialSteps?: InteractiveStep[]

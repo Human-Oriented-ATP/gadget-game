@@ -1,4 +1,4 @@
-import { assertType, expect, test } from 'vitest'
+import { expect, test } from 'vitest'
 import { parseStatement } from "../lib/parsing/Semantics"
 import { isAxiom } from '../lib/game/Initialization'
 

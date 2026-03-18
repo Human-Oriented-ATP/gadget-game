@@ -13,15 +13,28 @@ export function getProblemList(config: StudyConfiguration): string[] {
     return problems
 }
 
-export function getNextProblem(config: StudyConfiguration, currentProblem: string): string | undefined {
-    const problemList = getProblemListWithQuestionnaires(config)
-    const currentIndex = problemList.indexOf(currentProblem)
-    if (currentIndex === -1) {
-        return undefined
-    } else {
-        const nextProblem = problemList[currentIndex + 1]
-        return nextProblem
+export function getDestinationIfSolved(config: StudyConfiguration, currentProblem: string, completedProblems: string[] = []): string {
+    const category = config.categories.find(cat => cat.problems.includes(currentProblem))
+
+    if (!category) {
+        return `/${config.name}/`
     }
+
+    const categoryProblems = category.problems
+    const currentIndex = categoryProblems.indexOf(currentProblem)
+    const otherProblems = categoryProblems.filter((_, i) => i !== currentIndex)
+    const allOthersCompleted = otherProblems.every(p => completedProblems.includes(p))
+
+    if (allOthersCompleted) {
+        return `../world-complete?worldName=${encodeURIComponent(category.name)}`
+    }
+
+    const isLastInCategory = currentIndex === categoryProblems.length - 1
+    if (isLastInCategory) {
+        return `/${config.name}/`
+    }
+
+    return `../game/${categoryProblems[currentIndex + 1]}`
 }
 
 export function findFirstUncompletedProblem(config: StudyConfiguration): string | undefined {

@@ -1,4 +1,4 @@
-import { Connection, ReactFlowInstance, XYPosition } from "@xyflow/react";
+import { ReactFlowInstance, XYPosition } from "@xyflow/react";
 import { getCenter } from './XYPosition';
 import { getGadgetIdFromHandle, isTargetHandle, isEqualityHandle, getPositionOfEqualityHandle } from "lib/game/Handles";
 
@@ -21,15 +21,15 @@ export function getPositionOfHandle(handleId: string, rf: ReactFlowInstance): XY
 }
 
 function getEqualityHandles<T>(handles: Map<string, T>): Map<string, T> {
-    return new Map([...handles].filter(([handle, position]) => isEqualityHandle(handle)))
+    return new Map([...handles].filter(([handle]) => isEqualityHandle(handle)))
 }
 
 function getSourceHandles<T>(handles: Map<string, T>): Map<string, T> {
-    return new Map([...handles].filter(([handle, position]) => !isTargetHandle(handle) && !isEqualityHandle(handle)))
+    return new Map([...handles].filter(([handle]) => !isTargetHandle(handle) && !isEqualityHandle(handle)))
 }
 
 function getTargetHandles<T>(handles: Map<string, T>): Map<string, T> {
-    return new Map([...handles].filter(([handle, position]) => isTargetHandle(handle) && !isEqualityHandle(handle)))
+    return new Map([...handles].filter(([handle]) => isTargetHandle(handle) && !isEqualityHandle(handle)))
 }
 
 function findClosestHandle(position: XYPosition, otherHandles: HandlesWithPositions): { distance: number, id: string } {

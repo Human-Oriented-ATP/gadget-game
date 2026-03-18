@@ -78,7 +78,8 @@ export const flowSlice: CreateStateWithInitialValue<FlowStateInitializedFromData
     },
 
     onConnect: (connection: Connection) => {
-      if (!isValidConnection(connection)) throw Error(`Connection is not valid ${connection}`)
+      if (!isValidConnection(connection)) 
+        throw Error(`Connection is not valid ${JSON.stringify(connection)}`)
       const isEqualityConnection = isEqualityHandle(connection.sourceHandle);
       const edgeRemovalEvents = isEqualityConnection ? [] :
         get().removeEdgesConnectedToHandle(connection.targetHandle);

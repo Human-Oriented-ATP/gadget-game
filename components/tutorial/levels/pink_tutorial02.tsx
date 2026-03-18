@@ -1,22 +1,10 @@
-import { DragIndicatorProps } from "../DragIndicator";
-import { fromGadgetSelector, GadgetPosition, InteractiveLevel, TUTORIAL_SETTINGS } from "../InteractiveLevel";
+import { fromGadgetSelector, InteractiveLevel, TUTORIAL_SETTINGS } from "../InteractiveLevel";
 import { GOAL_GADGET_ID } from 'lib/game/Primitives';
 import { InitialDiagram } from "lib/game/Initialization";
 import { parseRelation } from "lib/parsing/Semantics";
 import { Gadget } from "components/game/gadget/Gadget";
 import { BrokenTargetConnector, PinkHole } from "../TutorialSetup";
 import { gadgetToGeneralConnection } from "lib/game/Connection";
-
-const firstAxiomDragPoint: GadgetPosition = {
-    elementId: "axiom_0",
-    anchorPoint: "BOTTOM_RIGHT",
-    offset: { x: -20, y: -20 }
-};
-
-const dragFirstAxiomOut: DragIndicatorProps<GadgetPosition> = {
-    origin: firstAxiomDragPoint,
-    destination: { relativePosition: { x: 280, y: 240 } },
-};
 
 const initialDiagram: InitialDiagram = {
     gadgets: new Map([
@@ -27,38 +15,6 @@ const initialDiagram: InitialDiagram = {
         from: "initial_gadget_1",
         to: [GOAL_GADGET_ID, 0]
     })]
-};
-
-const connectGadgets1: DragIndicatorProps<GadgetPosition> = {
-    origin: {
-        gadget: { gadgetId: "g_0" },
-        anchorPoint: "CENTER_RIGHT",
-        offset: { x: -4, y: 0 }
-    },
-    destination: {
-        absolutePosition: {
-            elementId: "initial_gadget_1",
-            anchorPoint: "CENTER_LEFT",
-            offset: { x: 3, y: -38 }
-        }
-    },
-    drawLine: true
-};
-
-const connectGadgets2: DragIndicatorProps<GadgetPosition> = {
-    origin: {
-        gadget: { gadgetId: "g_1" },
-        anchorPoint: "CENTER_RIGHT",
-        offset: { x: -4, y: 0 }
-    },
-    destination: {
-        absolutePosition: {
-            elementId: "initial_gadget_1",
-            anchorPoint: "CENTER_LEFT",
-            offset: { x: 3, y: 38 }
-        }
-    },
-    drawLine: true
 };
 
 function RedCell1() {
@@ -84,7 +40,7 @@ export const pink_tutorial02: InteractiveLevel = {
     initialDiagram: initialDiagram,
     steps: [{
         content: {
-            jsx: <> Start by connecting the gadget with <PinkHole value="?" />to <RedCell1 />.</>,
+            jsx: <> Start by connecting the dependent gadget with <PinkHole value="?" />to <RedCell1 />.</>,
         },
         trigger: { ConnectionAdded: fromGadgetSelector({ from: { axiom: "r(f(X), X)" }, to: [{ gadgetId: "initial_gadget_1" }, 0] }) }
     }, {

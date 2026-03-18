@@ -1,9 +1,9 @@
 import { GeneralConnection } from "./Connection";
-import { Axiom, GadgetId, GOAL_GADGET_ID } from "./Primitives";
+import { FixedAxiom, GadgetId, GOAL_GADGET_ID } from "./Primitives";
 import { Relation } from "./Term";
 import { axiomToString, goalToString } from "./GameLogic";
 
-export type Statement = { axiom: Axiom } | { goal: Relation }
+export type Statement = { fixedAxiom: FixedAxiom } | { goal: Relation }
 
 export interface ProblemFileData {
     goal: string
@@ -14,8 +14,8 @@ export function isGoal(statement: Statement): statement is { goal: Relation } {
     return "goal" in statement
 }
 
-export function isAxiom(statement: Statement): statement is { axiom: Axiom } {
-    return "axiom" in statement
+export function isAxiom(statement: Statement): statement is { fixedAxiom: FixedAxiom } {
+    return "fixedAxiom" in statement
 }
 
 export function makeProblemFileDataFromStatements(statements: Statement[]): ProblemFileData {
@@ -25,7 +25,7 @@ export function makeProblemFileDataFromStatements(statements: Statement[]): Prob
     }
     return {
         goal: goalToString(goals[0].goal),
-        axioms: statements.filter(isAxiom).map(statement => axiomToString(statement.axiom))
+        axioms: statements.filter(isAxiom).map(statement => axiomToString(statement.fixedAxiom))
     }
 }
 

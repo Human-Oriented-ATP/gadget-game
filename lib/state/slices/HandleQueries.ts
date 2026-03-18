@@ -32,6 +32,7 @@ export const handleQueriesSlice: CreateStateWithInitialValue<HandleQueriesStateI
       }
 
       const relations = gadgetProps.relations;
+      if (relations === "formless") throw Error("Formless logic not implemented yet");
       const cellPositions = Array.from(relations.keys());
 
       const getCellHandles = (pos: CellPosition) => {

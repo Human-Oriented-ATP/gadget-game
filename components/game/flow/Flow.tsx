@@ -9,7 +9,7 @@ import { ConnectionLineComponent } from './ConnectionLineComponent';
 import { ControlButtons } from './ControlButtons';
 import '@xyflow/react/dist/base.css';
 import './flow.css'
-import { DoubleClickHandler } from '../gadget/handles/ConnectorTypes';
+import { DoubleClickHandler } from '../gadget/handles/Connector';
 
 const useNodeTypesWithHandler = (onHandleDoubleClick: DoubleClickHandler) => {
     const nodeTypes = useMemo(() => {

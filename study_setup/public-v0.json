@@ -56,7 +56,7 @@
       ]
     },
     {
-      "name": "Apprentince World 1",
+      "name": "Apprentice World 1",
       "problems": [
         "t_e11",
         "ja_e03",
@@ -131,22 +131,7 @@
       ]
     },
     {
-      "name": "Craftsman World 3",
-      "problems": [
-        "t16",
-        "t78",
-        "t_e09",
-        "ja07",
-        "t12",
-        "t36",
-        "t44",
-        "t_e05",
-        "t20",
-        "ja08"
-      ]
-    },
-    {
-      "name": "Artisan World 1",
+      "name": "Crafsman World 3",
       "problems": [
         "ja12a",
         "ja14",
@@ -225,7 +210,6 @@
         "ja06",
         "ja11",
         "t06", 
-        "ja03",
         "ja04",
         "t21",
         "t09",

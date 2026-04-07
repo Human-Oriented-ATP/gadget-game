@@ -146,7 +146,7 @@
       ]
     },
     {
-      "name": "Artisan World 2",
+      "name": "Artisan World 1",
       "problems": [
         "ja26",
         "ja24",
@@ -161,7 +161,7 @@
       ]
     },
     {
-      "name": "Artisan World 3",
+      "name": "Artisan World 2",
       "problems": [
         "t40",
         "ja15",
@@ -176,7 +176,7 @@
       ]
     },
     {
-      "name": "Artisan World 4",
+      "name": "Artisan World 3",
       "problems": [
         "ja43",
         "t37",
@@ -187,13 +187,13 @@
         "ja01",
         "ja09",
         "t02",
-        "ja02a",
-        "ja10"
+        "ja02a"
       ]
     },
     {
       "name": "Advanced World",
       "problems": [
+        "ja10",
         "t05a",
         "ja29",
         "t01",

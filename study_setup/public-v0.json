@@ -215,17 +215,15 @@
         "ja18a"
       ]
     }
-
   ],
   "previous_worlds": [
-
     {
       "name": "Expert World",
       "problems": [
-        "ja03(easy(for an expert ofc))",
-        "ja04(easy)",
-        "ja06(v easy)",
-        "ja11(easy)",
+        "ja03",
+        "ja04",
+        "ja06",
+        "ja11",
         "t06", 
         "ja03",
         "ja04",

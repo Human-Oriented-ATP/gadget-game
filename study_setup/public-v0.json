@@ -131,7 +131,7 @@
       ]
     },
     {
-      "name": "Crafsman World 3",
+      "name": "Artisan World 1",
       "problems": [
         "ja12a",
         "ja14",
@@ -161,7 +161,7 @@
       ]
     },
     {
-      "name": "Artisan World 2",
+      "name": "Artisan World 3",
       "problems": [
         "t40",
         "ja15",
@@ -176,10 +176,23 @@
       ]
     },
     {
-      "name": "Artisan World 3",
+      "name": "Advanced World 1",
       "problems": [
+        "ja06",
+        "ja13",
+        "ja03",
+        "ja04",
+        "ja11",
+        "ja16",
+        "ja17",
+        "t09",
         "ja43",
-        "t37",
+        "t37"
+      ]
+    },
+    {
+      "name": "Advanced World 2",
+      "problems": [
         "t38",
         "t27a",
         "t44a",
@@ -187,35 +200,27 @@
         "ja01",
         "ja09",
         "t02",
-        "ja02a"
+        "ja02a",
+        "ja10",
+        "t05a"
       ]
     },
     {
-      "name": "Advanced World",
+      "name": "Advanced World 3",
       "problems": [
-        "ja10",
-        "t05a",
         "ja29",
         "t01",
         "ja18a"
       ]
-    }
-  ],
-  "previous_worlds": [
+    },
     {
       "name": "Expert World",
       "problems": [
-        "ja03",
-        "ja04",
-        "ja06",
-        "ja11",
-        "t06", 
-        "ja04",
+	      "ja47",
+        "t06",
+	      "ja54",
         "t21",
-        "t09",
-        "t31",
-        "ja16",
-        "ja17"
+        "t31"
       ]
     },
     {
@@ -226,5 +231,7 @@
         "t35"
       ]
     }
+  ],
+  "previous_worlds": [
   ]
 }

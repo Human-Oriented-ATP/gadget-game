@@ -32,9 +32,17 @@ export function MainMenuTop(props: { onOpenFeedback: () => void }) {
                 <span>The Gadget Game</span>
             </h1>
 
-            <Button onClick={props.onOpenFeedback}>
-                Give Feedback
-            </Button>
+            <div className="flex flex-col gap-2">
+                <Link
+                    href="/about"
+                    className="border-2 border-black rounded-lg p-2.5 hover:bg-black hover:text-white text-center"
+                >
+                    About
+                </Link>
+                <Button onClick={props.onOpenFeedback}>
+                    Give Feedback
+                </Button>
+            </div>
         </div>
     )
 }

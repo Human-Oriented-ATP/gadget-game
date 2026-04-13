@@ -43,7 +43,7 @@ export const tutorial02: InteractiveLevel = {
     initialDiagram: tutorial02InitialDiagram,
     steps: [{
         content: {
-            jsx: <>The dotted line means that the connection is broken. Remove it by double-clicking on <BrokenTargetConnector />.</>,
+            jsx: <>The dotted line means that the connection is broken, because the numbers don’t line up. Remove it by double-clicking on <BrokenTargetConnector />.</>,
             dragIndicator: tutorial02DragIndicatorDeleteConnection
         },
         trigger: { ConnectionRemoved: fromGadgetSelector({ to: [{ gadgetId: GOAL_GADGET_ID }, 0] }) }

@@ -9,6 +9,7 @@ import { StudyCompletionPopup } from "./StudyCompletionPopup";
 import { BugReportPopover } from "components/navigation/BugReportPopover";
 import { useGameStateContext } from "lib/state/StateContextProvider";
 import { useEffect } from "react";
+import { LevelCompletionConfetti } from "./LevelCompletionConfetti";
 
 export default function FlowWithMenuBar() {
   const uploadHistoryWithBeacon = useGameStateContext((state) => state.uploadHistoryWithBeacon);
@@ -33,6 +34,7 @@ export default function FlowWithMenuBar() {
       <InteractiveOverlay />
       <HelpPopup />
       <StudyCompletionPopup />
+      <LevelCompletionConfetti />
       <BugReportPopover />
     </div>
   </div>

@@ -65,7 +65,7 @@ export type InteractiveLevel = {
 export const RESTRICTIVE_SETTINGS: LevelConfiguration = {
     zoomEnabled: false,
     panEnabled: false,
-    proximityConnectEnabled: false,
+    proximityConnectEnabled: true,
     gadgetDeletionEnabled: false,
     initialViewportSetting: "ORIGIN_AT_RIGHT",
     showBrokenConnectionStatusBarMessage: true,
@@ -75,7 +75,7 @@ export const RESTRICTIVE_SETTINGS: LevelConfiguration = {
 export const DELETE_ONLY_SETTINGS: LevelConfiguration = {
     zoomEnabled: false,
     panEnabled: false,
-    proximityConnectEnabled: false,
+    proximityConnectEnabled: true,
     gadgetDeletionEnabled: true,
     initialViewportSetting: "ORIGIN_AT_RIGHT",
     showBrokenConnectionStatusBarMessage: true,

@@ -7,6 +7,7 @@ import ProblemCategoryGrid from "./ProblemGrid"
 import StartButton from "components/primitive/buttons/StartFirstUnsolvedLevel"
 import { BugReportDialog } from "./BugReportPopover"
 import { useTouchDevice } from "lib/util/useTouchDevice"
+import { useScrollAnchorPersistence } from "lib/util/useScrollAnchorPersistence"
 
 type MainPageProps = { config: StudyConfiguration, allProblems: string[] }
 
@@ -33,6 +34,7 @@ function StickyStartPanel(props: { config: StudyConfiguration, disableStartButto
 export function MainPage({ config, allProblems }: MainPageProps) {
     const [feedbackPopupIsOpen, setFeedbackPopupIsOpen] = useState(false)
     const isTouchDevice = useTouchDevice()
+    const scrollContainerRef = useScrollAnchorPersistence(config.name)
 
     return <div className="h-dvh flex flex-col overflow-hidden">
         <div className="md:hidden border-b border-gray-200 p-6">
@@ -44,7 +46,7 @@ export function MainPage({ config, allProblems }: MainPageProps) {
                 <MainMenuBar />
             </div>
 
-            <main className="flex-1 min-h-0 overflow-y-auto">
+            <main className="flex-1 min-h-0 overflow-y-auto" ref={scrollContainerRef}>
                 {isTouchDevice ? <TouchDeviceDetectedBanner /> : <IntroBanner />}
                 <StickyStartPanel config={config} disableStartButton={isTouchDevice === true} />
                 <ProblemCategoryGrid config={config} allProblems={allProblems} />

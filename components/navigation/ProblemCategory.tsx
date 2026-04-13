@@ -51,6 +51,7 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
     const problems = props.category.problems.filter(problem => problem !== "questionnaire1" && problem !== "questionnaire2");
     const solvedProblems = completedProblems?.filter(problem => problems.includes(problem)).length ?? 0;
     const allProblemsSolved = problems.length > 0 && solvedProblems === problems.length;
+    const categoryAnchor = `category:${props.config.name}:${props.category.name}`
 
     useEffect(() => {
         if (completedProblems === undefined || hasInitializedOpenState) {
@@ -71,7 +72,9 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
         })
     }
 
-    return <div className={twMerge("justify-self-center w-lg border-2 border-gray-300 rounded-lg p-3", fullNamesDisplayed && "w-4xl")}>
+    return <div
+        className={twMerge("justify-self-center w-lg border-2 border-gray-300 rounded-lg p-3", fullNamesDisplayed && "w-4xl")}
+        data-scroll-anchor={categoryAnchor}>
         <button className="w-full flex items-center justify-between text-left px-2 py-1"
             onClick={handleToggleOpenState}>
             <div className="flex items-center gap-2">

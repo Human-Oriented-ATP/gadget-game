@@ -17,7 +17,7 @@
       ]
     },
     {
-      "name": "The Novice World",
+      "name": "Novice World 1",
       "problems": [
         "t_e13",
         "jofwd01",
@@ -32,7 +32,7 @@
       ]
     },
     {
-      "name": "The Apprentice World",
+      "name": "Novice World 2",
       "problems": [
         "t23",
         "t18",
@@ -56,7 +56,7 @@
       ]
     },
     {
-      "name": "The Craftsman World",
+      "name": "Apprentice World 1",
       "problems": [
         "t_e11",
         "ja_e03",
@@ -71,7 +71,7 @@
       ]
     },
     {
-      "name": "The Artisan World",
+      "name": "Apprentice World 2",
       "problems": [
         "joai03",
         "ja63",
@@ -86,7 +86,7 @@
       ]
     },
     {
-      "name": "The Master World",
+      "name": "Apprentice World 3",
       "problems": [
         "ja69",
         "t65",
@@ -99,124 +99,128 @@
         "t73",
         "ja64"
       ]
-    }
-  ],
-  "previous_worlds": [
+    },
     {
-      "name": "Lite World 2",
+      "name": "Craftsman World 1",
       "problems": [
+        "t76",
         "t29a",
-        "ja55b"
-      ]
-    },
-    {
-      "name": "Lite World 3",
-      "problems": [
-        "ja24",
-        "ja68",
-        "ja33",
-        "t05a",
-        "ja07",
-        "ja08",
-        "t25",
-        "t27a",
-        "ja09",
-        "ja10",
-        "ja43",
-        "t72"
-      ]
-    },
-    {
-      "name": "Pro World 1",
-      "problems": [
-        "t08",
-        "t11",
-        "t33",
-        "t43",
-        "t65",
-        "t66",
-        "t67",
-        "t71",
-        "t73",
-        "t76",
         "t74",
-        "t76",
         "ja70",
         "ja58",
-        "t25a"
-      ]
-    },
-    {
-      "name": "Pro World 2",
-      "problems": [
-        "ja30",
-        "ja46",
-        "ja49",
+        "t25a",
+        "ja55b",
         "t04",
         "t10",
-        "t12",
-        "t16",
-        "t20",
-        "t36",
-        "t44",
-        "t68",
-        "t78",
-        "t_e05",
-        "t_e09"
+        "t68"
       ]
     },
     {
-      "name": "Pro World 3",
+      "name": "Craftsman World 2",
+      "problems": [
+        "t16",
+        "t78",
+        "t_e09",
+        "ja07",
+        "t12",
+        "t36",
+        "t44",
+        "t_e05",
+        "t20",
+        "ja08"
+      ]
+    },
+    {
+      "name": "Artisan World 1",
       "problems": [
         "ja12a",
         "ja14",
+        "t42",
+        "ja45",
+        "t14", 
+        "t22a",
+        "t70",
+        "ja30",
+        "ja46",
+        "ja49"
+      ]
+    },
+    {
+      "name": "Artisan World 2",
+      "problems": [
         "ja26",
+        "ja24",
         "ja28a",
         "ja31",
         "ja32",
         "ja34",
+        "t25",
         "t41",
-        "t42",
-        "ja45",
         "ja51",
-        "t14",
-        "t22a",
-        "t70",
         "t77"
       ]
     },
     {
-      "name": "Pro World 4",
+      "name": "Artisan World 3",
       "problems": [
-        "ja01",
-        "ja02a",
-        "ja15",
-        "ja27",
-        "t01",
-        "t02",
-        "t07",
-        "t22b",
-        "t28",
-        "t32",
-        "t37",
-        "t38",
-        "t39",
         "t40",
+        "ja15",
+        "t07",
+        "ja68",
+        "ja33",
+        "t32",
+        "t_e06",
+        "t28",
+        "t39",
+        "t72"
+      ]
+    },
+    {
+      "name": "Advanced World 1",
+      "problems": [
+        "ja06",
+        "ja13",
+        "ja03",
+        "ja04",
+        "ja11",
+        "ja16",
+        "ja17",
+        "t09",
+        "ja43",
+        "t37"
+      ]
+    },
+    {
+      "name": "Advanced World 2",
+      "problems": [
+        "t38",
+        "t27a",
         "t44a",
-        "t_e06"
+        "ja27",
+        "ja01",
+        "ja09",
+        "t02",
+        "ja02a",
+        "ja10",
+        "t05a"
+      ]
+    },
+    {
+      "name": "Advanced World 3",
+      "problems": [
+        "ja29",
+        "t01",
+        "ja18a"
       ]
     },
     {
       "name": "Expert World",
       "problems": [
+	      "ja47",
         "t06",
-        "ja03",
-        "ja04",
+	      "ja54",
         "t21",
-        "t09",
-        "t31",
-        "ja16",
-        "ja17"
+        "t31"
       ]
     },
     {
@@ -227,5 +231,7 @@
         "t35"
       ]
     }
+  ],
+  "previous_worlds": [
   ]
 }

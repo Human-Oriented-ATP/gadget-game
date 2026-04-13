@@ -25,7 +25,7 @@ export function getDestinationIfSolved(config: StudyConfiguration, currentProble
     const otherProblems = categoryProblems.filter((_, i) => i !== currentIndex)
     const allOthersCompleted = otherProblems.every(p => completedProblems.includes(p))
 
-    if (allOthersCompleted) {
+    if (allOthersCompleted && !completedProblems.includes(currentProblem)) {
         return `../world-complete?worldName=${encodeURIComponent(category.name)}`
     }
 

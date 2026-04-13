@@ -4,9 +4,15 @@ import ProblemCategoryGrid from "./ProblemGrid"
 import internal from "study_setup/internal.json"
 import { StudyConfiguration } from "lib/study/Types"
 import { ResetProgressButton } from "components/primitive/buttons/ResetProgress"
+import { getPlayerId } from "lib/study/playerId"
 
-export default function InternalPage({ allProblems }: { allProblems: string[] }) {
-    return <div className="w-full text-center pt-10">
+export default async function InternalPage({ allProblems }: { allProblems: string[] }) {
+    const playerId = await getPlayerId()
+
+    return <div className="relative w-full text-center pt-10">
+        <p className="absolute top-4 right-4 text-sm text-gray-600">
+            Player ID: <span className="font-mono">{playerId}</span>
+        </p>
         <h1 className="text-2xl p-4">Welcome to the Gadget Game!</h1>
 
         <h2 className="text-xl p-4">You might find the following interesting:</h2>

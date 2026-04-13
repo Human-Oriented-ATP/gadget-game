@@ -5,8 +5,26 @@ import { GameLevelButton } from "components/primitive/buttons/GameLevel";
 import { getCompletedProblems } from "lib/study/CompletedProblems";
 import { findFirstUncompletedProblem } from "lib/study/LevelConfiguration";
 import { ProblemCategory, StudyConfiguration } from "lib/study/Types";
+import { clientSideCookies } from "lib/util/ClientSideCookies";
 import { useEffect, useState } from "react";
 import { twJoin, twMerge } from "tailwind-merge";
+
+function getCategoryOpenStateCookieName(configName: string, categoryName: string) {
+    return `problem-category-open:${encodeURIComponent(configName)}:${encodeURIComponent(categoryName)}`
+}
+
+function getPersistedCategoryOpenState(configName: string, categoryName: string): boolean | undefined {
+    const persistedState = clientSideCookies.get(getCategoryOpenStateCookieName(configName, categoryName))
+    if (persistedState === undefined) {
+        return undefined
+    }
+
+    return persistedState === "open"
+}
+
+function saveCategoryOpenState(configName: string, categoryName: string, isOpen: boolean) {
+    clientSideCookies.set(getCategoryOpenStateCookieName(configName, categoryName), isOpen ? "open" : "closed", 365)
+}
 
 interface ProblemCategoryProps {
     config: StudyConfiguration
@@ -38,15 +56,24 @@ export function ProblemCategoryDisplay(props: ProblemCategoryProps) {
         if (completedProblems === undefined || hasInitializedOpenState) {
             return;
         }
-        setIsOpen(!allProblemsSolved);
+        const persistedOpenState = getPersistedCategoryOpenState(props.config.name, props.category.name)
+        setIsOpen(persistedOpenState ?? !allProblemsSolved);
         setHasInitializedOpenState(true);
-    }, [allProblemsSolved, completedProblems, hasInitializedOpenState]);
+    }, [allProblemsSolved, completedProblems, hasInitializedOpenState, props.config.name, props.category.name]);
 
     const nextProblem = completedProblems && findFirstUncompletedProblem(props.config);
 
+    function handleToggleOpenState() {
+        setIsOpen(current => {
+            const next = !current
+            saveCategoryOpenState(props.config.name, props.category.name, next)
+            return next
+        })
+    }
+
     return <div className={twMerge("justify-self-center w-lg border-2 border-gray-300 rounded-lg p-3", fullNamesDisplayed && "w-4xl")}>
         <button className="w-full flex items-center justify-between text-left px-2 py-1"
-            onClick={() => setIsOpen(current => !current)}>
+            onClick={handleToggleOpenState}>
             <div className="flex items-center gap-2">
                 {isOpen ? <ChevronDownIcon className="w-5 h-5" /> : <ChevronRightIcon className="w-5 h-5" />}
                 {allProblemsSolved ? <CheckCircledIcon className="w-5 h-5 rounded-full bg-green" /> : <></>}

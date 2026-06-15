@@ -74,9 +74,23 @@
 }
 
 .react-flow__node.selectable:focus {
-    box-shadow: 0px 10px 30px gray;
     border-radius: 15px;
-    background-color: var(--color-white);
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
+}
+
+.react-flow__node.selected::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 15px;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
 }
 
 .react-flow__handle.valid svg {

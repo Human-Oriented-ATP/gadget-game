@@ -16,7 +16,7 @@ export function SwapperConnector({ status = "DEFAULT", isConnecting = false, isI
 
     return <svg width="26" height="26" xmlns="http://www.w3.org/2000/svg" className={diamondClassName}>
         <SwapperDiamondConnector />
-        {status === "OPEN" ? <polyline points="5,10 13,2 21,10" fill="none"
+        {status === "OPEN" ? <polyline points="5,9 13,1 21,9" fill="none"
             className="stroke-black animate-svg-stroke-blink" /> : <></>}
     </svg>
 }

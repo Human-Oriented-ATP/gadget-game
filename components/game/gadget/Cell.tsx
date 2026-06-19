@@ -67,13 +67,16 @@ export function Cell(props: CellProps & HandleDoubleClickProps & SwapperTogglePr
         )}>
             {relationArgs.map((arg, idx) => {
                 let swapperButton: React.ReactNode = null;
+                let normalizedName: string | undefined;
+                let isToggled = false;
                 if (props.isSwapper) {
                     if (!("variable" in arg))
                         throw new Error("Swapper holes should always be variables");
 
+                    normalizedName = arg.variable.replace("SWAPOUT_", "SWAPIN_");
+                    isToggled = props.toggledSwapperHoles === normalizedName;
+
                     if (props.onToggleSwapperHole) {
-                        const normalizedName = arg.variable.replace("SWAPOUT_", "SWAPIN_");
-                        const isToggled = props.toggledSwapperHoles === normalizedName;
                         swapperButton = <ToggleableSwapperButton
                             gadgetId={props.gadgetId}
                             variableName={normalizedName}
@@ -83,7 +86,13 @@ export function Cell(props: CellProps & HandleDoubleClickProps & SwapperTogglePr
                 }
                 return (
                     <div key={idx} className="relative flex items-center justify-center">
-                        <Hole term={arg} />
+                        <Hole
+                            term={arg}
+                            gadgetId={props.gadgetId}
+                            variableName={normalizedName}
+                            isToggled={isToggled}
+                            onToggleSwapperHole={props.onToggleSwapperHole}
+                        />
                         {swapperButton}
                     </div>
                 );

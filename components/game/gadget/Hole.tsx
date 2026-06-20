@@ -1,12 +1,19 @@
 import { useGameStateContext } from 'lib/state/StateContextProvider'
-import { Term } from 'lib/game/Term'
+import type { MouseEvent } from 'react'
+import { Term, VariableName } from 'lib/game/Term'
 import { getAssignedValue } from 'lib/game/TermEnumeration'
 import { StaticHole } from './StaticHole'
 import { GameSlice } from 'lib/state/Store'
 import { getIdentifier } from 'lib/game/HoleUnification'
+import { SwapperHoleClickHandler } from './handles/ToggleableSwapperHandle'
+import { GadgetId } from 'lib/game/Primitives'
 
 interface HoleProps {
     term: Term
+    gadgetId?: GadgetId
+    variableName?: VariableName
+    isToggled?: boolean
+    onToggleSwapperHole?: SwapperHoleClickHandler
 }
 
 const selector = (state: GameSlice) => ({
@@ -37,5 +44,17 @@ export function Hole(props: HoleProps) {
         }
     }
 
-    return <StaticHole value={value} isFunctionHole={"function" in props.term} {...makeFocusProps(props.term)} onMouseLeave={removeFocus} />
+    const { onToggleSwapperHole, gadgetId, variableName, isToggled } = props;
+
+    const onClick = onToggleSwapperHole && gadgetId !== undefined
+        && variableName !== undefined && isToggled !== undefined
+        ? (event: MouseEvent<HTMLDivElement>) => onToggleSwapperHole(event, gadgetId, variableName, !isToggled)
+        : undefined;
+
+    return <StaticHole value={value}
+        isFunctionHole={"function" in props.term}
+        isToggled={props.isToggled} onClick={onClick}
+        {...makeFocusProps(props.term)}
+        onMouseLeave={removeFocus}
+    />
 }

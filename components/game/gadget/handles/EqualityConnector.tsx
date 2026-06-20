@@ -1,6 +1,6 @@
 import { EqualityPosition } from "lib/game/Primitives"
 import { twMerge } from "tailwind-merge"
-import { ConnectorDetails } from "./ConnectorTypes"
+import { ConnectorDetails } from "./Connector"
 
 interface EqualityConnectorProps extends ConnectorDetails {
     equalityPosition?: EqualityPosition
@@ -13,14 +13,14 @@ function EqualityConnectorPolygon() {
 export function EqualityConnector({ equalityPosition, status = "DEFAULT", isConnecting = false, isInline = false }: EqualityConnectorProps) {
     if (equalityPosition === undefined && !isInline) throw Error("Position of equality connector unspecified")
 
-    const circleClassName = twMerge("stroke-[1.5px] fill-black stroke-black pointer-events-none fill-white",
+    const className = twMerge("stroke-[1.5px] fill-black stroke-black pointer-events-none fill-white",
         status === "BROKEN" && isConnecting === false && "animate-svg-stroke-glow-red",
         isConnecting && "fill-green",
         isInline && "inline align-text-bottom");
 
     const transformProps = equalityPosition === "left" ? "rotate(0)" : "rotate(180)";
 
-    return <svg width="21" height="20" xmlns="http://www.w3.org/2000/svg" className={circleClassName} transform={transformProps}>
+    return <svg width="21" height="20" xmlns="http://www.w3.org/2000/svg" className={className} transform={transformProps}>
         <EqualityConnectorPolygon />
     </svg>
 }

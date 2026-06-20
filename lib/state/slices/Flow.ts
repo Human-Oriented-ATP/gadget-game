@@ -5,7 +5,7 @@ import { isValidConnection, toGeneralConnection } from 'lib/game/Connection';
 import { initViewport } from 'lib/game/ViewportInitialisation';
 import { flowUtilitiesSlice, FlowUtilitiesSlice, FlowUtilitiesState, FlowUtilitiesStateInitializedFromData } from './FlowUtilities';
 import { HoleFocusSlice, holeFocusSlice } from './HoleFocus';
-import { DoubleClickHandler } from 'components/game/gadget/handles/ConnectorTypes';
+import { DoubleClickHandler } from 'components/game/gadget/handles/Connector';
 import { isEqualityHandle } from 'lib/game/Handles';
 import { DEFAULT_EDGE_PROPS } from './Edges';
 

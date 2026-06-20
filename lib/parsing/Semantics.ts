@@ -3,7 +3,7 @@ import { IRecognitionException } from "chevrotain"
 import { Term, Relation } from "../game/Term"
 import { Statement, makeProblemFileDataFromStatements, ProblemFileData, isAxiom } from "../game/Initialization"
 import { FunctionNode, ProblemNode, RelationNode, StatementNode, TermNode, NormalRelationNode, EqualityRelationNode } from "./Nodes"
-import { Axiom } from "lib/game/Primitives"
+import { FixedAxiom } from "lib/game/Primitives"
 
 const BaseVisitor = parser.getBaseCstVisitorConstructor()
 
@@ -65,9 +65,9 @@ class PrologAstBuilderVisitor extends BaseVisitor {
             if (node.hypotheses) {
                 this.validateEqualityInHypotheses(node.hypotheses)
                 const hypotheses = node.hypotheses.map((hyp) => this.visit(hyp))
-                return { axiom: { conclusion, hypotheses } }
+                return { fixedAxiom: { conclusion, hypotheses } }
             } else {
-                return { axiom: { conclusion: conclusion, hypotheses: [] } }
+                return { fixedAxiom: { conclusion: conclusion, hypotheses: [] } }
             }
         } else {
             if (node.hypotheses) {
@@ -133,10 +133,10 @@ export function parseStatement(text: string): Statement {
     return ast
 }
 
-export function parseAxiom(text: string): Axiom {
+export function parseAxiom(text: string): FixedAxiom {
     const stmt = parseStatement(text)
     if (isAxiom(stmt)) {
-        return stmt.axiom;
+        return stmt.fixedAxiom;
     }
     else {
         throw new Error("Expected an axiom, got a goal.")

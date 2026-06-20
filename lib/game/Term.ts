@@ -1,5 +1,5 @@
 import { DisjointSetWithAssignment } from "../util/DisjointSetWithAssignment"
-import { Axiom } from "./Primitives"
+import { FixedAxiom } from "./Primitives"
 
 export type VariableName = string
 export type FunctionName = string
@@ -120,7 +120,7 @@ export function makeRelationWithFreshLabels(r: Relation, prefix: string, number_
 // number and identifier term an identifier (so we can track the exact
 // hole a term is associated with). The prefix should begin with g_, 
 // to not collide with number labels. 
-export function makeAxiomWithFreshLabels(axiom: Axiom, prefix: string): Axiom {
+export function makeAxiomWithFreshLabels(axiom: FixedAxiom, prefix: string): FixedAxiom {
   const hypotheses = axiom.hypotheses.map((h, i) => makeRelationWithFreshLabels(h, prefix, `n_${i}`))
   const conclusion = makeRelationWithFreshLabels(axiom.conclusion, prefix, "nc")
   return { hypotheses, conclusion }

@@ -1,9 +1,10 @@
 import { Relation } from "./Term"
 
 export type EqualityPosition = "left" | "right"
+export type SwapperPosition = "left" | "right"
 export type GadgetId = string
 
-export interface Axiom {
+export interface FixedAxiom {
     hypotheses: Relation[]
     conclusion: Relation
 }

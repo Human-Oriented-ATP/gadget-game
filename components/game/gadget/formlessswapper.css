@@ -1,0 +1,7 @@
+.swapper-background {
+    background-image: repeating-linear-gradient(
+        45deg,
+        rgba(176, 166, 180, 1) 0px 4px,
+        white 0px 12px
+    );
+}

@@ -2,10 +2,7 @@ import { applyNodeChanges, NodeChange, OnNodesChange } from '@xyflow/react';
 import { GadgetNode } from '../../../components/game/flow/GadgetFlowNode';
 import { CreateStateWithInitialValue } from '../Types';
 import { gadgetDndFromShelfSlice, GadgetDndFromShelfSlice } from './DragGadgetFromShelf';
-import { ConnectorStatus } from 'components/game/gadget/handles/ConnectorTypes';
-
-export const DEFAULT_NODE_Z_INDEX = undefined;
-export const CONNECTED_NODE_Z_INDEX = 1005;
+import { ConnectorStatus } from 'components/game/gadget/handles/Connector';
 
 export type NodeStateInitializedFromData = {
   nodes: GadgetNode[],

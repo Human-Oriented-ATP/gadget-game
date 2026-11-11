@@ -51,6 +51,14 @@
                 "questionnaire2"
             ],
             "numberOfUnlockedProblems": 1000
+        },
+        {
+            "name": "Thesis Examples",
+            "problems": [
+                "jo_exp01",
+                "jo_exp02"
+            ],
+            "numberOfUnlockedProblems": 1000
         }
     ]
 }

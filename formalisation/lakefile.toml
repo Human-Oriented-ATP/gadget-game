@@ -1,0 +1,14 @@
+name = "GadgetGame"
+version = "0.1.0"
+defaultTargets = ["gadgetgame"]
+
+[[lean_lib]]
+name = "GadgetGame"
+
+[[require]]
+name = "mathlib"
+scope = "leanprover-community"
+
+[[lean_exe]]
+name = "gadgetgame"
+root = "Main"

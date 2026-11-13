@@ -1,11 +1,12 @@
-import { Crosshair1Icon } from "@radix-ui/react-icons"
+﻿import { Crosshair1Icon } from "@radix-ui/react-icons"
 import { CellConnector } from "./gadget/handles/CellConnector"
 import { useGameStateContext } from "lib/state/StateContextProvider"
 import { StaticHole } from "./gadget/StaticHole"
-import { Axiom } from "lib/game/Primitives"
-import { parseAxiom } from "lib/parsing/Semantics"
+import { FixedAxiom } from "lib/game/Primitives"
+import { parseStatement } from "lib/parsing/Semantics"
 import { Relation } from "lib/game/Term"
 import { useShallow } from "zustand/react/shallow"
+import { isAxiom } from "lib/game/Initialization"
 
 function HelpSection(props: { title: string, children: React.ReactNode }) {
     return <li className="pt-3 first:pt-0">
@@ -75,13 +76,18 @@ function hasPinkCircleTerm(relation: Relation) {
     }
 }
 
-function hasPinkCircle(axiom: Axiom) {
+function hasPinkCircle(axiom: FixedAxiom) {
     const relations = [...axiom.hypotheses, axiom.conclusion]
     return relations.some(hasPinkCircleTerm)
 }
 
 function hasPinkCircleAxiom(axioms: string[]) {
-    return axioms.some(axiom => hasPinkCircle(parseAxiom(axiom)))
+    return axioms.some(axiom => {
+        const parsedAxiom = parseStatement(axiom);
+        if (isAxiom(parsedAxiom))
+            return hasPinkCircle(parsedAxiom.fixedAxiom);
+        else return false;
+    })
 }
 
 export function HelpContent() {

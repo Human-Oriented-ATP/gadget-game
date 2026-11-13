@@ -1,5 +1,5 @@
 import { CellPosition, OUTPUT_POSITION } from 'lib/game/CellPosition';
-import { Axiom, GOAL_GADGET_ID } from "./Primitives";
+import { FixedAxiom, GOAL_GADGET_ID } from "./Primitives";
 import { GadgetId } from "./Primitives";
 import { GadgetProps } from "components/game/gadget/Gadget";
 import { Relation, Term, makeAxiomWithFreshLabels, makeRelationWithFreshLabels } from "./Term";
@@ -7,8 +7,8 @@ import { parseStatement } from 'lib/parsing/Semantics';
 
 export function getGadgetRelations(statement: string, id: GadgetId): Map<CellPosition, Relation> {
     const parsed = parseStatement(statement)
-    if ("axiom" in parsed) {
-        const axiomWithFreshVariables = makeAxiomWithFreshLabels(parsed.axiom, id)
+    if ("fixedAxiom" in parsed) {
+        const axiomWithFreshVariables = makeAxiomWithFreshLabels(parsed.fixedAxiom, id)
         let relations = new Map<CellPosition, Relation>()
         axiomWithFreshVariables.hypotheses.forEach((hypothesis, i) => {
             relations.set(i, hypothesis)
@@ -45,7 +45,7 @@ export function relationToString(r: Relation): string {
 //     return termToString(equation[0]) + "=" + termToString(equation[1])
 // }
 
-export function axiomToString(a: Axiom) {
+export function axiomToString(a: FixedAxiom) {
     const hypotheses = a.hypotheses.map(relationToString).join(",")
     const conclusion = relationToString(a.conclusion)
     if (hypotheses === "") {

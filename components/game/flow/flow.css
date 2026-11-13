@@ -32,6 +32,22 @@
     align-items: start;
 }
 
+.swapper-handle {
+    width: 26px;
+    height: 26px;
+    top: -8.5px !important;
+}
+
+.swapper-handle-left {
+    left: 17px !important;
+    right: unset !important;
+}
+
+.swapper-handle-right {
+    left: unset !important;
+    right: 17px !important;
+}
+
 .react-flow__handle-left {
     left: -12px;
 }
@@ -43,20 +59,6 @@
 .react-flow__handle-top {
     left: -12px;
     top: 0px;
-}
-
-.react-flow__handle-top {
-    left: unset;
-    right: 12px;
-    top: calc(50% - 48px); 
-    align-items: flex-end;
-}
-
-.react-flow__handle-bottom {
-    left: unset;
-    right: 12px;
-    top: calc(50% + 23px);
-    align-items: flex-start;
 }
 
 
@@ -72,9 +74,22 @@
 }
 
 .react-flow__node.selectable:focus {
-    box-shadow: 0px 10px 30px gray;
     border-radius: 15px;
-    background-color: var(--color-white);
+    background-color: transparent;
+    outline: none;
+    box-shadow: none;
+}
+
+.react-flow__node.selected::before {
+    content: '';
+    position: absolute;
+    inset: -8px;
+    border-radius: 15px;
+    z-index: -1;
+    background: rgba(255, 255, 255, 0.65);
+    backdrop-filter: blur(4px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    pointer-events: none;
 }
 
 .react-flow__handle.valid svg {

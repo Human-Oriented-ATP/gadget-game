@@ -1,5 +1,5 @@
 import { twMerge } from "tailwind-merge"
-import { ConnectorDetails } from "./ConnectorTypes"
+import { ConnectorDetails } from "./Connector"
 
 interface CellConnectorProps extends ConnectorDetails {
     type: "source" | "target"

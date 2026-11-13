@@ -1,7 +1,7 @@
 import { EqualityPosition } from "lib/game/Primitives"
 import { twMerge } from "tailwind-merge"
 import { EqualityConnector } from "./EqualityConnector"
-import { ConnectorDetails } from "./ConnectorTypes"
+import { ConnectorDetails } from "./Connector"
 
 interface StaticEqualityHandleProps extends ConnectorDetails {
     equalityPosition: EqualityPosition

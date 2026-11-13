@@ -163,6 +163,7 @@ export const logicalStateSlice: CreateStateWithInitialValue<SetupReadonlyState, 
       if (gadgetProps === undefined) {
         throw Error(`Gadget ${gadgetId} not found in `);
       }
+      if (gadgetProps.relations === "formless") throw Error("Formless logic not implemented yet");
 
       return gadgetProps.relations;
     },
